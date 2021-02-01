@@ -1,16 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class OnClickMovement : MonoBehaviour
 {
-    // [SerializeField] private float movementSpeed;
-    // private Vector3 targetPosition;
-    // private Camera mainCamera;
+    [SerializeField] private float movementSpeed = 1;
+    private Vector3 targetPosition;
+    private Camera mainCamera;
     
     void Start()
     {
-        // mainCamera = Camera.main;
+        mainCamera = Camera.main;
     }
 
     void Update()
@@ -26,27 +27,28 @@ public class OnClickMovement : MonoBehaviour
             }
         }
 
-        // if(Input.GetMouseButtonDown(0)) {
-        //     CalculateTargetPosition();
-        //     Debug.Log("targetPosition");
-        //     Debug.Log(targetPosition);
-        // }
+         if(Input.GetMouseButtonDown(0)) {
+             CalculateTargetPosition();
+             Debug.Log("targetPosition");
+             Debug.Log(targetPosition);
+         }
 
-        // MoveTarget();
+         MoveTarget();
     }
 
 
     private void PrintName(GameObject go) {
         Debug.Log(go.name);
     }
-    // private void CalculateTargetPosition() {
+    private void CalculateTargetPosition() {
         
-    //     var mousePosition = Input.mousePosition;
-    //     var transformedPosition = mainCamera.ScreenToWorldPoint(mousePosition);
-    //     targetPosition = new Vector3(transformedPosition.x, transformedPosition.y, 0);
-    // }
+        var mousePosition = Input.mousePosition;
+        var transformedPosition = mainCamera.ScreenToWorldPoint(mousePosition);
+        targetPosition = new Vector3((float)Math.Floor(transformedPosition.x) + 0.5f, (float)Math.Floor(transformedPosition.y) + 1.1f, 0);
+    }
 
-    // private void MoveTarget() {
-    //     transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * movementSpeed);
-    // }
+    private void MoveTarget() {
+        //transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * movementSpeed);
+        transform.position = new Vector3(targetPosition.x, targetPosition.y);
+    }
 }
