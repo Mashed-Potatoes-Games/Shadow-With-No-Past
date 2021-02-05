@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class OnClickMovement : MonoBehaviour
 {
-    [SerializeField] private float movementSpeed = 1;
+    //[SerializeField] private float movementSpeed = 1;
     private Vector3 targetPosition;
     private Camera mainCamera;
     
@@ -25,15 +25,13 @@ public class OnClickMovement : MonoBehaviour
                     PrintName(hit.transform.gameObject);
                 }
             }
+
+            CalculateTargetPosition();
+            Debug.Log("targetPosition");
+            Debug.Log(targetPosition);
+
+            MoveTarget();
         }
-
-         if(Input.GetMouseButtonDown(0)) {
-             CalculateTargetPosition();
-             Debug.Log("targetPosition");
-             Debug.Log(targetPosition);
-         }
-
-         MoveTarget();
     }
 
 
