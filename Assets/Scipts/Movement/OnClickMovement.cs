@@ -5,13 +5,18 @@ using UnityEngine;
 
 public class OnClickMovement : MonoBehaviour
 {
-    //[SerializeField] private float movementSpeed = 1;
-    private Vector3 targetPosition;
+    private GridInformation GridInfo;
+
+    private Vector3Int targetPosition;
     private Camera mainCamera;
     
     void Start()
     {
         mainCamera = Camera.main;
+        GridInfo = GameObject.Find("Main grid").GetComponent<GridInformation>();
+        GameObject grid = GameObject.Find("Main grid");
+        GridInfo = grid.gameObject.GetComponent<GridInformation>();
+
     }
 
     void Update()
@@ -30,7 +35,11 @@ public class OnClickMovement : MonoBehaviour
             Debug.Log("targetPosition");
             Debug.Log(targetPosition);
 
-            MoveTarget();
+            if(CanMoveTo(targetPosition))
+            {
+                MoveTarget();
+            }
+
         }
     }
 
@@ -39,14 +48,18 @@ public class OnClickMovement : MonoBehaviour
         Debug.Log(go.name);
     }
     private void CalculateTargetPosition() {
-        
         var mousePosition = Input.mousePosition;
         var transformedPosition = mainCamera.ScreenToWorldPoint(mousePosition);
-        targetPosition = new Vector3((float)Math.Floor(transformedPosition.x) + 0.5f, (float)Math.Floor(transformedPosition.y) + 1.1f, 0);
+        targetPosition = new Vector3Int((int)Math.Floor(transformedPosition.x), (int)Math.Floor(transformedPosition.y), 0);
+    }
+
+    private bool CanMoveTo(Vector3Int position)
+    {
+        return GridInfo.IsGround(position) && !GridInfo.IsObstacle(position);
     }
 
     private void MoveTarget() {
         //transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * movementSpeed);
-        transform.position = new Vector3(targetPosition.x, targetPosition.y);
+        transform.position = new Vector3(targetPosition.x + 0.5f, targetPosition.y + 1.1f);
     }
 }
