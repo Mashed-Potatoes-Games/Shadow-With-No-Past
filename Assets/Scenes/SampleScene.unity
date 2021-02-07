@@ -270,12 +270,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a12fb3b82340dc43b4ee58aff4bea07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Ground:
-    serializedVersion: 2
-    m_Bits: 256
-  Obstacles:
-    serializedVersion: 2
-    m_Bits: 512
   GroundMaps: []
   ObstacleMaps: []
 --- !u!1 &1638314581
@@ -294,7 +288,7 @@ GameObject:
   m_TagString: ObstacleTilemap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1638314582
 Transform:
@@ -1035,7 +1029,7 @@ GameObject:
   m_TagString: GroundTilemap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1987878675
 Transform:
@@ -1807,6 +1801,10 @@ PrefabInstance:
     - target: {fileID: 4078981272284618143, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4078981272284618143, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
+      propertyPath: MoveDistance
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}

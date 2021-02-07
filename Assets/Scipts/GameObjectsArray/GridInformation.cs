@@ -6,9 +6,6 @@ using UnityEngine.Tilemaps;
 public class GridInformation : MonoBehaviour
 {
 
-    public LayerMask Ground;
-    public LayerMask Obstacles;
-
     public List<Tilemap> GroundMaps;
     public List<Tilemap> ObstacleMaps;
 
@@ -30,6 +27,7 @@ public class GridInformation : MonoBehaviour
         foreach (GameObject obj in GridChildren)
         {
             Tilemap tilemap = obj.GetComponent<Tilemap>();
+
             if (tilemap != null )
             {
                 if (obj.tag == "GroundTilemap")
@@ -56,12 +54,13 @@ public class GridInformation : MonoBehaviour
         return GridChildren;
     }
 
-    public bool IsObstacle(Vector3Int position)
+    public bool IsObstacle(Vector2Int position)
     {
         bool isObstacle = false;
+        Vector3Int vector3Pos = new Vector3Int(position.x, position.y, 0);
         foreach(Tilemap tilemap in ObstacleMaps)
         {
-            if (tilemap.GetTile(position) != null)
+            if (tilemap.GetTile(vector3Pos) != null)
             {
                 isObstacle = true;
             }
@@ -69,12 +68,13 @@ public class GridInformation : MonoBehaviour
         return isObstacle;
     }
 
-    public bool IsGround(Vector3Int position)
+    public bool IsGround(Vector2Int position)
     {
+        Vector3Int vector3Pos = new Vector3Int(position.x, position.y, 0);
         bool isGround = false;
         foreach(Tilemap tilemap in GroundMaps)
         {
-            if(tilemap.GetTile(position) != null)
+            if(tilemap.GetTile(vector3Pos) != null)
             {
                 isGround = true;
             }

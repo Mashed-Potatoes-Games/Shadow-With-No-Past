@@ -5,18 +5,43 @@ using UnityEngine;
 
 public class OnClickMovement : MonoBehaviour
 {
+    public Vector2Int CurrentPos
+    {
+        get
+        {
+            if(currentPos.x != (int)Math.Floor(transform.position.x))
+            {
+                currentPos.x = (int)Math.Floor(transform.position.x);
+            }
+
+            if (currentPos.y != (int)Math.Floor(transform.position.y))
+            {
+                currentPos.y = (int)Math.Floor(transform.position.y);
+            }
+
+            return currentPos;
+        }
+    }
+    private Vector2Int currentPos;
+
+    public int MoveDistance = 2;
+
+    private Camera mainCamera;
     private GridInformation GridInfo;
 
-    private Vector3Int targetPosition;
-    private Camera mainCamera;
-    
+    private const float XOffset = 0.5f;
+    private const float YOffset = 1.1f;
+
     void Start()
     {
+        currentPos = new Vector2Int(
+                (int)Math.Floor(transform.position.x),
+                (int)Math.Floor(transform.position.y));
+
         mainCamera = Camera.main;
-        GridInfo = GameObject.Find("Main grid").GetComponent<GridInformation>();
+
         GameObject grid = GameObject.Find("Main grid");
         GridInfo = grid.gameObject.GetComponent<GridInformation>();
-
     }
 
     void Update()
@@ -31,35 +56,43 @@ public class OnClickMovement : MonoBehaviour
                 }
             }
 
-            CalculateTargetPosition();
+            Vector2Int targetPos = CalculateTargetPosition();
             Debug.Log("targetPosition");
-            Debug.Log(targetPosition);
+            Debug.Log(targetPos);
 
-            if(CanMoveTo(targetPosition))
+            if(CanMoveTo(targetPos))
             {
-                MoveTarget();
+                MoveTo(targetPos);
             }
 
         }
     }
 
-
     private void PrintName(GameObject go) {
         Debug.Log(go.name);
     }
-    private void CalculateTargetPosition() {
+
+    private Vector2Int CalculateTargetPosition() {
         var mousePosition = Input.mousePosition;
         var transformedPosition = mainCamera.ScreenToWorldPoint(mousePosition);
-        targetPosition = new Vector3Int((int)Math.Floor(transformedPosition.x), (int)Math.Floor(transformedPosition.y), 0);
+        return new Vector2Int((int)Math.Floor(transformedPosition.x), (int)Math.Floor(transformedPosition.y));
     }
 
-    private bool CanMoveTo(Vector3Int position)
+    private bool CanMoveTo(Vector2Int targetPos)
     {
-        return GridInfo.IsGround(position) && !GridInfo.IsObstacle(position);
+        //TODO: move to GridInfo class!
+        bool isSpaceAvailable = GridInfo.IsGround(targetPos) && !GridInfo.IsObstacle(targetPos);
+        bool canReachTo;
+        int xDiff = Math.Abs(CurrentPos.x - targetPos.x);
+        int yDiff = Math.Abs(CurrentPos.y - targetPos.y);
+
+        canReachTo = MoveDistance >= xDiff + yDiff;
+        //TODO: make pathfinding through obstacles!
+
+        return isSpaceAvailable && canReachTo;
     }
 
-    private void MoveTarget() {
-        //transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * movementSpeed);
-        transform.position = new Vector3(targetPosition.x + 0.5f, targetPosition.y + 1.1f);
+    private void MoveTo(Vector2Int targetPos) {
+        transform.position = new Vector3(targetPos.x + XOffset, targetPos.y + YOffset);
     }
 }
