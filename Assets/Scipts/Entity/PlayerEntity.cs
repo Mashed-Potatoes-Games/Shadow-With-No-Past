@@ -5,11 +5,8 @@ using UnityEngine;
 
 namespace Entity
 {
-    public class PlayeEntity : BaseEntity
+    public class PlayerEntity : BaseEntity
     {
-
-
-
         public override void Start()
         {
             base.Start();
@@ -31,14 +28,27 @@ namespace Entity
                 }
 
                 Vector2Int targetPos = CalculateMouseTargetPosition();
-                Debug.Log("targetPosition");
-                Debug.Log(targetPos);
+                Debug.Log("targetPosition" + targetPos);
+                Debug.Log("playerPosition" + CurrentPos);
 
-                if (CanMoveTo(targetPos))
-                {
-                    MoveTo(targetPos);
-                }
+                TryMoveTo(targetPos);
 
+            }
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                TryMoveTo(Direction.Up);
+            }
+            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                TryMoveTo(Direction.Right);
+            }
+            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                TryMoveTo(Direction.Down);
+            }
+            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                TryMoveTo(Direction.Left);
             }
         }
 
