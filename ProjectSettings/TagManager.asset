@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ObstacleTilemap
   - GroundTilemap
+  - CharactersTilemap
   layers:
   - Default
   - TransparentFX

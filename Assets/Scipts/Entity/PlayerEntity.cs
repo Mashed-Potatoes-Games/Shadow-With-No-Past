@@ -7,25 +7,22 @@ namespace Entity
 {
     public class PlayerEntity : BaseEntity
     {
+        //Here should be unique initialization of player
         public override void Start()
         {
             base.Start();
         }
 
-        void Update()
+        public override void Update()
         {
+            //Look for mouse click to move.
+            //TODO: Try to move this functionality to scriptable tiles!!
             if (Input.GetMouseButtonDown(0))
             {
                 RaycastHit hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                if (Physics.Raycast(ray, out hit, 100.00f))
-                {
-                    if (hit.transform != null)
-                    {
-                        PrintName(hit.transform.gameObject);
-                    }
-                }
+                Physics.Raycast(ray, out hit, 100.00f);
 
                 Vector2Int targetPos = CalculateMouseTargetPosition();
                 Debug.Log("targetPosition" + targetPos);
@@ -34,6 +31,8 @@ namespace Entity
                 TryMoveTo(targetPos);
 
             }
+
+            //Check for unputes to move or attack adjacent fields.
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 TryMoveTo(Direction.Up);
@@ -52,16 +51,18 @@ namespace Entity
             }
         }
 
-        private void PrintName(GameObject go)
-        {
-            Debug.Log(go.name);
-        }
-
+        //This code won't be necessary after changing click catching to scriptable tiles
         private Vector2Int CalculateMouseTargetPosition()
         {
             var mousePosition = Input.mousePosition;
             var transformedPosition = mainCamera.ScreenToWorldPoint(mousePosition);
             return new Vector2Int((int)Math.Floor(transformedPosition.x), (int)Math.Floor(transformedPosition.y));
+        }
+
+        //This function should never be called, because player is controlled by user.
+        public override void MakeTurn()
+        {
+            throw new NotImplementedException();
         }
     }
 
