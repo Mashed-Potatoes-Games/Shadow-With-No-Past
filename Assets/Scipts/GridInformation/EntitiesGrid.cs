@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Entity;
+using ShadowWithNoPast.Entites;
 
 public class EntitiesGrid : MonoBehaviour
 {

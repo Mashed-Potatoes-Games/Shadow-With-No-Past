@@ -270,7 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a12fb3b82340dc43b4ee58aff4bea07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ThisGrid: {fileID: 0}
+  Grid: {fileID: 0}
   GroundMaps: []
   ObstacleMaps: []
   EntitiesGrid: {fileID: 0}
@@ -1683,15 +1683,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4078981272284618141, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.5
+      value: -4.5
       objectReference: {fileID: 0}
     - target: {fileID: 4078981272284618141, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.1
+      value: 0.100000024
       objectReference: {fileID: 0}
     - target: {fileID: 4078981272284618141, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.171096
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4078981272284618141, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
       propertyPath: m_LocalRotation.w

@@ -7,9 +7,9 @@ using UnityEngine.Tilemaps;
 using UnityEditor;
 #endif
 
-namespace Entity
+namespace ShadowWithNoPast.Entites
 {
-    public abstract class BaseEntity : MonoBehaviour
+    public abstract class BaseEntity : GridObject
     {
         public EntitiesGrid ParentGrid;
 
@@ -22,23 +22,7 @@ namespace Entity
             Left
         }
 
-        //Get: returns global position to the entity.
-        //Set: changes the value AND moves the GameObject (Adding the offset values).
-        public Vector2Int CurrentPos
-        {
-            get
-            {
-                return currentPos;
-            }
-
-            set
-            {
-                transform.position = new Vector3(value.x + XOffset, value.y + YOffset);
-
-                currentPos = value;
-            }
-        }
-        protected Vector2Int currentPos;
+        
 
         //Get: returns the direction this obect is facing to.
         //Set: changes this value AND flips the sprite to this direction
@@ -71,14 +55,10 @@ namespace Entity
         protected Camera mainCamera;
         protected GridInformation GridInfo;
 
-        //Entites can be the different size and offets are used to position the object in the center of the grid.
-        //Changing the sprite center to custom fucks up hard with it's flip.
-        protected virtual float XOffset => 0.5f;
-        protected virtual float YOffset => 1.1f;
-
         //ToDo: Don't work with EntitiesGrid, and work with GridInfo instead!!!
-        public virtual void Start()
+        protected override void Start()
         {
+            base.Start();
             GameObject grid = GameObject.Find("Main grid");
             GridInfo = grid.gameObject.GetComponent<GridInformation>();
 
@@ -99,7 +79,7 @@ namespace Entity
 
         //Usual enemies don't need to do anything at each frame, so it's blank.
         //It's virtual in case you will need to override it in innerhited entities(animations or so)
-        public virtual void Update()
+        protected override void Update()
         {
 
         }
@@ -154,7 +134,7 @@ namespace Entity
             return isSpaceAvailable && canReachTo;
         }
 
-        public void MoveTo(Vector2Int targetPos)
+        public override void MoveTo(Vector2Int targetPos)
         {
             Vector2Int direction = targetPos - CurrentPos;
             if(direction.x > 0)
@@ -166,7 +146,8 @@ namespace Entity
             }
             //TODO: Make sure that only one class will control the movement, so the logic won't be scattered.
             ParentGrid.MoveTo(this, CurrentPos, targetPos);
-            CurrentPos = targetPos;
+
+            base.MoveTo(targetPos);
         }
 
         //Change facing direction after a move or other interractions

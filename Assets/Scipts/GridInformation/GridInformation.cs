@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using Entity;
 
+[RequireComponent(typeof(Grid))]
 public class GridInformation : MonoBehaviour
 {
     public enum CellStatus
@@ -14,17 +14,20 @@ public class GridInformation : MonoBehaviour
         Occupied
     }
 
-    public Grid ThisGrid;
+    public Grid Grid;
 
     public List<Tilemap> GroundMaps;
     public List<Tilemap> ObstacleMaps;
     public EntitiesGrid EntitiesGrid;
 
+    public void Awake()
+    {
+        Grid = GetComponent<Grid>();
+    }
+
     // Initialize information
     void Start()
     {
-        ThisGrid = gameObject.GetComponent<Grid>();
-
         GetMaps();
     }
 
