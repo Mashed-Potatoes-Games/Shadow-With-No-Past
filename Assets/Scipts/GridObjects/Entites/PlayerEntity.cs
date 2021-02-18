@@ -3,10 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ShadowWithNoPast.Entites
+namespace ShadowWithNoPast.GridObjects
 {
     public class PlayerEntity : BaseEntity
     {
+        protected Camera mainCamera;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            mainCamera = Camera.main;
+        }
         //Here should be unique initialization of player
         protected override void Start()
         {
@@ -15,6 +22,7 @@ namespace ShadowWithNoPast.Entites
 
         protected override void Update()
         {
+            base.Update();
             //Look for mouse click to move.
             //TODO: Try to move this functionality to scriptable tiles!!
             if (Input.GetMouseButtonDown(0))

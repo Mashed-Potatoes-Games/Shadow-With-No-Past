@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ShadowWithNoPast.Entites
+namespace ShadowWithNoPast.GridObjects
 {
+    [ExecuteAlways]
     public class GridObject : MonoBehaviour
     {
         //Get: returns global position to the entity.
         //Set: changes the value AND moves the GameObject (Adding the offset values).
-        [ExecuteInEditMode]
         public Vector2Int CurrentPos
         {
             get
@@ -30,6 +30,14 @@ namespace ShadowWithNoPast.Entites
         //This values are for 512x512px sprites, which corresponds to 2x2 units in Unity.
         public virtual float XOffset => 0.5f;
         public virtual float YOffset => 1.1f;
+
+
+        protected virtual void Awake()
+        {
+            currentPos = new Vector2Int(
+                Mathf.RoundToInt(transform.position.x - XOffset),
+                Mathf.RoundToInt(transform.position.y - YOffset));
+        }
 
         // Start is called before the first frame update
         protected virtual void Start()

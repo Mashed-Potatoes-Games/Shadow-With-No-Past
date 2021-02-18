@@ -7,11 +7,12 @@ using UnityEngine.Tilemaps;
 using UnityEditor;
 #endif
 
-namespace ShadowWithNoPast.Entites
+namespace ShadowWithNoPast.GridObjects
 {
+    [ExecuteAlways]
     public abstract class BaseEntity : GridObject
     {
-        public EntitiesGrid ParentGrid;
+        public ObjectsGrid ParentGrid;
 
         //Direction, the entity can face or attack.
         public enum Direction
@@ -52,8 +53,13 @@ namespace ShadowWithNoPast.Entites
         //Distance the entity is allowed to move in 1 turn.
         public int MoveDistance = 1;
 
-        protected Camera mainCamera;
+        
         protected GridInformation GridInfo;
+
+        protected override void Awake()
+        {
+            base.Awake();
+        }
 
         //ToDo: Don't work with EntitiesGrid, and work with GridInfo instead!!!
         protected override void Start()
@@ -63,16 +69,11 @@ namespace ShadowWithNoPast.Entites
             GridInfo = grid.gameObject.GetComponent<GridInformation>();
 
             //At the start the entity is not it the position of the grid
-            ParentGrid = transform.parent.GetComponent<EntitiesGrid>();
+            ParentGrid = transform.parent.GetComponent<ObjectsGrid>();
 
-            //write current position to work with later
-            currentPos = new Vector2Int(
-                Mathf.RoundToInt(transform.position.x - XOffset),
-                Mathf.RoundToInt(transform.position.y - YOffset));
             //Add itself to entity grid
-            ParentGrid.SetEntityTo(this, currentPos);
 
-            mainCamera = Camera.main;
+            
 
 
         }
@@ -81,7 +82,7 @@ namespace ShadowWithNoPast.Entites
         //It's virtual in case you will need to override it in innerhited entities(animations or so)
         protected override void Update()
         {
-
+            base.Update();
         }
 
         //check for an available space before moving

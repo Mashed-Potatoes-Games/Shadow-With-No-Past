@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ShadowWithNoPast.Entites;
+using ShadowWithNoPast.GridObjects;
 [ExecuteInEditMode]
 //This Editor script can be applied only to Grid objects
 [RequireComponent(typeof(GridObject))]

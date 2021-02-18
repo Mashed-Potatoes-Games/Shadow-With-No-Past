@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -11,24 +12,24 @@ public class GridInformation : MonoBehaviour
         NoGround,
         Obstacle,
         Free,
-        Occupied
+        Entity,
+        Item
     }
 
     public Grid Grid;
 
     public List<Tilemap> GroundMaps;
     public List<Tilemap> ObstacleMaps;
-    public EntitiesGrid EntitiesGrid;
+    public ObjectsGrid EntitiesGrid;
 
     public void Awake()
     {
         Grid = GetComponent<Grid>();
+        GetMaps();
     }
 
-    // Initialize information
     void Start()
     {
-        GetMaps();
     }
 
     // Update is called once per frame
@@ -41,13 +42,13 @@ public class GridInformation : MonoBehaviour
     void GetMaps()
     {
         //Tilemaps or other objects need to be the childer in order to find and work with those.
-        //This is because every world has it's own tilemap and it allows to differentiate between them.
+        //This is because every world has it's own tilemaps and it allows grids to differentiate between them.
         List<GameObject> GridChildren = GetGridChildren();
 
         foreach (GameObject obj in GridChildren)
         {
             Tilemap tilemap = obj.GetComponent<Tilemap>();
-            EntitiesGrid entGrid = obj.GetComponent<EntitiesGrid>();
+            ObjectsGrid entGrid = obj.GetComponent<ObjectsGrid>();
             if (tilemap != null)
             {
                 if (obj.CompareTag("GroundTilemap"))
@@ -108,12 +109,6 @@ public class GridInformation : MonoBehaviour
         return isGround;
     }
 
-    //This function is needed mostly so the Entities could call this one instead of GridInformation.EntitiesGrid.IsOccupied();
-    //This way I'm hiding Entities grid from it.
-    public bool IsOccupied(Vector2Int pos)
-    {
-        return EntitiesGrid.IsOccupied(pos);
-    }
 
     //Returns, what is at the given coordinate.
     public CellStatus GetCellStatus(Vector2Int pos)
@@ -124,10 +119,24 @@ public class GridInformation : MonoBehaviour
         } else if (IsObstacle(pos))
         {
             return CellStatus.Obstacle;
-        } else if(IsOccupied(pos))
+        } else 
         {
-            return CellStatus.Occupied;
+            switch (EntitiesGrid.WhatIn(pos))
+            {
+                //In the grid of objects - position is empty,
+                case ObjectsGrid.ObjectType.Empty:
+                    return CellStatus.Free;
+                    //but in the Grid info position is not, because there is ground and obstacles.
+                    //So it's named "Free", which means it contains ground tile, has no obstacles and free for any GridObject.
+                case ObjectsGrid.ObjectType.Entity:
+                    return CellStatus.Entity;
+                case ObjectsGrid.ObjectType.Item:
+                    return CellStatus.Item;
+                default:
+                    throw new NotImplementedException();
+                    //Other Grid types can be implemented - such as burning tiles, so "Free" is not by default,
+                    //and if it catches any different object - you will know it's a place you need to add.
+            }
         }
-        return CellStatus.Free;
     }
 }
