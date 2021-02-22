@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace ShadowWithNoPast.GridObjects
 {
+    [RequireComponent(typeof(ObjectEditor))]
     [ExecuteAlways]
     public class GridObject : MonoBehaviour
     {
@@ -27,7 +28,7 @@ namespace ShadowWithNoPast.GridObjects
         [SerializeField]
         protected Vector2Int currentPos;
 
-        //Entites can be the different size and offets are used to position the object in the center of the grid.
+        //Entites can be the different size and offsets are used to position the object in the center of the grid.
         //Changing the sprite center to custom fucks up hard with it's flip.
         //This values are for 512x512px sprites, which corresponds to 2x2 units in Unity.
         public virtual float XOffset => 0.5f;

@@ -19,15 +19,12 @@ public class GridManagement : MonoBehaviour
         Item
     }
 
-    public Grid Grid;
-
     public List<Tilemap> GroundMaps;
     public List<Tilemap> ObstacleMaps;
     public ObjectsGrid ObjGrid;
 
     public void Awake()
     {
-        Grid = GetComponent<Grid>();
         GetMaps();
     }
 

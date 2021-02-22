@@ -6,8 +6,6 @@ using ShadowWithNoPast.GridObjects;
 using System;
 
 [ExecuteInEditMode]
-//This Editor script can be applied only to Grid objects
-[RequireComponent(typeof(GridObject))]
 //This script is needed be applied to every Entity or Item prefab, so you could move them only on grid coordinates
 public class ObjectEditor : MonoBehaviour
 {
@@ -18,6 +16,10 @@ public class ObjectEditor : MonoBehaviour
     void Awake()
     {
         Object = GetComponent<GridObject>();
+        if(Object is null)
+        {
+            DestroyImmediate(this, false);
+        }
     }
 
     //Every time editor interracts with the object it calls Update.

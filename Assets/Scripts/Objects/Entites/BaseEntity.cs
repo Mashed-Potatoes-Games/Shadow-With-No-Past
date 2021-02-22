@@ -52,9 +52,6 @@ namespace ShadowWithNoPast.GridObjects
         //Distance the entity is allowed to move in 1 turn.
         public int MoveDistance = 1;
 
-        
-        protected GridManagement GridInfo;
-
         protected override void Awake()
         {
             base.Awake();
@@ -125,12 +122,13 @@ namespace ShadowWithNoPast.GridObjects
 
         public override void MoveTo(Vector2Int targetPos)
         {
+            
             Vector2Int direction = targetPos - CurrentPos;
 
-            if(direction.x > 0)
+            if (direction.x > 0)
             {
                 FaceTo(Direction.Right);
-            } 
+            }
             else if (direction.x < 0)
             {
                 FaceTo(Direction.Left);
@@ -152,7 +150,7 @@ namespace ShadowWithNoPast.GridObjects
                     spriteRenderer.flipX = true;
                     break;
                 default:
-                    throw new System.NotImplementedException();
+                    throw new NotImplementedException();
             }
         }
         
