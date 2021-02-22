@@ -1,12 +1,15 @@
-﻿using System;
+﻿using ShadowWithNoPast.GridObjects;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+[ExecuteAlways]
 [RequireComponent(typeof(Grid))]
-public class GridInformation : MonoBehaviour
+public class GridManagement : MonoBehaviour
 {
+    public class CannotMoveHereException : Exception { }
     public enum CellStatus
     {
         NoGround,
@@ -20,7 +23,7 @@ public class GridInformation : MonoBehaviour
 
     public List<Tilemap> GroundMaps;
     public List<Tilemap> ObstacleMaps;
-    public ObjectsGrid EntitiesGrid;
+    public ObjectsGrid ObjGrid;
 
     public void Awake()
     {
@@ -33,7 +36,7 @@ public class GridInformation : MonoBehaviour
     }
 
     // Update is called once per frame
-    // We don't need those
+    // We don't need this for now
     void Update()
     {
 
@@ -62,7 +65,7 @@ public class GridInformation : MonoBehaviour
             }
             else if (entGrid != null)
             {
-                EntitiesGrid = entGrid;
+                ObjGrid = entGrid;
             }
         }
     }
@@ -121,7 +124,7 @@ public class GridInformation : MonoBehaviour
             return CellStatus.Obstacle;
         } else 
         {
-            switch (EntitiesGrid.WhatIn(pos))
+            switch (ObjGrid.WhatIn(pos))
             {
                 //In the grid of objects - position is empty,
                 case ObjectsGrid.ObjectType.Empty:
@@ -138,5 +141,39 @@ public class GridInformation : MonoBehaviour
                     //and if it catches any different object - you will know it's a place you need to add.
             }
         }
+    }
+
+    public void MoveInstantTo(GridObject obj, Vector2Int pos)
+    {
+        Vector2Int objPos = obj.CurrentPos;
+        if(GetCellStatus(pos) == CellStatus.Free)
+        {
+            ObjGrid.MoveInstantTo(obj, pos);
+        }
+        else if(ObjGrid.GetEntityAt(pos) != obj)
+        {
+            throw new CannotMoveHereException();
+        }
+    }
+
+    public void SetNewObjectTo(GridObject obj, Vector2Int pos)
+    {
+        if(GetCellStatus(pos) == CellStatus.Free)
+        {
+            ObjGrid.SetNewObjectTo(obj, pos);
+        } else
+        {
+            throw new CannotMoveHereException();
+        }
+    }
+
+    public GridObject GetEntityAt(Vector2Int pos)
+    {
+        return ObjGrid.GetEntityAt(pos);
+    }
+
+    public void RemoveAt(GridObject obj, Vector2Int pos)
+    {
+        ObjGrid.RemoveAt(obj, pos);
     }
 }

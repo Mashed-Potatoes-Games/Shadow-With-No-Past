@@ -12,7 +12,6 @@ namespace ShadowWithNoPast.GridObjects
     [ExecuteAlways]
     public abstract class BaseEntity : GridObject
     {
-        public ObjectsGrid ParentGrid;
 
         //Direction, the entity can face or attack.
         public enum Direction
@@ -54,7 +53,7 @@ namespace ShadowWithNoPast.GridObjects
         public int MoveDistance = 1;
 
         
-        protected GridInformation GridInfo;
+        protected GridManagement GridInfo;
 
         protected override void Awake()
         {
@@ -65,17 +64,6 @@ namespace ShadowWithNoPast.GridObjects
         protected override void Start()
         {
             base.Start();
-            GameObject grid = GameObject.Find("Main grid");
-            GridInfo = grid.gameObject.GetComponent<GridInformation>();
-
-            //At the start the entity is not it the position of the grid
-            ParentGrid = transform.parent.GetComponent<ObjectsGrid>();
-
-            //Add itself to entity grid
-
-            
-
-
         }
 
         //Usual enemies don't need to do anything at each frame, so it's blank.
@@ -124,7 +112,7 @@ namespace ShadowWithNoPast.GridObjects
         public bool CanMoveTo(Vector2Int targetPos)
         {
             //TODO: move to GridInfo class!
-            bool isSpaceAvailable = GridInfo.IsGround(targetPos) && !GridInfo.IsObstacle(targetPos);
+            bool isSpaceAvailable = GlobalParentGrid.GetCellStatus(targetPos) == GridManagement.CellStatus.Free;
             bool canReachTo;
             int xDiff = Mathf.Abs(CurrentPos.x - targetPos.x);
             int yDiff = Mathf.Abs(CurrentPos.y - targetPos.y);
@@ -138,15 +126,15 @@ namespace ShadowWithNoPast.GridObjects
         public override void MoveTo(Vector2Int targetPos)
         {
             Vector2Int direction = targetPos - CurrentPos;
+
             if(direction.x > 0)
             {
                 FaceTo(Direction.Right);
-            } else if (direction.x < 0)
+            } 
+            else if (direction.x < 0)
             {
                 FaceTo(Direction.Left);
             }
-            //TODO: Make sure that only one class will control the movement, so the logic won't be scattered.
-            ParentGrid.MoveTo(this, CurrentPos, targetPos);
 
             base.MoveTo(targetPos);
         }

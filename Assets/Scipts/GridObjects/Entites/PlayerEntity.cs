@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace ShadowWithNoPast.GridObjects
 {
+    [ExecuteAlways]
     public class PlayerEntity : BaseEntity
     {
         protected Camera mainCamera;
