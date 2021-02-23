@@ -3,9 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace ShadowWithNoPast.GridObjects
 {
@@ -21,8 +18,6 @@ namespace ShadowWithNoPast.GridObjects
             Down,
             Left
         }
-
-        
 
         //Get: returns the direction this obect is facing to.
         //Set: changes this value AND flips the sprite to this direction
@@ -52,44 +47,26 @@ namespace ShadowWithNoPast.GridObjects
         //Distance the entity is allowed to move in 1 turn.
         public int MoveDistance = 1;
 
-        protected override void Awake()
-        {
-            base.Awake();
-        }
-
-        //ToDo: Don't work with EntitiesGrid, and work with GridInfo instead!!!
-        protected override void Start()
-        {
-            base.Start();
-        }
-
-        //Usual enemies don't need to do anything at each frame, so it's blank.
-        //It's virtual in case you will need to override it in innerhited entities(animations or so)
-        protected override void Update()
-        {
-            base.Update();
-        }
-
         //check for an available space before moving
         public void TryMoveTo(Vector2Int targetPos)
         {
             if (CanMoveTo(targetPos))
             {
-                MoveTo(targetPos);
+                InstantMoveTo(targetPos);
             }
         }
 
         //According to direction tries to move to calculated coordinate.
         public virtual void TryMoveTo(Direction direction)
         {
-            Vector2Int MovementVector = GetPosFromDirection(direction);
+            Vector2Int MovementVector = GetVectorFromDirection(direction);
             
             Vector2Int TargetPosition = CurrentPos + MovementVector;
             TryMoveTo(TargetPosition);
         } 
 
         //Get's movement vector from position, that can be added to current coordinates to find the target position.
-        private Vector2Int GetPosFromDirection(Direction direction)
+        private Vector2Int GetVectorFromDirection(Direction direction)
         {
             switch (direction)
             {
@@ -102,14 +79,13 @@ namespace ShadowWithNoPast.GridObjects
                 case Direction.Left:
                     return new Vector2Int(-1, 0);
                 default:
-                    throw new Exception();
+                    throw new NotImplementedException();
             }
         }
 
         public bool CanMoveTo(Vector2Int targetPos)
         {
-            //TODO: move to GridInfo class!
-            bool isSpaceAvailable = GlobalParentGrid.GetCellStatus(targetPos) == GridManagement.CellStatus.Free;
+            bool isSpaceAvailable = MainGrid.GetCellStatus(targetPos) == GridManagement.CellStatus.Free;
             bool canReachTo;
             int xDiff = Mathf.Abs(CurrentPos.x - targetPos.x);
             int yDiff = Mathf.Abs(CurrentPos.y - targetPos.y);
@@ -120,9 +96,9 @@ namespace ShadowWithNoPast.GridObjects
             return isSpaceAvailable && canReachTo;
         }
 
-        public override void MoveTo(Vector2Int targetPos)
+        public override void InstantMoveTo(Vector2Int targetPos)
         {
-            
+            //Changes direction, object is facing.
             Vector2Int direction = targetPos - CurrentPos;
 
             if (direction.x > 0)
@@ -134,7 +110,7 @@ namespace ShadowWithNoPast.GridObjects
                 FaceTo(Direction.Left);
             }
 
-            base.MoveTo(targetPos);
+            base.InstantMoveTo(targetPos);
         }
 
         //Change facing direction after a move or other interractions

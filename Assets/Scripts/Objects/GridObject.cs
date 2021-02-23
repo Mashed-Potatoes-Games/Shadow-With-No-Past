@@ -8,7 +8,7 @@ namespace ShadowWithNoPast.GridObjects
     [ExecuteAlways]
     public class GridObject : MonoBehaviour
     {
-        public GridManagement GlobalParentGrid;
+        public GridManagement MainGrid;
 
         //Get: returns global position to the entity.
         //Set: changes the value AND moves the GameObject (Adding the offset values).
@@ -34,14 +34,16 @@ namespace ShadowWithNoPast.GridObjects
         public virtual float XOffset => 0.5f;
         public virtual float YOffset => 1.1f;
 
-
+        #region Empty Awake, Start and Uptade ready to be overriden.
         protected virtual void Awake()
         {
+
         }
 
         // Start is called before the first frame update
         protected virtual void Start()
         {
+
         }
 
         // Update is called once per frame
@@ -49,12 +51,12 @@ namespace ShadowWithNoPast.GridObjects
         {
 
         }
-
-        public virtual void MoveTo(Vector2Int targetPos)
+        #endregion
+        public virtual void InstantMoveTo(Vector2Int targetPos)
         {
-            if(GlobalParentGrid != null)
+            if(MainGrid != null)
             {
-                GlobalParentGrid.MoveInstantTo(this, targetPos);
+                MainGrid.MoveInstantTo(this, targetPos);
             }
             CurrentPos = targetPos;
         }

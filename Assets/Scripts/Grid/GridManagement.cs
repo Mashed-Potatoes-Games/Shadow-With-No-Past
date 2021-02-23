@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+//This allows Awake to be called in the editor, to get the links to children Tilemaps and ObjectsGrid.
 [ExecuteAlways]
 [RequireComponent(typeof(Grid))]
 public class GridManagement : MonoBehaviour
@@ -19,6 +20,8 @@ public class GridManagement : MonoBehaviour
         Item
     }
 
+    public const float TileOffset = 0.5f;
+
     public List<Tilemap> GroundMaps;
     public List<Tilemap> ObstacleMaps;
     public ObjectsGrid ObjGrid;
@@ -26,17 +29,6 @@ public class GridManagement : MonoBehaviour
     public void Awake()
     {
         GetMaps();
-    }
-
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    // We don't need this for now
-    void Update()
-    {
-
     }
 
     void GetMaps()
@@ -47,10 +39,12 @@ public class GridManagement : MonoBehaviour
 
         foreach (GameObject obj in GridChildren)
         {
+            //We are trying to get the components, tied to the GameObject.
             Tilemap tilemap = obj.GetComponent<Tilemap>();
-            ObjectsGrid entGrid = obj.GetComponent<ObjectsGrid>();
+            ObjectsGrid objGrid = obj.GetComponent<ObjectsGrid>();
             if (tilemap != null)
             {
+                //To differentiate between Ground and Obstacles they have different tags.
                 if (obj.CompareTag("GroundTilemap"))
                 {
                     GroundMaps.Add(tilemap);
@@ -60,9 +54,9 @@ public class GridManagement : MonoBehaviour
                     ObstacleMaps.Add(tilemap);
                 }
             }
-            else if (entGrid != null)
+            else if (objGrid != null)
             {
-                ObjGrid = entGrid;
+                ObjGrid = objGrid;
             }
         }
     }
@@ -71,8 +65,10 @@ public class GridManagement : MonoBehaviour
     {
         List<GameObject> GridChildren = new List<GameObject>();
 
+        //Transform is IEnumerable that contains all the children transforms.
         foreach (Transform child in transform)
         {
+            //We need not transfrorms, but the objects itself.
             GridChildren.Add(child.gameObject);
         }
 
@@ -89,6 +85,7 @@ public class GridManagement : MonoBehaviour
             if (tilemap.GetTile(vector3Pos) != null)
             {
                 isObstacle = true;
+                break;
             }
         }
         return isObstacle;
@@ -104,6 +101,7 @@ public class GridManagement : MonoBehaviour
             if (tilemap.GetTile(vector3Pos) != null)
             {
                 isGround = true;
+                break;
             }
         }
         return isGround;
@@ -113,7 +111,7 @@ public class GridManagement : MonoBehaviour
     //Returns, what is at the given coordinate.
     public CellStatus GetCellStatus(Vector2Int pos)
     {
-        if(!IsGround(pos))
+        if (!IsGround(pos))
         {
             return CellStatus.NoGround;
         } else if (IsObstacle(pos))
@@ -140,9 +138,9 @@ public class GridManagement : MonoBehaviour
         }
     }
 
+    //It "teleports" object from it's place to destination pos.
     public void MoveInstantTo(GridObject obj, Vector2Int pos)
     {
-        Vector2Int objPos = obj.CurrentPos;
         if(GetCellStatus(pos) == CellStatus.Free)
         {
             ObjGrid.MoveInstantTo(obj, pos);
@@ -153,6 +151,8 @@ public class GridManagement : MonoBehaviour
         }
     }
 
+    //It initiates the chosen objects on the grid.
+    //Don't try to move objects with it, because it won't delete previous object position.
     public void SetNewObjectTo(GridObject obj, Vector2Int pos)
     {
         if(GetCellStatus(pos) == CellStatus.Free)
@@ -164,6 +164,7 @@ public class GridManagement : MonoBehaviour
         }
     }
 
+    //Those are wrappers, so the entites, using GridManagement won't touch ObjectsGrid by it's own.
     public GridObject GetEntityAt(Vector2Int pos)
     {
         return ObjGrid.GetEntityAt(pos);
@@ -172,5 +173,17 @@ public class GridManagement : MonoBehaviour
     public void RemoveAt(GridObject obj, Vector2Int pos)
     {
         ObjGrid.RemoveAt(obj, pos);
+    }
+
+    public static Vector2Int CellFromMousePos()
+    {
+        var mousePos = Input.mousePosition;
+        var worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        return CellFromWorld(worldPos);
+    }
+
+    public static Vector2Int CellFromWorld(Vector3 worldPos)
+    {
+        return new Vector2Int(Mathf.RoundToInt(worldPos.x - TileOffset), Mathf.RoundToInt(worldPos.y - TileOffset));
     }
 }

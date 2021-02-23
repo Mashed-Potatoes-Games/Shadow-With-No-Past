@@ -1,22 +1,32 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using ShadowWithNoPast.GridObjects;
 using System;
 
+//In release version this script will not be loaded at all.
+#if UNITY_EDITOR
+
 [ExecuteInEditMode]
-//This script is needed be applied to every Entity or Item prefab, so you could move them only on grid coordinates
+/// <summary>
+/// This script allows objects to me moved in grid, and changes ObjectsGrid to know the position changed.
+/// it will always load with GridObject component.
+/// </summary>
 public class ObjectEditor : MonoBehaviour
 {
-    GridObject Object;
+    GridObject GridObj;
 
     public bool IsConnectedToGrid = false;
 
     void Awake()
     {
-        Object = GetComponent<GridObject>();
-        if(Object is null)
+        GridObj = GetComponent<GridObject>();
+
+        //This should always be added with GridObject.
+        //Grid object depends on it, so it will always be added on it, but if we try to add it manually, it will kill itself.
+        if (GridObj is null)
         {
             DestroyImmediate(this, false);
         }
@@ -26,42 +36,45 @@ public class ObjectEditor : MonoBehaviour
     //It will always force rewrite the position, so it will always be snapped to a grid.
     void Update()
     {
-        //This prevents the script from running in Game vindow, while still in editor
+        //This prevents the script from running in Game vindow, while still in editor, or while object is not tied to a grid yet.
         if(!Application.isPlaying && IsConnectedToGrid)
         {
             SnapToGrid();
-            EditorUtility.SetDirty(Object);
+            //This tells editor that GridObj fields was overriden dirty, and it needs to save the changes.
+            EditorUtility.SetDirty(GridObj);
         }
     }
 
+    //Before this object is destroyed, remove itself from the grid.
     void OnDestroy()
     {
         if (!Application.isPlaying && 
             IsConnectedToGrid && 
-            Object.GlobalParentGrid.GetEntityAt(Object.CurrentPos) == Object)
+            GridObj.MainGrid.GetEntityAt(GridObj.CurrentPos) == GridObj)
         {
-            Object.GlobalParentGrid.RemoveAt(Object, Object.CurrentPos);
+            GridObj.MainGrid.RemoveAt(GridObj, GridObj.CurrentPos);
         }
     }
 
 
     private void SnapToGrid()
     {
-        GridManagement ParentGrid = Object.GlobalParentGrid;
+        GridManagement ParentGrid = GridObj.MainGrid;
         //Gets the position in the grid from the position that editor tries to set.
         Vector2Int snapPosition = new Vector2Int(
-            Mathf.RoundToInt(transform.position.x - Object.XOffset),
-            Mathf.RoundToInt(transform.position.y - Object.YOffset));
+            Mathf.RoundToInt(transform.position.x - GridObj.XOffset),
+            Mathf.RoundToInt(transform.position.y - GridObj.YOffset));
 
         //If you can't place object here, you want to keep it in previous place.
         if (ParentGrid.GetCellStatus(snapPosition) != GridManagement.CellStatus.Free)
         {
-            Object.SnapToGrid();
+            GridObj.SnapToGrid();
         }
         else
         {
-            ParentGrid.MoveInstantTo(Object, snapPosition);
+            ParentGrid.MoveInstantTo(GridObj, snapPosition);
         }
     }
 }
 
+#endif

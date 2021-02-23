@@ -8,18 +8,6 @@ namespace ShadowWithNoPast.GridObjects
     [ExecuteAlways]
     public class PlayerEntity : BaseEntity
     {
-        protected Camera mainCamera;
-
-        protected override void Awake()
-        {
-            base.Awake();
-            mainCamera = Camera.main;
-        }
-        //Here should be unique initialization of player
-        protected override void Start()
-        {
-            base.Start();
-        }
 
         protected override void Update()
         {
@@ -28,14 +16,7 @@ namespace ShadowWithNoPast.GridObjects
             //TODO: Try to move this functionality to scriptable tiles!!
             if (Input.GetMouseButtonDown(0))
             {
-                RaycastHit hit;
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                Physics.Raycast(ray, out hit, 100.00f);
-
-                Vector2Int targetPos = CalculateMouseTargetPosition();
-                Debug.Log("targetPosition" + targetPos);
-                Debug.Log("playerPosition" + CurrentPos);
+                Vector2Int targetPos = GridManagement.CellFromMousePos();
 
                 TryMoveTo(targetPos);
 
@@ -60,15 +41,7 @@ namespace ShadowWithNoPast.GridObjects
             }
         }
 
-        //This code won't be necessary after changing click catching to scriptable tiles
-        private Vector2Int CalculateMouseTargetPosition()
-        {
-            var mousePosition = Input.mousePosition;
-            var transformedPosition = mainCamera.ScreenToWorldPoint(mousePosition);
-            return new Vector2Int((int)Math.Floor(transformedPosition.x), (int)Math.Floor(transformedPosition.y));
-        }
-
-        //This function should never be called, because player is controlled by user.
+        //Figure out the way to stop movement queue, to wait for the user input!
         public override void MakeTurn()
         {
             throw new NotImplementedException();
