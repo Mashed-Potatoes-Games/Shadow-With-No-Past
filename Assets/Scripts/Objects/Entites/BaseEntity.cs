@@ -9,16 +9,6 @@ namespace ShadowWithNoPast.GridObjects
     [ExecuteAlways]
     public abstract class BaseEntity : GridObject
     {
-
-        //Direction, the entity can face or attack.
-        public enum Direction
-        {
-            Up,
-            Right,
-            Down,
-            Left
-        }
-
         //Get: returns the direction this obect is facing to.
         //Set: changes this value AND flips the sprite to this direction
         public Direction Facing
@@ -44,25 +34,82 @@ namespace ShadowWithNoPast.GridObjects
         }
         protected Direction facing;
 
+
+        public virtual TurnPriority Priority => TurnPriority.Normal;
+
         //Distance the entity is allowed to move in 1 turn.
-        public int MoveDistance = 1;
+        public virtual int MoveDistance => 1;
+        public virtual float DelayInSecBetweenCellsMove => 0.1f;
+
+        public Queue<Vector2Int> MovementQueue = new Queue<Vector2Int>();
+
+        protected Queue<Vector2Int> GetPath(Vector2Int targetPos, bool isSearchStrict = true)
+        {
+            if (!WorldGrid.CanCellBePassable(targetPos))
+            {
+                return null;
+            }
+
+            Queue<Vector2Int> pathQueue = WorldGrid.FindClearPath(currentPos, targetPos);
+
+            if (pathQueue is null)
+            {
+                if (isSearchStrict)
+                {
+                    return null;
+                }
+                else
+                {
+                    pathQueue = WorldGrid.FindPathThroughEntities(currentPos, targetPos);
+                }
+            }
+            if (pathQueue != null && pathQueue.Peek() == CurrentPos)
+            {
+                pathQueue.Dequeue();
+            }
+
+            return pathQueue;
+        }
+
+        public IEnumerator MoveWithDelay(Queue<Vector2Int> path)
+        {
+            int movesLeft = MoveDistance;
+            while(path.Count > 0 && movesLeft > 0)
+            {
+                Vector2Int pos = path.Dequeue();
+                if(!TryInstantMoveTo(pos))
+                {
+                    yield break;
+                }
+                else
+                {
+                    yield return new WaitForSeconds(DelayInSecBetweenCellsMove);
+                    movesLeft--;
+                }
+            }
+        }
 
         //check for an available space before moving
-        public void TryMoveTo(Vector2Int targetPos)
+        public bool TryInstantMoveTo(Vector2Int targetPos)
         {
             if (CanMoveTo(targetPos))
             {
                 InstantMoveTo(targetPos);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
         //According to direction tries to move to calculated coordinate.
-        public virtual void TryMoveTo(Direction direction)
+        public virtual bool TryInstantMoveTo(Direction direction)
         {
             Vector2Int MovementVector = GetVectorFromDirection(direction);
             
             Vector2Int TargetPosition = CurrentPos + MovementVector;
-            TryMoveTo(TargetPosition);
+            return TryInstantMoveTo(TargetPosition);
         } 
 
         //Get's movement vector from position, that can be added to current coordinates to find the target position.
@@ -85,7 +132,7 @@ namespace ShadowWithNoPast.GridObjects
 
         public bool CanMoveTo(Vector2Int targetPos)
         {
-            bool isSpaceAvailable = MainGrid.GetCellStatus(targetPos) == GridManagement.CellStatus.Free;
+            bool isSpaceAvailable = WorldGrid.GetCellStatus(targetPos) == CellStatus.Free;
             bool canReachTo;
             int xDiff = Mathf.Abs(CurrentPos.x - targetPos.x);
             int yDiff = Mathf.Abs(CurrentPos.y - targetPos.y);
@@ -99,6 +146,18 @@ namespace ShadowWithNoPast.GridObjects
         public override void InstantMoveTo(Vector2Int targetPos)
         {
             //Changes direction, object is facing.
+            FaceTo(targetPos);
+
+            base.InstantMoveTo(targetPos);
+        }
+
+        protected void FaceTo(GridObject obj)
+        {
+            FaceTo(obj.CurrentPos);
+        }
+
+        protected void FaceTo(Vector2Int targetPos)
+        {
             Vector2Int direction = targetPos - CurrentPos;
 
             if (direction.x > 0)
@@ -109,8 +168,6 @@ namespace ShadowWithNoPast.GridObjects
             {
                 FaceTo(Direction.Left);
             }
-
-            base.InstantMoveTo(targetPos);
         }
 
         //Change facing direction after a move or other interractions
@@ -145,8 +202,29 @@ namespace ShadowWithNoPast.GridObjects
             throw new NotImplementedException();
         }
 
-        //This function should be used from controlling class to let the entity make it's move. 
+
+        //This functions should be used from controlling class to let the entity make it's move. 
         //It should always be implemented except of player.
-        public abstract void MakeTurn();
+
+        public abstract IEnumerator PrepareAndTelegraphMove();
+        public abstract IEnumerator ExecuteMove();
+    }
+    public enum TurnPriority
+    {
+        First,
+        High,
+        Normal,
+        Low,
+        Last,
+        Player
+    }
+
+    //Direction, the entity can face or attack.
+    public enum Direction
+    {
+        Up,
+        Right,
+        Down,
+        Left
     }
 }

@@ -50,23 +50,23 @@ public class ObjectEditor : MonoBehaviour
     {
         if (!Application.isPlaying && 
             IsConnectedToGrid && 
-            GridObj.MainGrid.GetEntityAt(GridObj.CurrentPos) == GridObj)
+            GridObj.WorldGrid.GetEntityAt(GridObj.CurrentPos) == GridObj)
         {
-            GridObj.MainGrid.RemoveAt(GridObj, GridObj.CurrentPos);
+            GridObj.WorldGrid.RemoveAt(GridObj, GridObj.CurrentPos);
         }
     }
 
 
     private void SnapToGrid()
     {
-        GridManagement ParentGrid = GridObj.MainGrid;
+        GridManagement ParentGrid = GridObj.WorldGrid;
         //Gets the position in the grid from the position that editor tries to set.
         Vector2Int snapPosition = new Vector2Int(
             Mathf.RoundToInt(transform.position.x - GridObj.XOffset),
             Mathf.RoundToInt(transform.position.y - GridObj.YOffset));
 
         //If you can't place object here, you want to keep it in previous place.
-        if (ParentGrid.GetCellStatus(snapPosition) != GridManagement.CellStatus.Free)
+        if (ParentGrid.GetCellStatus(snapPosition) != CellStatus.Free)
         {
             GridObj.SnapToGrid();
         }

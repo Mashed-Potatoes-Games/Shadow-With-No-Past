@@ -5,30 +5,53 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+using ShadowWithNoPast.Algorithms;
+using UnityEngine.UI;
+
 //This allows Awake to be called in the editor, to get the links to children Tilemaps and ObjectsGrid.
 [ExecuteAlways]
 [RequireComponent(typeof(Grid))]
 public class GridManagement : MonoBehaviour
 {
     public class CannotMoveHereException : Exception { }
-    public enum CellStatus
-    {
-        NoGround,
-        Obstacle,
-        Free,
-        Entity,
-        Item
-    }
 
     public const float TileOffset = 0.5f;
-
-    public List<Tilemap> GroundMaps;
-    public List<Tilemap> ObstacleMaps;
+    private const string LabelsName = "CoordinateLabels";
+    private List<Tilemap> GroundMaps;
+    private List<Tilemap> ObstacleMaps;
     public ObjectsGrid ObjGrid;
+
+    public GridManagement OtherWorld;
+
+    public WorldType Type;
+    public bool Active
+    {
+        get
+        {
+            return active;
+        }
+        set
+        {
+            active = value;
+            OtherWorld.active = !value;
+        }
+    }
+
+    [SerializeField]
+    private bool active;
 
     public void Awake()
     {
         GetMaps();
+
+        if(!Application.isPlaying || ShowInPlayMode)
+        {
+            AddCoordinateLabels();
+        } 
+        else
+        {
+            DestroyCoordinateLabels();
+        }
     }
 
     void GetMaps()
@@ -36,6 +59,10 @@ public class GridManagement : MonoBehaviour
         //Tilemaps or other objects need to be the childer in order to find and work with those.
         //This is because every world has it's own tilemaps and it allows grids to differentiate between them.
         List<GameObject> GridChildren = GetGridChildren();
+
+
+        GroundMaps = new List<Tilemap>();
+        ObstacleMaps = new List<Tilemap>();
 
         foreach (GameObject obj in GridChildren)
         {
@@ -60,6 +87,93 @@ public class GridManagement : MonoBehaviour
             }
         }
     }
+
+    #region Labels, showing coordinates on grid (Only in editor)
+
+    public bool ShowInPlayMode = false;
+    private void AddCoordinateLabels()
+    {
+        GameObject Canvas = CreateCanvas();
+        SetupCanvas(Canvas);
+        AddLabelsToCanvas(Canvas);
+    }
+
+    private void SetupCanvas(GameObject Canvas)
+    {
+        Canvas canvas = Canvas.AddComponent<Canvas>();
+        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+        canvasRect.anchoredPosition = new Vector3(0, 0, 0);
+        canvasRect.sizeDelta = new Vector2(100, 100);
+
+        canvas.renderMode = RenderMode.WorldSpace;
+        canvas.referencePixelsPerUnit = 256;
+        Canvas.transform.SetParent(transform);
+    }
+
+    private GameObject CreateCanvas()
+    {
+        GameObject Canvas;
+        Transform LabelsTransform = transform.Find(LabelsName);
+
+        if (LabelsTransform != null)
+        {
+            DestroyImmediate(LabelsTransform.gameObject);
+        }
+        Canvas = new GameObject(LabelsName)
+        {
+            tag = "EditorOnly",
+        };
+        return Canvas;
+    }
+
+    private void AddLabelsToCanvas(GameObject Canvas)
+    {
+        foreach (Tilemap map in GroundMaps)
+        {
+            for (int x = map.cellBounds.min.x; x < map.cellBounds.max.x; x++)
+            {
+                for (int y = map.cellBounds.min.y; y < map.cellBounds.max.y; y++)
+                {
+                    if (map.GetTile(new Vector3Int(x, y, 0)) != null)
+                    {
+                        GameObject Label = CreateLabelOnCanvas(Canvas, x, y);
+                        SetupLabel(Label, x, y);
+                    }
+                }
+
+            }
+        }
+    }
+
+    private static GameObject CreateLabelOnCanvas(GameObject Labels, int x, int y)
+    {
+        GameObject Label = new GameObject("Label");
+        Label.transform.parent = Labels.transform;
+        return Label;
+    }
+
+    private static void SetupLabel(GameObject Label, int x, int y)
+    {
+        Label.transform.position = new Vector3(x + TileOffset, y + TileOffset, 0);
+        Label.transform.localScale = new Vector3(0.01f, 0.01f, 1);
+        Text textComp = Label.AddComponent<Text>();
+        textComp.text = x + "," + y;
+        textComp.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+        textComp.fontSize = 42;
+        textComp.alignment = TextAnchor.MiddleCenter;
+
+        UnityEditor.EditorUtility.SetDirty(Label);
+    }
+
+    private void DestroyCoordinateLabels()
+    {
+        Transform labelsTransform = transform.Find(LabelsName);
+        if(labelsTransform != null)
+        {
+            Destroy(labelsTransform.gameObject);
+        }
+    }
+    #endregion
 
     List<GameObject> GetGridChildren()
     {
@@ -175,6 +289,8 @@ public class GridManagement : MonoBehaviour
         ObjGrid.RemoveAt(obj, pos);
     }
 
+
+    //Static fields, objects should use to get cell position
     public static Vector2Int CellFromMousePos()
     {
         var mousePos = Input.mousePosition;
@@ -186,4 +302,43 @@ public class GridManagement : MonoBehaviour
     {
         return new Vector2Int(Mathf.RoundToInt(worldPos.x - TileOffset), Mathf.RoundToInt(worldPos.y - TileOffset));
     }
+
+    public Queue<Vector2Int> FindClearPath(Vector2Int start, Vector2Int end)
+    {
+        return BreadthFirstSearch.FindPath(start, end, IsCellFree);
+    }
+
+    public bool IsCellFree(Vector2Int pos)
+    {
+        return GetCellStatus(pos) == CellStatus.Free;
+    }
+
+    public Queue<Vector2Int> FindPathThroughEntities(Vector2Int start, Vector2Int end)
+    {
+        return BreadthFirstSearch.FindPath(start, end, CanCellBePassable);
+    }
+
+    public bool CanCellBePassable(Vector2Int pos)
+    {
+        CellStatus status = GetCellStatus(pos);
+        bool CanPass = status != CellStatus.NoGround &&
+                       status != CellStatus.Obstacle;
+        return CanPass;
+            
+    }
+}
+
+public enum CellStatus
+{
+    NoGround,
+    Obstacle,
+    Free,
+    Entity,
+    Item
+}
+
+public enum WorldType
+{
+    Regular,
+    Dark
 }

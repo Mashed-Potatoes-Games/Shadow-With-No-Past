@@ -8,7 +8,7 @@ namespace ShadowWithNoPast.GridObjects
     [ExecuteAlways]
     public class GridObject : MonoBehaviour
     {
-        public GridManagement MainGrid;
+        public GridManagement WorldGrid;
 
         //Get: returns global position to the entity.
         //Set: changes the value AND moves the GameObject (Adding the offset values).
@@ -54,9 +54,9 @@ namespace ShadowWithNoPast.GridObjects
         #endregion
         public virtual void InstantMoveTo(Vector2Int targetPos)
         {
-            if(MainGrid != null)
+            if(WorldGrid != null)
             {
-                MainGrid.MoveInstantTo(this, targetPos);
+                WorldGrid.MoveInstantTo(this, targetPos);
             }
             CurrentPos = targetPos;
         }

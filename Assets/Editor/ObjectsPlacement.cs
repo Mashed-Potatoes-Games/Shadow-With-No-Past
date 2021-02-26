@@ -11,12 +11,12 @@ class ObjectsPlacement : Editor
 	static ObjectsPlacement()
     {
         //while editing files, this script will be loaded again, so we are removing the function from event.
-		SceneView.duringSceneGui -= OnSceneGUI;
+		SceneView.duringSceneGui -= EditSceneGUI;
         //We are adding our own GUI handler to modify scene behaviour.
-		SceneView.duringSceneGui += OnSceneGUI;
+		SceneView.duringSceneGui += EditSceneGUI;
 	}
 
-	public static void OnSceneGUI(SceneView sceneView)
+	public static void EditSceneGUI(SceneView sceneView)
 	{
 		Event current = Event.current;
 
@@ -54,7 +54,7 @@ class ObjectsPlacement : Editor
                     //Remember, that Grid cells have left-bottom pivot.
                     Vector2Int cellPos = GridManagement.CellFromWorld(worldPos);
                     //If cell is occupied, we do nothing and notify the editor about this mistake on his part.
-                    if (grid.GetCellStatus(cellPos) != GridManagement.CellStatus.Free)
+                    if (grid.GetCellStatus(cellPos) != CellStatus.Free)
                     {
                         Debug.LogWarning("You can set your object only to a free cell!");
                     }
@@ -79,7 +79,7 @@ class ObjectsPlacement : Editor
 
         //We tweak instantiated obj values, so it will stick to a grid and occur on mouse position.
         InstantiatedObj.transform.SetParent(grid.ObjGrid.transform);
-        InstantiatedGridObj.MainGrid = grid;
+        InstantiatedGridObj.WorldGrid = grid;
         InstantiatedGridObj.CurrentPos = cellPos;
 
         grid.SetNewObjectTo(InstantiatedGridObj, cellPos);

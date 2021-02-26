@@ -9,40 +9,72 @@ namespace ShadowWithNoPast.GridObjects
     public class PlayerEntity : BaseEntity
     {
 
-        protected override void Update()
+        public override int MoveDistance => 3;
+        public override TurnPriority Priority => TurnPriority.Player;
+
+        public IEnumerator ListenToInputAndMakeAMove()
         {
-            base.Update();
-            //Look for mouse click to move.
-            //TODO: Try to move this functionality to scriptable tiles!!
-            if (Input.GetMouseButtonDown(0))
+            bool moveIsOver = false;
+            while (!moveIsOver)
             {
-                Vector2Int targetPos = GridManagement.CellFromMousePos();
+                //TODO: Try to move this functionality to scriptable tiles!!
+                if (Input.GetMouseButtonDown(0))
+                {
 
-                TryMoveTo(targetPos);
+                    Vector2Int targetPos = GridManagement.CellFromMousePos();
 
-            }
+                    Queue<Vector2Int> path = GetPath(targetPos);
 
-            //Check for unputes to move or attack adjacent fields.
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                TryMoveTo(Direction.Up);
-            }
-            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                TryMoveTo(Direction.Right);
-            }
-            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                TryMoveTo(Direction.Down);
-            }
-            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                TryMoveTo(Direction.Left);
+                    if(path != null)
+                    {
+                        yield return MoveWithDelay(path);
+                        moveIsOver = true;
+                    }
+
+                }
+
+
+                //Check for unputes to move or attack adjacent fields.
+                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    if(TryInstantMoveTo(Direction.Up))
+                    {
+                        moveIsOver = true;
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    if (TryInstantMoveTo(Direction.Right))
+                    {
+                        moveIsOver = true;
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    if (TryInstantMoveTo(Direction.Down))
+                    {
+                        moveIsOver = true;
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    if (TryInstantMoveTo(Direction.Left))
+                    {
+                        moveIsOver = true;
+                    }
+                }
+
+                yield return null;
             }
         }
 
-        //Figure out the way to stop movement queue, to wait for the user input!
-        public override void MakeTurn()
+        //Those functions should never be executed;
+        public override IEnumerator ExecuteMove()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerator PrepareAndTelegraphMove()
         {
             throw new NotImplementedException();
         }
