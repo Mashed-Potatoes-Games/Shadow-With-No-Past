@@ -8,10 +8,10 @@ namespace ShadowWithNoPast.Algorithms
     /// </summary>
     public static class BreadthFirstSearch
     {
-        public delegate bool IsCellFree(Vector2Int pos);
+        public delegate bool IsPassable(Vector2Int pos);
 
 
-        public static Queue<Vector2Int> FindPath(Vector2Int start, Vector2Int end, IsCellFree isCellFree)
+        public static Queue<Vector2Int> FindPath(Vector2Int start, Vector2Int end, IsPassable isCellFree)
         {
             Queue<PathNode> SearchQueue = new Queue<PathNode>();
             SearchQueue.Enqueue(new PathNode(start));

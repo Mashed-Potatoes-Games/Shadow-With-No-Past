@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections;
-using ShadowWithNoPast.GridObjects;
+using ShadowWithNoPast.Entities;
 
 //This script will always be loaded
 [InitializeOnLoad()]
@@ -10,9 +10,7 @@ class ObjectsPlacement : Editor
     
 	static ObjectsPlacement()
     {
-        //while editing files, this script will be loaded again, so we are removing the function from event.
 		SceneView.duringSceneGui -= EditSceneGUI;
-        //We are adding our own GUI handler to modify scene behaviour.
 		SceneView.duringSceneGui += EditSceneGUI;
 	}
 
@@ -37,7 +35,7 @@ class ObjectsPlacement : Editor
                     return;
                 }
 
-                GridManagement grid = GetSelectedGrid();
+                WorldManagement grid = GetSelectedGrid();
 
                 //The game will contain at least 2 grids for objects, so we need to be sure, that needed grid is selected in the scene hierarchy.
                 if (grid == null)
@@ -52,7 +50,7 @@ class ObjectsPlacement : Editor
                     Vector3 worldPos = HandleUtility.GUIPointToWorldRay(mousePos).origin;
 
                     //Remember, that Grid cells have left-bottom pivot.
-                    Vector2Int cellPos = GridManagement.CellFromWorld(worldPos);
+                    Vector2Int cellPos = WorldManagement.CellFromWorld(worldPos);
                     //If cell is occupied, we do nothing and notify the editor about this mistake on his part.
                     if (grid.GetCellStatus(cellPos) != CellStatus.Free)
                     {
@@ -70,7 +68,7 @@ class ObjectsPlacement : Editor
         }
 	}
 
-    private static void InstantiateAndConnect(GameObject gameObject, GridManagement grid, Vector2Int cellPos)
+    private static void InstantiateAndConnect(GameObject gameObject, WorldManagement grid, Vector2Int cellPos)
     {
         //Drag and drop contains prefab reference, 
         //so we need to actually instantiate new one instead of modifying the referenced one.
@@ -78,11 +76,14 @@ class ObjectsPlacement : Editor
         GridObject InstantiatedGridObj = InstantiatedObj.GetComponent<GridObject>();
 
         //We tweak instantiated obj values, so it will stick to a grid and occur on mouse position.
-        InstantiatedObj.transform.SetParent(grid.ObjGrid.transform);
+        Transform objGrid = grid.GetComponentInChildren<ObjectsGrid>().transform;
+        InstantiatedObj.transform.SetParent(objGrid);
         InstantiatedGridObj.WorldGrid = grid;
         InstantiatedGridObj.CurrentPos = cellPos;
 
         grid.SetNewObjectTo(InstantiatedGridObj, cellPos);
+
+        EditorUtility.SetDirty(InstantiatedGridObj);
 
         //We need to tell the editor helper of this object, so it can start working.
         ObjectEditor EditorScript = InstantiatedObj.GetComponent<ObjectEditor>();
@@ -92,13 +93,13 @@ class ObjectsPlacement : Editor
         }
     }
 
-    private static GridManagement GetSelectedGrid()
+    private static WorldManagement GetSelectedGrid()
     {
-        GridManagement MainGrid = null;
+        WorldManagement MainGrid = null;
         //Selection containt information about the GameObject selected in the hierarchy and is always available.
         if (Selection.activeGameObject != null)
         {
-            MainGrid = Selection.activeGameObject.GetComponent<GridManagement>();
+            MainGrid = Selection.activeGameObject.GetComponent<WorldManagement>();
             //First we try to see, is the selected object a MainGrid.
             if (MainGrid == null)
             {
@@ -107,7 +108,7 @@ class ObjectsPlacement : Editor
                 ObjectsGrid ObjGrid = Selection.activeGameObject.GetComponent<ObjectsGrid>();
                 if (ObjGrid != null)
                 {
-                    MainGrid = ObjGrid.GetComponentInParent<GridManagement>();
+                    MainGrid = ObjGrid.GetComponentInParent<WorldManagement>();
                 }
             }
         }

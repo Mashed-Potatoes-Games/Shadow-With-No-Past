@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ShadowWithNoPast.GridObjects;
+using ShadowWithNoPast.Entities;
 
 /// <summary>
 /// This class ties GridObjects to Grid and them only!
@@ -14,11 +14,6 @@ public class ObjectsGrid : MonoBehaviour
     public class UnexpectedEntityAtPosException : Exception { }
     public class PositionOccupiedException : Exception { }
 
-    public enum ObjectType{
-        Entity,
-        Item,
-        Empty
-    }
 
     //The complexity of getting values from dictionary as well as all of the keys is close to O(1).
     //So it should be efficient to use Dictionary.
@@ -62,7 +57,7 @@ public class ObjectsGrid : MonoBehaviour
         if(Objects.ContainsKey(pos))
         {
             GridObject obj = Objects[pos];
-            if(obj is BaseEntity)
+            if(obj is GridEntity)
             {
             return ObjectType.Entity;
             }
@@ -107,4 +102,10 @@ public class ObjectsGrid : MonoBehaviour
         Objects.Add(pos, entity);
         entity.CurrentPos = pos;
     }
+}
+public enum ObjectType
+{
+    Entity,
+    Item,
+    Empty
 }

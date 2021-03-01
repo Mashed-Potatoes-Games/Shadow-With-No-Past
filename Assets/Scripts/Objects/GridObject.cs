@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ShadowWithNoPast.GridObjects
+namespace ShadowWithNoPast.Entities
 {
     [RequireComponent(typeof(ObjectEditor))]
     [ExecuteAlways]
     public class GridObject : MonoBehaviour
     {
-        public GridManagement WorldGrid;
+        public WorldManagement WorldGrid;
 
         //Get: returns global position to the entity.
         //Set: changes the value AND moves the GameObject (Adding the offset values).
@@ -34,7 +34,7 @@ namespace ShadowWithNoPast.GridObjects
         public virtual float XOffset => 0.5f;
         public virtual float YOffset => 1.1f;
 
-        #region Empty Awake, Start and Uptade ready to be overriden.
+        #region Empty Awake, Start and Update ready to be overriden.
         protected virtual void Awake()
         {
 
@@ -52,14 +52,6 @@ namespace ShadowWithNoPast.GridObjects
 
         }
         #endregion
-        public virtual void InstantMoveTo(Vector2Int targetPos)
-        {
-            if(WorldGrid != null)
-            {
-                WorldGrid.MoveInstantTo(this, targetPos);
-            }
-            CurrentPos = targetPos;
-        }
 
         public void SnapToGrid()
         {

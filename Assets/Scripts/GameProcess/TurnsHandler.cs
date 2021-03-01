@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ShadowWithNoPast.GridObjects;
+using ShadowWithNoPast.Entities;
 
 namespace ShadowWithNoPast.GameProcess
 {
@@ -11,30 +11,25 @@ namespace ShadowWithNoPast.GameProcess
         public bool IsWorking;
 
         private const float SecondsBetweenEnemiesMove = 0.5f;
-        private Queue<BaseEntity> TurnsQueue;
+        private Queue<ITurnController> TurnsQueue = new Queue<ITurnController>();
 
-        private GridManagement ActiveWorld;
-        private GridManagement InactiveWorld;
+        private WorldManagement ActiveWorld;
+        private WorldManagement InactiveWorld;
 
         void Start()
         {
-            TurnsQueue = new Queue<BaseEntity>();
             IsWorking = true;
             StartCoroutine(TurnsCoroutine());
         }
 
         public IEnumerator TurnsCoroutine()
         {
-            yield return PlayerMove();
             while (IsWorking)
             {
 
                 ReloadWorldReferences();
                 yield return InitiateQueueAndTelegraph();
                 Debug.Log("Enemies telegraph is over");
-
-                yield return PlayerMove();
-                Debug.Log("Player moved");
 
                 yield return MakeTurns();
                 Debug.Log("Enemies turn is over");
@@ -44,9 +39,9 @@ namespace ShadowWithNoPast.GameProcess
 
         private void ReloadWorldReferences()
         {
-            foreach (GridManagement World in FindObjectsOfType<GridManagement>())
+            foreach (WorldManagement World in GetComponentsInChildren<WorldManagement>())
             {
-                if (World.Active)
+                if (World.active)
                 {
                     ActiveWorld = World;
                 } 
@@ -63,46 +58,36 @@ namespace ShadowWithNoPast.GameProcess
             yield return AddToQueueAndTelegraphFromWorld(InactiveWorld);
         }
 
-        public IEnumerator AddToQueueAndTelegraphFromWorld(GridManagement world)
+        public IEnumerator AddToQueueAndTelegraphFromWorld(WorldManagement world)
         {
             if(world is null)
             {
                 yield break;
             }
-            foreach (TurnPriority priority in Enum.GetValues(typeof(TurnPriority)))
+
+            var priorities = Enum.GetValues(typeof(TurnPriority));
+            foreach (TurnPriority priority in priorities)
             {
-                if(priority == TurnPriority.Player)
+                foreach (var turnController in world.GetComponentsInChildren<ITurnController>())
                 {
-                    continue;
-                }
-                foreach (BaseEntity entity in world.GetComponentsInChildren<BaseEntity>())
-                {
-                    if (entity.Priority == priority)
+                    if (turnController.Priority == priority)
                     {
-                        yield return entity.PrepareAndTelegraphMove();
-                        TurnsQueue.Enqueue(entity);
+                        yield return turnController.PrepareAndTelegraphMove();
+                        TurnsQueue.Enqueue(turnController);
                         yield return new WaitForSeconds(SecondsBetweenEnemiesMove);
                     }
                 }
             }
         }
 
-        private IEnumerator PlayerMove()
-        {
-            PlayerEntity player = FindObjectOfType<PlayerEntity>();
-            yield return player.ListenToInputAndMakeAMove();
-        }
-
         public IEnumerator MakeTurns()
         {
             while (TurnsQueue.Count > 0)
             {
-                BaseEntity entity = TurnsQueue.Dequeue();
-                entity.ExecuteMove();
+                var turnController = TurnsQueue.Dequeue();
+                yield return turnController.ExecuteMove();
                 yield return new WaitForSeconds(SecondsBetweenEnemiesMove);
             }
-
-            yield return new WaitForSeconds(SecondsBetweenEnemiesMove);
         }
     }
 }

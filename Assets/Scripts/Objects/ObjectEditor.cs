@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using ShadowWithNoPast.GridObjects;
+using ShadowWithNoPast.Entities;
 using System;
 
 //In release version this script will not be loaded at all.
@@ -59,7 +59,7 @@ public class ObjectEditor : MonoBehaviour
 
     private void SnapToGrid()
     {
-        GridManagement ParentGrid = GridObj.WorldGrid;
+        WorldManagement ParentGrid = GridObj.WorldGrid;
         //Gets the position in the grid from the position that editor tries to set.
         Vector2Int snapPosition = new Vector2Int(
             Mathf.RoundToInt(transform.position.x - GridObj.XOffset),

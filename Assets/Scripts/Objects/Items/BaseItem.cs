@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ShadowWithNoPast.GridObjects
+namespace ShadowWithNoPast.Entities
 {
     public class BaseItem : GridObject
     {
