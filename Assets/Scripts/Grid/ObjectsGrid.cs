@@ -13,15 +13,50 @@ public class ObjectsGrid : MonoBehaviour
 {
     public class UnexpectedEntityAtPosException : Exception { }
     public class PositionOccupiedException : Exception { }
+    bool b;
 
+    [Serializable]
+    private class ObjDictionary : Dictionary<Vector2Int, GridObject>, ISerializationCallbackReceiver
+    {
+        [SerializeField]
+        private List<Vector2Int> keys = new List<Vector2Int>();
+
+        [SerializeField]
+        private List<GridObject> values = new List<GridObject>();
+
+        // save the dictionary to lists
+        public void OnBeforeSerialize()
+        {
+            keys.Clear();
+            values.Clear();
+            foreach (KeyValuePair<Vector2Int, GridObject> pair in this)
+            {
+                keys.Add(pair.Key);
+                values.Add(pair.Value);
+            }
+        }
+
+        // load dictionary from lists
+        public void OnAfterDeserialize()
+        {
+            this.Clear();
+
+            if (keys.Count != values.Count)
+                throw new System.Exception(string.Format("there are {0} keys and {1} values after deserialization. Make sure that both key and value types are serializable."));
+
+            for (int i = 0; i < keys.Count; i++)
+                this.Add(keys[i], values[i]);
+        }
+    }
 
     //The complexity of getting values from dictionary as well as all of the keys is close to O(1).
     //So it should be efficient to use Dictionary.
-    public Dictionary<Vector2Int, GridObject> Objects
-        = new Dictionary<Vector2Int, GridObject>();
+    [SerializeField]
+    private ObjDictionary objects;
 
     void Start()
     {
+        objects = new ObjDictionary();
         //Every time Editor reloads, dictionary clears, so we need to write objects position again.
         foreach (GridObject obj in transform.GetComponentsInChildren<GridObject>())
         {
@@ -47,16 +82,16 @@ public class ObjectsGrid : MonoBehaviour
     public GridObject GetEntityAt(Vector2Int pos)
     {
         GridObject obj;
-        Objects.TryGetValue(pos, out obj);
+        objects.TryGetValue(pos, out obj);
         return obj;
     }
 
     //Returns type of the object, so the entity could behave differently.
     public ObjectType WhatIn(Vector2Int pos)
     {
-        if(Objects.ContainsKey(pos))
+        if(objects.ContainsKey(pos))
         {
-            GridObject obj = Objects[pos];
+            GridObject obj = objects[pos];
             if(obj is GridEntity)
             {
             return ObjectType.Entity;
@@ -70,14 +105,14 @@ public class ObjectsGrid : MonoBehaviour
     bool IsObjectInPos(GridObject entity, Vector2Int pos)
     {
         GridObject ObjInPos;
-        bool IsOccupied = Objects.TryGetValue(pos, out ObjInPos);
+        bool IsOccupied = objects.TryGetValue(pos, out ObjInPos);
         return IsOccupied && ObjInPos == entity;
     }
 
     //Deletes any entity at the position
     private void ClearPosition(Vector2Int pos)
     {
-        Objects.Remove(pos);
+        objects.Remove(pos);
     }
 
     //Will throw an exception if the Position contains entity that is different from specified.
@@ -99,7 +134,7 @@ public class ObjectsGrid : MonoBehaviour
         {
             throw new PositionOccupiedException();
         }
-        Objects.Add(pos, entity);
+        objects.Add(pos, entity);
         entity.CurrentPos = pos;
     }
 }
