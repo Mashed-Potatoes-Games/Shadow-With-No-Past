@@ -1,0 +1,744 @@
+fileFormatVersion: 2
+guid: 20bc34b0835a38d4ca817e93bbd925c2
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6853711505610118751
+    second: the_edge_background_tilemap_0
+  - first:
+      213: 6083222101839058507
+    second: the_edge_background_tilemap_1
+  - first:
+      213: 5047184911154622126
+    second: the_edge_background_tilemap_2
+  - first:
+      213: -4716428118984558304
+    second: the_edge_background_tilemap_3
+  - first:
+      213: 3223706257845956298
+    second: the_edge_background_tilemap_4
+  - first:
+      213: 421901155624680447
+    second: the_edge_background_tilemap_5
+  - first:
+      213: 6319279915547389000
+    second: the_edge_background_tilemap_6
+  - first:
+      213: -2046544507874695139
+    second: the_edge_background_tilemap_7
+  - first:
+      213: 5855389979030911613
+    second: the_edge_background_tilemap_8
+  - first:
+      213: 3808391061634256867
+    second: the_edge_background_tilemap_9
+  - first:
+      213: 6824369263091212281
+    second: the_edge_background_tilemap_10
+  - first:
+      213: 6428068841585349521
+    second: the_edge_background_tilemap_11
+  - first:
+      213: 2816783935586517534
+    second: the_edge_background_tilemap_12
+  - first:
+      213: -6841714590826885353
+    second: the_edge_background_tilemap_14
+  - first:
+      213: -7695956017301745090
+    second: the_edge_background_tilemap_15
+  - first:
+      213: -5049812741732220264
+    second: the_edge_background_tilemap_16
+  - first:
+      213: -706174470804796281
+    second: the_edge_background_tilemap_17
+  - first:
+      213: -6670493956897115631
+    second: the_edge_background_tilemap_20
+  - first:
+      213: 8344815600824375311
+    second: the_edge_background_tilemap_21
+  - first:
+      213: -2739894660970893975
+    second: the_edge_background_tilemap_22
+  - first:
+      213: 1643804731519238241
+    second: the_edge_background_tilemap_25
+  - first:
+      213: 6195461813856890578
+    second: the_edge_background_tilemap_26
+  - first:
+      213: -1234238607289851386
+    second: the_edge_background_tilemap_27
+  - first:
+      213: 7838945055620545926
+    second: the_edge_background_tilemap_30
+  - first:
+      213: -1036213339443300587
+    second: the_edge_background_tilemap_31
+  - first:
+      213: -1588827128288778155
+    second: the_edge_background_tilemap_32
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 256
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2008
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a9e91bb2b9b2e0a0800000000000000
+      internalID: -6853711505610118751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 2008
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b461ce57542fb6450800000000000000
+      internalID: 6083222101839058507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 2008
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eae25118fe33b0640800000000000000
+      internalID: 5047184911154622126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_3
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 2008
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 029f24f4d91eb8eb0800000000000000
+      internalID: -4716428118984558304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_4
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 2008
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aceac17f2c7ecbc20800000000000000
+      internalID: 3223706257845956298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1752
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffbf55f9dd4ead500800000000000000
+      internalID: 421901155624680447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_6
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1752
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84c667a2a9792b750800000000000000
+      internalID: 6319279915547389000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_7
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1752
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d182a17fc963993e0800000000000000
+      internalID: -2046544507874695139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_8
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 1752
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7af489a926824150800000000000000
+      internalID: 5855389979030911613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_9
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1752
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ef8b7a2e7f1ad430800000000000000
+      internalID: 3808391061634256867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1496
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ff55ae00b705be50800000000000000
+      internalID: 6824369263091212281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_11
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1496
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1939376dd86153950800000000000000
+      internalID: 6428068841585349521
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_12
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1496
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1249a1c01a371720800000000000000
+      internalID: 2816783935586517534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_14
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1496
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71f082f14d85d01a0800000000000000
+      internalID: -6841714590826885353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1240
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3213b5f6c8723590800000000000000
+      internalID: -7695956017301745090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_16
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1240
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8924fc201167be9b0800000000000000
+      internalID: -5049812741732220264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_17
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1240
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78c0b3e6f0a2336f0800000000000000
+      internalID: -706174470804796281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 984
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 112f1c68615ad63a0800000000000000
+      internalID: -6670493956897115631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_21
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 984
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f085643839dbec370800000000000000
+      internalID: 8344815600824375311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_22
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 984
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96d27da8250f9f9d0800000000000000
+      internalID: -2739894660970893975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_25
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 728
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1608f4ea1b7ffc610800000000000000
+      internalID: 1643804731519238241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_26
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 728
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2deef6ad1b3baf550800000000000000
+      internalID: 6195461813856890578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_27
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 728
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6026a64a68a1fdee0800000000000000
+      internalID: -1234238607289851386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 472
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68d311edef689cc60800000000000000
+      internalID: 7838945055620545926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_31
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 472
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 517f5f63571ae91f0800000000000000
+      internalID: -1036213339443300587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: the_edge_background_tilemap_32
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 472
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 558e7d0152a53f9e0800000000000000
+      internalID: -1588827128288778155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -13,7 +13,6 @@ public class ObjectsGrid : MonoBehaviour
 {
     public class UnexpectedEntityAtPosException : Exception { }
     public class PositionOccupiedException : Exception { }
-    bool b;
 
     [Serializable]
     private class ObjDictionary : Dictionary<Vector2Int, GridObject>, ISerializationCallbackReceiver

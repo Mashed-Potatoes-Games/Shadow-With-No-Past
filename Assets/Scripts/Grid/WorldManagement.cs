@@ -22,8 +22,7 @@ public class WorldManagement : MonoBehaviour
 
     public WorldType Type;
 
-    [SerializeField]
-    public bool active { get; private set; }
+    public bool Active { get; private set; }
 
     //Needed for the editor script
     public bool ShowTileCoordinates = false;
@@ -32,11 +31,10 @@ public class WorldManagement : MonoBehaviour
     {
 
         //TODO Change screen appearance
-        active = thisActive;
-        OtherWorld.active = !thisActive;
+        Active = thisActive;
+        OtherWorld.Active = !thisActive;
     }
 
-    //Returns, what is at the given coordinate.
     public CellStatus GetCellStatus(Vector2Int pos)
     {
         if (!ground.IsGround(pos))

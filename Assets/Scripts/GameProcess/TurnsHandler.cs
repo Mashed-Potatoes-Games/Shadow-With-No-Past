@@ -41,7 +41,7 @@ namespace ShadowWithNoPast.GameProcess
         {
             foreach (WorldManagement World in GetComponentsInChildren<WorldManagement>())
             {
-                if (World.active)
+                if (World.Active)
                 {
                     ActiveWorld = World;
                 } 
