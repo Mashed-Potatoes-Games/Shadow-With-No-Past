@@ -45,3 +45,24 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BackWorld/Ground
+    uniqueID: 3248766809
+    locked: 0
+  - name: BackWorld/Objects
+    uniqueID: 1525022997
+    locked: 0
+  - name: BackWorld/Roof
+    uniqueID: 759171287
+    locked: 0
+  - name: FrontWorld/Ground
+    uniqueID: 3987166219
+    locked: 0
+  - name: FrontWorld/Objects
+    uniqueID: 3459361537
+    locked: 0
+  - name: FrontWorld/Roof
+    uniqueID: 1616374763
+    locked: 0
+  - name: Indications
+    uniqueID: 583259405
+    locked: 0

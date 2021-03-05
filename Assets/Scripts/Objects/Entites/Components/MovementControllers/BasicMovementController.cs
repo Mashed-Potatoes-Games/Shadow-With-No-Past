@@ -90,6 +90,7 @@ namespace ShadowWithNoPast.Entities
         {
             entity.FaceTo(targetPos);
             world.MoveInstantTo(entity, targetPos);
+            world.EventManager.EntityMoved.Invoke(entity);
         }
 
         public Queue<Vector2Int> FindClearPath(Vector2Int start, Vector2Int end)

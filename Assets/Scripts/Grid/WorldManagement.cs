@@ -3,36 +3,69 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using ShadowWithNoPast.Algorithms;
+using UnityEngine.Rendering;
+using System.Collections;
+using ShadowWithNoPast.Utils;
 
+[ExecuteAlways]
 [RequireComponent(typeof(Grid))]
+[RequireComponent(typeof(WorldEventManager))]
 public class WorldManagement : MonoBehaviour
 {
     public class CannotMoveHereException : Exception { }
+
+    public WorldType Type;
 
     [SerializeField]
     private ObstacleTilemap obstacles;
     [SerializeField]
     private GroundTilemap ground;
-    [SerializeField]
-    private ObjectsGrid objects;
 
-    public WorldManagement OtherWorld { get; private set; }
+    public ObjectsGrid objects;
+
+    public WorldEventManager EventManager;
+
 
     public const float TileOffset = 0.5f;
 
-    public WorldType Type;
 
-    public bool Active { get; private set; }
+     public bool Active { get => active; private set => active = value; }
+    [SerializeField]
+    private bool active;
 
     //Needed for the editor script
     public bool ShowTileCoordinates = false;
 
-    public void SwitchActiveWorld(bool thisActive = true)
+    public void Start()
     {
+        EventManager = GetComponent<WorldEventManager>();
+    }
 
-        //TODO Change screen appearance
-        Active = thisActive;
-        OtherWorld.Active = !thisActive;
+    public void SetActive()
+    {
+        Active = true;
+
+        const string activeWorldLayerName = "FrontWorld/";
+        SwitchAllRenderersToMainLayer(activeWorldLayerName);
+    }
+
+    public void SetInactive()
+    {
+        Active = false;
+
+        const string inactiveWorldLayerName = "BackWorld/";
+        SwitchAllRenderersToMainLayer(inactiveWorldLayerName);
+
+    }
+
+    private void SwitchAllRenderersToMainLayer(string worldLayerName)
+    {
+        var renderers = GetComponentsInChildren<Renderer>();
+
+        foreach (var renderer in renderers)
+        {
+            RendererUtil.ChangeRenderToLayer(renderer, worldLayerName);
+        }
     }
 
     public CellStatus GetCellStatus(Vector2Int pos)
@@ -40,8 +73,8 @@ public class WorldManagement : MonoBehaviour
         if (!ground.IsGround(pos))
         {
             return CellStatus.NoGround;
-        } 
-        
+        }
+
         if (obstacles.IsObstacle(pos))
         {
             return CellStatus.Obstacle;
@@ -59,11 +92,11 @@ public class WorldManagement : MonoBehaviour
     //Use it only after ensuring the cell is free
     public void MoveInstantTo(GridObject obj, Vector2Int pos)
     {
-        if(GetCellStatus(pos) == CellStatus.Free)
+        if (GetCellStatus(pos) == CellStatus.Free)
         {
             objects.MoveInstantTo(obj, pos);
         }
-        else if(objects.GetEntityAt(pos) != obj)
+        else if (objects.GetEntityAt(pos) != obj)
         {
             throw new CannotMoveHereException();
         }
@@ -74,10 +107,11 @@ public class WorldManagement : MonoBehaviour
     /// </summary>
     public void SetNewObjectTo(GridObject obj, Vector2Int pos)
     {
-        if(GetCellStatus(pos) == CellStatus.Free)
+        if (GetCellStatus(pos) == CellStatus.Free)
         {
             objects.SetNewObjectTo(obj, pos);
-        } else
+        }
+        else
         {
             throw new CannotMoveHereException();
         }
@@ -120,5 +154,5 @@ public enum CellStatus
 public enum WorldType
 {
     Regular,
-    Dark
+    TheEdge
 }

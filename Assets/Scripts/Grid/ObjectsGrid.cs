@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using ShadowWithNoPast.Entities;
 
@@ -9,44 +8,10 @@ using ShadowWithNoPast.Entities;
 /// To interract with the grid mindind both tiles and objects, use MainGrid !!!
 /// </summary>
 [ExecuteAlways]
-public class ObjectsGrid : MonoBehaviour
+public partial class ObjectsGrid : MonoBehaviour
 {
     public class UnexpectedEntityAtPosException : Exception { }
     public class PositionOccupiedException : Exception { }
-
-    [Serializable]
-    private class ObjDictionary : Dictionary<Vector2Int, GridObject>, ISerializationCallbackReceiver
-    {
-        [SerializeField]
-        private List<Vector2Int> keys = new List<Vector2Int>();
-
-        [SerializeField]
-        private List<GridObject> values = new List<GridObject>();
-
-        // save the dictionary to lists
-        public void OnBeforeSerialize()
-        {
-            keys.Clear();
-            values.Clear();
-            foreach (KeyValuePair<Vector2Int, GridObject> pair in this)
-            {
-                keys.Add(pair.Key);
-                values.Add(pair.Value);
-            }
-        }
-
-        // load dictionary from lists
-        public void OnAfterDeserialize()
-        {
-            this.Clear();
-
-            if (keys.Count != values.Count)
-                throw new System.Exception(string.Format("there are {0} keys and {1} values after deserialization. Make sure that both key and value types are serializable."));
-
-            for (int i = 0; i < keys.Count; i++)
-                this.Add(keys[i], values[i]);
-        }
-    }
 
     //The complexity of getting values from dictionary as well as all of the keys is close to O(1).
     //So it should be efficient to use Dictionary.

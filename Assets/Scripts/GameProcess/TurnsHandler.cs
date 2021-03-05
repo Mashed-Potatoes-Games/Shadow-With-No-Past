@@ -10,14 +10,15 @@ namespace ShadowWithNoPast.GameProcess
     {
         public bool IsWorking;
 
-        private const float SecondsBetweenEnemiesMove = 0.5f;
+        private const float SecondsBetweenEnemiesMove = 0.1f;
         private Queue<ITurnController> TurnsQueue = new Queue<ITurnController>();
 
-        private WorldManagement ActiveWorld;
-        private WorldManagement InactiveWorld;
+        private WorldsChanger changer;
 
         void Start()
         {
+            changer = GetComponent<WorldsChanger>();
+
             IsWorking = true;
             StartCoroutine(TurnsCoroutine());
         }
@@ -26,8 +27,6 @@ namespace ShadowWithNoPast.GameProcess
         {
             while (IsWorking)
             {
-
-                ReloadWorldReferences();
                 yield return InitiateQueueAndTelegraph();
                 Debug.Log("Enemies telegraph is over");
 
@@ -37,25 +36,10 @@ namespace ShadowWithNoPast.GameProcess
 
         }
 
-        private void ReloadWorldReferences()
-        {
-            foreach (WorldManagement World in GetComponentsInChildren<WorldManagement>())
-            {
-                if (World.Active)
-                {
-                    ActiveWorld = World;
-                } 
-                else
-                {
-                    InactiveWorld = World;
-                }
-            }
-        }
-
         private IEnumerator InitiateQueueAndTelegraph()
         {
-            yield return AddToQueueAndTelegraphFromWorld(ActiveWorld);
-            yield return AddToQueueAndTelegraphFromWorld(InactiveWorld);
+            yield return AddToQueueAndTelegraphFromWorld(changer.CurrentlyActive);
+            yield return AddToQueueAndTelegraphFromWorld(changer.CurrentlyInactive);
         }
 
         public IEnumerator AddToQueueAndTelegraphFromWorld(WorldManagement world)
@@ -68,7 +52,8 @@ namespace ShadowWithNoPast.GameProcess
             var priorities = Enum.GetValues(typeof(TurnPriority));
             foreach (TurnPriority priority in priorities)
             {
-                foreach (var turnController in world.GetComponentsInChildren<ITurnController>())
+                var turnControllers = world.objects.GetComponentsInChildren<ITurnController>();
+                foreach (var turnController in turnControllers)
                 {
                     if (turnController.Priority == priority)
                     {

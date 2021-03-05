@@ -16,11 +16,10 @@ namespace ShadowWithNoPast.Algorithms
             Queue<PathNode> SearchQueue = new Queue<PathNode>();
             SearchQueue.Enqueue(new PathNode(start));
 
-            List<Vector2Int> Visited = new List<Vector2Int>();
+            List<Vector2Int> Visited = new List<Vector2Int>() { start };
             while (SearchQueue.Count > 0)
             {
                 PathNode Current = SearchQueue.Dequeue();
-                Visited.Add(Current.Pos);
 
                 foreach(Vector2Int pos in Current.GetNeighbours())
                 {
@@ -34,6 +33,7 @@ namespace ShadowWithNoPast.Algorithms
                     {
                         
                         SearchQueue.Enqueue(NeighbourToCurrent);
+                        Visited.Add(pos);
                     }
                 }
             }
@@ -113,6 +113,11 @@ namespace ShadowWithNoPast.Algorithms
         }
 
         public override string ToString()
+        {
+            return Pos.ToString();
+        }
+
+        public string ToStringManual()
         {
             if(Previous != null)
             {

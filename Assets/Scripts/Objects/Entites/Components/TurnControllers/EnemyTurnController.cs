@@ -24,15 +24,13 @@ namespace ShadowWithNoPast.Entities
             world = entity.WorldGrid;
             movement = GetComponent<IMovementController>();
         }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
         public IEnumerator PrepareAndTelegraphMove()
         {
             GridEntity player = FindPlayer();
+            if(player is null)
+            {
+                yield break;
+            }
 
             Queue<Vector2Int> path = movement.GetPath(player.CurrentPos, false);
 
@@ -69,7 +67,8 @@ namespace ShadowWithNoPast.Entities
 
         public GridEntity FindPlayer()
         {
-            foreach (var entity in world.GetComponentsInChildren<GridEntity>())
+            var entities = transform.parent.GetComponentsInChildren<GridEntity>();
+            foreach (var entity in entities)
             {
                 if (entity.CompareTag("Player"))
                     return entity;

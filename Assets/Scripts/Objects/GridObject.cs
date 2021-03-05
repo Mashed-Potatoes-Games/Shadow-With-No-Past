@@ -55,7 +55,7 @@ namespace ShadowWithNoPast.Entities
 
         public void SnapToGrid()
         {
-            transform.position = new Vector3(CurrentPos.x + XOffset, CurrentPos.y + YOffset);
+            transform.localPosition = new Vector3(CurrentPos.x + XOffset, CurrentPos.y + YOffset, 0);
         }
     }
 
