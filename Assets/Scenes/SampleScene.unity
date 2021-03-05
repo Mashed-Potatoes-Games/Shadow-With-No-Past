@@ -204,7 +204,6 @@ GameObject:
   - component: {fileID: 476898853}
   - component: {fileID: 476898852}
   - component: {fileID: 476898854}
-  - component: {fileID: 476898855}
   m_Layer: 0
   m_Name: Regular World
   m_TagString: Untagged
@@ -248,7 +247,6 @@ MonoBehaviour:
   EventManager: {fileID: 476898854}
   active: 0
   ShowTileCoordinates: 0
-  sortingGroup: {fileID: 476898855}
 --- !u!156049354 &476898853
 Grid:
   m_ObjectHideFlags: 0
@@ -279,17 +277,6 @@ MonoBehaviour:
   WorldDeactivates:
     m_PersistentCalls:
       m_Calls: []
---- !u!210 &476898855
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 476898850}
-  m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,6 +288,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420030}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -316,6 +304,18 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+--- !u!114 &519420030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88ace3827b9dcf44fbc19164d115af86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -401,7 +401,6 @@ GameObject:
   - component: {fileID: 1438147945}
   - component: {fileID: 1438147947}
   - component: {fileID: 1438147948}
-  - component: {fileID: 1438147949}
   m_Layer: 0
   m_Name: TheEdge World
   m_TagString: Untagged
@@ -433,8 +432,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1987878675}
-  - {fileID: 1823345650}
   - {fileID: 1638314582}
+  - {fileID: 1823345650}
   m_Father: {fileID: 1790163715}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -457,7 +456,6 @@ MonoBehaviour:
   EventManager: {fileID: 1438147948}
   active: 1
   ShowTileCoordinates: 0
-  sortingGroup: {fileID: 1438147949}
 --- !u!114 &1438147948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,17 +474,6 @@ MonoBehaviour:
   WorldDeactivates:
     m_PersistentCalls:
       m_Calls: []
---- !u!210 &1438147949
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1438147944}
-  m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
 --- !u!1 &1530207219
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,8 +558,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -835605759
-  m_SortingLayer: 5
+  m_SortingLayerID: 1525022997
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0.000051915646, y: 1, z: 0}
@@ -1359,7 +1346,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6526480820260920968, guid: d24adbff220efbd4e822d0905f361625, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6526480820260920968, guid: d24adbff220efbd4e822d0905f361625, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -835605759
+      objectReference: {fileID: 0}
+    - target: {fileID: 6526480820260920968, guid: d24adbff220efbd4e822d0905f361625, type: 3}
+      propertyPath: m_SpriteSortPoint
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6526480820260920969, guid: d24adbff220efbd4e822d0905f361625, type: 3}
       propertyPath: WorldGrid
@@ -1367,11 +1362,11 @@ PrefabInstance:
       objectReference: {fileID: 1438147947}
     - target: {fileID: 6526480820260920969, guid: d24adbff220efbd4e822d0905f361625, type: 3}
       propertyPath: currentPos.x
-      value: -3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6526480820260920969, guid: d24adbff220efbd4e822d0905f361625, type: 3}
       propertyPath: currentPos.y
-      value: -1
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 6526480820260920972, guid: d24adbff220efbd4e822d0905f361625, type: 3}
       propertyPath: m_RootOrder
@@ -1379,11 +1374,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6526480820260920972, guid: d24adbff220efbd4e822d0905f361625, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6526480820260920972, guid: d24adbff220efbd4e822d0905f361625, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.100000024
+      value: -1.9
       objectReference: {fileID: 0}
     - target: {fileID: 6526480820260920972, guid: d24adbff220efbd4e822d0905f361625, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1455,7 +1450,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1438147946}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &1638314583
 TilemapRenderer:
@@ -2126,7 +2121,7 @@ Transform:
   - {fileID: 846761766}
   - {fileID: 2107171306}
   m_Father: {fileID: 1438147946}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1823345651
 MonoBehaviour:
@@ -2142,11 +2137,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objects:
     keys:
-    - {x: -3, y: -3}
-    - {x: -3, y: -1}
+    - {x: 0, y: -3}
+    - {x: -11, y: -2}
     values:
-    - {fileID: 415362465}
     - {fileID: 1199020890}
+    - {fileID: 415362465}
 --- !u!1 &1854815651
 GameObject:
   m_ObjectHideFlags: 0
@@ -2230,8 +2225,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -307801077
-  m_SortingLayer: 4
+  m_SortingLayerID: -1046200487
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0.000051915646, y: 0, z: 0}
@@ -5118,7 +5113,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 382708216090105636, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 382708216090105636, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -835605759
       objectReference: {fileID: 0}
     - target: {fileID: 382708216090105640, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
       propertyPath: m_RootOrder
@@ -5126,11 +5125,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 382708216090105640, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.5
+      value: -10.5
       objectReference: {fileID: 0}
     - target: {fileID: 382708216090105640, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.9
+      value: -0.9
       objectReference: {fileID: 0}
     - target: {fileID: 382708216090105640, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5170,11 +5169,11 @@ PrefabInstance:
       objectReference: {fileID: 1438147947}
     - target: {fileID: 382708216090105643, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
       propertyPath: currentPos.x
-      value: -3
+      value: -11
       objectReference: {fileID: 0}
     - target: {fileID: 382708216090105643, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
       propertyPath: currentPos.y
-      value: -3
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 382708216090105647, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
       propertyPath: m_Name
