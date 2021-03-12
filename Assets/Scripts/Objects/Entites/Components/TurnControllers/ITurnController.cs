@@ -7,7 +7,6 @@ namespace ShadowWithNoPast.Entities
     public interface ITurnController
     {
         TurnPriority Priority { get; set; }
-        int MoveDistance { get; set; }
 
         IEnumerator PrepareAndTelegraphMove();
         IEnumerator ExecuteMove();

@@ -64,6 +64,37 @@ namespace ShadowWithNoPast.Algorithms
             return queue;
         }
 
+        public static List<Vector2Int> GetAvailableMoves(Vector2Int startPos, int moveDistance, IsPassable isPassable)
+        {
+            var availableMoves = new List<Vector2Int>() { startPos }; 
+            
+            Queue<PathNode> SearchQueue = new Queue<PathNode>();
+            SearchQueue.Enqueue(new PathNode(startPos));
+
+            List<Vector2Int> Visited = new List<Vector2Int>() { startPos };
+            while (SearchQueue.Count > 0)
+            {
+                PathNode Current = SearchQueue.Dequeue();
+
+                foreach (Vector2Int pos in Current.GetNeighbours())
+                {
+                    if (!Visited.Contains(pos) && isPassable(pos))
+                    {
+                        PathNode NeighbourToCurrent = new PathNode(pos, Current);
+
+                        Visited.Add(pos);
+                        availableMoves.Add(pos);
+
+                        if (NeighbourToCurrent.PathLength < moveDistance)
+                        {
+                            SearchQueue.Enqueue(NeighbourToCurrent);
+                        }
+                    }
+                }
+            }
+            return availableMoves;
+        }
+
     }
 
     /// <summary>
@@ -73,6 +104,11 @@ namespace ShadowWithNoPast.Algorithms
     {
         public Vector2Int Pos;
         public PathNode Previous;
+
+        public int PathLength { get
+            {
+                return Previous is null ? 0 : Previous.PathLength + 1;
+            } }
 
         public PathNode(Vector2Int pos)
         {

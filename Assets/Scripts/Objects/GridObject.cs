@@ -31,8 +31,12 @@ namespace ShadowWithNoPast.Entities
         //Entites can be the different size and offsets are used to position the object in the center of the grid.
         //Changing the sprite center to custom fucks up hard with it's flip.
         //This values are for 512x512px sprites, which corresponds to 2x2 units in Unity.
-        public virtual float XOffset => 0.5f;
-        public virtual float YOffset => 1.1f;
+        [field: SerializeField]
+        public virtual float XOffset { get; set; } = 0.5f;
+        [field: SerializeField]
+        public virtual float YOffset { get; set; } = 1.1f;
+        [field: SerializeField]
+        public virtual float ZValue { get; set; } = 0f;
 
         #region Empty Awake, Start and Update ready to be overriden.
         protected virtual void Awake()
@@ -55,7 +59,7 @@ namespace ShadowWithNoPast.Entities
 
         public void SnapToGrid()
         {
-            transform.localPosition = new Vector3(CurrentPos.x + XOffset, CurrentPos.y + YOffset, 0);
+            transform.localPosition = new Vector3(CurrentPos.x + XOffset, CurrentPos.y + YOffset, ZValue);
         }
     }
 

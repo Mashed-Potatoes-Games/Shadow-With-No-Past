@@ -9,8 +9,13 @@ namespace ShadowWithNoPast.Entities
     [ExecuteAlways]
     public class GridEntity : GridObject
     {
+
+        // This value was moved from TurnController because it was used too much across other components
+        public int MoveDistance = 1;
+
         protected IMovementController movementController;
         protected ITurnController turnController;
+        protected ITelegraphController telegraphController;
 
         #region Ability to face, flipping SpriteRenderer
 

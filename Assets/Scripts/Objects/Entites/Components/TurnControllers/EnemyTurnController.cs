@@ -9,9 +9,7 @@ namespace ShadowWithNoPast.Entities
     {
         public TurnPriority Priority { get; set; } = TurnPriority.Normal;
 
-        public int MoveDistance { get; set; } = 1;
-
-       private float delayInSecBetweenCellsMove = 0.1f;
+        private float delayInSecBetweenCellsMove = 0.1f;
 
         private GridEntity entity;
         private WorldManagement world;
@@ -27,7 +25,7 @@ namespace ShadowWithNoPast.Entities
         public IEnumerator PrepareAndTelegraphMove()
         {
             GridEntity player = FindPlayer();
-            if(player is null)
+            if (player is null)
             {
                 yield break;
             }
@@ -49,7 +47,7 @@ namespace ShadowWithNoPast.Entities
 
         public IEnumerator MoveWithDelay(Queue<Vector2Int> path)
         {
-            int movesLeft = MoveDistance;
+            int movesLeft = entity.MoveDistance;
             while (path.Count > 0 && movesLeft > 0)
             {
                 Vector2Int pos = path.Dequeue();
