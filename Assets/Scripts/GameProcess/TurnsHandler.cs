@@ -57,7 +57,7 @@ namespace ShadowWithNoPast.GameProcess
                 {
                     if (turnController.Priority == priority)
                     {
-                        yield return turnController.PrepareAndTelegraphMove();
+                        yield return turnController.MoveAndTelegraphAction();
                         TurnsQueue.Enqueue(turnController);
                         yield return new WaitForSeconds(SecondsBetweenEnemiesMove);
                     }

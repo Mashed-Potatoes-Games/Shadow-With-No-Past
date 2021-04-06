@@ -13,8 +13,17 @@ namespace ShadowWithNoPast.Algorithms
 
         public static Queue<Vector2Int> FindPath(Vector2Int start, Vector2Int end, IsPassable isCellFree)
         {
+            if (start == end)
+            {
+                var result = new Queue<Vector2Int>();
+                result.Enqueue(start);
+                return result;
+            }
+
             Queue<PathNode> SearchQueue = new Queue<PathNode>();
             SearchQueue.Enqueue(new PathNode(start));
+
+            
 
             List<Vector2Int> Visited = new List<Vector2Int>() { start };
             while (SearchQueue.Count > 0)

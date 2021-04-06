@@ -79,7 +79,7 @@ class ObjectsPlacement : Editor
         Transform objGrid = grid.GetComponentInChildren<ObjectsGrid>().transform;
         InstantiatedObj.transform.SetParent(objGrid);
         InstantiatedGridObj.WorldGrid = grid;
-        InstantiatedGridObj.CurrentPos = cellPos;
+        InstantiatedGridObj.Pos = cellPos;
 
         grid.SetNewObjectTo(InstantiatedGridObj, cellPos);
 

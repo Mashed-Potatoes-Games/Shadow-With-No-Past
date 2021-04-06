@@ -1,31 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!61 &-4842636895058245616
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9053116760100514188}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!1001 &7895144660357360440
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36,6 +10,10 @@ PrefabInstance:
     - target: {fileID: 1167014526319657652, guid: 35b8805632124204e8ad9fa3431d4f74, type: 3}
       propertyPath: m_Name
       value: EnemyMoveMark
+      objectReference: {fileID: 0}
+    - target: {fileID: 4841829072599543873, guid: 35b8805632124204e8ad9fa3431d4f74, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5122777783985813692, guid: 35b8805632124204e8ad9fa3431d4f74, type: 3}
       propertyPath: m_RootOrder
@@ -87,8 +65,3 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 300a38c8a36c59447be3401d9acbbd81, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35b8805632124204e8ad9fa3431d4f74, type: 3}
---- !u!1 &9053116760100514188 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1167014526319657652, guid: 35b8805632124204e8ad9fa3431d4f74, type: 3}
-  m_PrefabInstance: {fileID: 7895144660357360440}
-  m_PrefabAsset: {fileID: 0}

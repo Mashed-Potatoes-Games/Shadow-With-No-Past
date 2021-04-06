@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a63598b0ef29789409041bfad18b4a7a, type: 3}
+  m_Name: DefaultHealthbarSprites
+  m_EditorClassIdentifier: Assembly-CSharp::Healthbar/HealthbarSprites
+  HealthpointBackground: {fileID: 21300000, guid: 52d4b15c914a2254f995ae1f6ffd8ceb, type: 3}
+  HealthpointFill: {fileID: 21300000, guid: e82c1466a6224974b8d02ec95a14baf8, type: 3}
+  MasksToCreateParticles:
+  - {fileID: 21300000, guid: 23e60d40b506ae2419c707d4ee464f4a, type: 3}
+  - {fileID: 21300000, guid: 62066f9c56775d54ba16cca27f230daa, type: 3}

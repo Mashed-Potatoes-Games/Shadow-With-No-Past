@@ -117,7 +117,7 @@ public class WorldManagement : MonoBehaviour
         }
     }
 
-    public GridObject GetEntityAt(Vector2Int pos)
+    public GridEntity GetEntityAt(Vector2Int pos)
     {
         return objects.GetEntityAt(pos);
     }

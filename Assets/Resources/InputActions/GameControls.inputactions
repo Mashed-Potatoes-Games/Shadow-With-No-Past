@@ -1,0 +1,33 @@
+{
+    "name": "GameControls",
+    "maps": [
+        {
+            "name": "AbilityUsage",
+            "id": "ce6be5a2-1f5a-438b-8bce-9ede0816c4ef",
+            "actions": [
+                {
+                    "name": "Ability 1",
+                    "type": "Button",
+                    "id": "efb7eb3e-c743-4875-9c3e-d5daf9e03dff",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "02131171-122f-4604-bbb8-42bc4ee33f99",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ability 1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

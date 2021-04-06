@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4682669683384433524}
   - component: {fileID: 5201073931055528245}
   - component: {fileID: 4841829072599543873}
+  - component: {fileID: 7852372044953356676}
   m_Layer: 8
   m_Name: BasicrMoveMark
   m_TagString: Untagged
@@ -47,10 +48,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WorldGrid: {fileID: 0}
-  currentPos: {x: 0, y: 0}
+  pos: {x: 0, y: 0}
   <XOffset>k__BackingField: 0.5
   <YOffset>k__BackingField: 0.5
-  <ZValue>k__BackingField: 1
+  <ZValue>k__BackingField: 0
 --- !u!114 &4682669683384433524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,3 +142,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &7852372044953356676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167014526319657652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9512527a1b103384e9c7ac6045530456, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsConnectedToGrid: 0
