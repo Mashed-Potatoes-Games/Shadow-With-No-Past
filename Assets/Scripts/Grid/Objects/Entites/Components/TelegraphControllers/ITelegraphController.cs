@@ -1,3 +1,4 @@
+using ShadowWithNoPast.Entities.Abilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,9 +9,9 @@ namespace ShadowWithNoPast.Entities
 {
     public interface ITelegraphController
     {
-        public void TelegraphAvailableMove(float opacity, Action<Vector2Int> OnClickAction);
+        public void TelegraphAvailableMove(float opacity, Action<TargetPos> OnClickAction);
         public void ClearAvalableMoves();
-        public void TelegraphAttack(Vector2Int target, float opacity);
+        public void TelegraphAttack(List<TargetPos> targets, float opacity, Action<TargetPos> OnClickAction);
         public void ClearAttack();
     }
 }

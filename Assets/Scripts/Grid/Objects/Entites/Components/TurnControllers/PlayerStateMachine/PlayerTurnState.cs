@@ -3,9 +3,9 @@
     public abstract class PlayerTurnState
     {
         protected GridEntity player;
-        protected PlayerStateMachine stateMachine;
+        protected InputTurnsController stateMachine;
 
-        public PlayerTurnState(GridEntity player, PlayerStateMachine stateMachine)
+        public PlayerTurnState(GridEntity player, InputTurnsController stateMachine)
         {
             this.player = player;
             this.stateMachine = stateMachine;

@@ -543,7 +543,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -588,7 +588,7 @@ MonoBehaviour:
   m_EventMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_MaxRayIntersections: 0
+  m_MaxRayIntersections: 5
 --- !u!114 &558982406 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6526480820260920969, guid: d24adbff220efbd4e822d0905f361625, type: 3}
@@ -1010,36 +1010,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
-      propertyPath: Abilities.Array.size
-      value: 2
+      propertyPath: Abilities.Array.data[2].EffectValues.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
-      propertyPath: Abilities.Array.data[1].Caller
-      value: 
-      objectReference: {fileID: 1391350675}
-    - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
-      propertyPath: Abilities.Array.data[1].Ability
-      value: 
-      objectReference: {fileID: 11400000, guid: ccbb54b1b5f42d842898ecbb765d4c14, type: 2}
-    - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
-      propertyPath: Abilities.Array.data[1].CooldownOnUse
-      value: 2
+      propertyPath: Abilities.Array.data[2].<EndsTurn>k__BackingField
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
-      propertyPath: Abilities.Array.data[1].EffectValues.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
-      propertyPath: Abilities.Array.data[1].<EndsTurn>k__BackingField
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
-      propertyPath: Abilities.Array.data[1].EffectValues.Array.data[0]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
-      propertyPath: Abilities.Array.data[1].<ReadyToUse>k__BackingField
-      value: 1
+      propertyPath: Abilities.Array.data[2].<ReadyToUse>k__BackingField
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2159865961508273153, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1085,6 +1065,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6099638290796498177, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
+      propertyPath: AttackIndicator
+      value: 
+      objectReference: {fileID: 3273307110404952140, guid: 8e0d3f7de1ebcd24f8860e14ecb62c65, type: 3}
     - target: {fileID: 6152781655387616406, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
       propertyPath: m_Camera
       value: 

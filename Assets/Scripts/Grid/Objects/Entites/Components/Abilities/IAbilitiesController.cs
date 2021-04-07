@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace ShadowWithNoPast.Entities.Abilities
 {
-    interface IAbilitiesController
+    public interface IAbilitiesController
     {
         public event Action<AbilityInstance> AbilityUsed;
+        event Action<AbilityInstance> AbilityUsedWithNoTarget;
 
         int Count { get; }
 

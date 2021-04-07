@@ -4,6 +4,7 @@ using UnityEngine;
 using ShadowWithNoPast.Algorithms;
 using UnityEngine.EventSystems;
 using System;
+using ShadowWithNoPast.Entities.Abilities;
 
 namespace ShadowWithNoPast.Entities
 {
@@ -19,7 +20,7 @@ namespace ShadowWithNoPast.Entities
         private new SpriteRenderer renderer;
         private IMovementController movement;
 
-        private GameObject availableMoves;
+        private GameObject availableMovesTelegraphs;
         private GameObject attackTelegraphs;
 
         private void Start()
@@ -29,7 +30,7 @@ namespace ShadowWithNoPast.Entities
             movement = GetComponent<IMovementController>();
         }
 
-        public void TelegraphAttack(Vector2Int target, float opacity)
+        public void TelegraphAttack(List<TargetPos> targets, float opacity, Action<TargetPos> OnClickAction)
         {
             if (AvailableMoveIndicator is null)
             {
@@ -37,7 +38,30 @@ namespace ShadowWithNoPast.Entities
                 return;
             }
 
+
             ClearAttack();
+
+            attackTelegraphs = new GameObject("AvailableAttacksCollection");
+            attackTelegraphs.transform.SetParent(transform.parent);
+
+            foreach (var target in targets)
+            {
+                CreateAttackTelegraphElement(target.Pos, opacity, OnClickAction);
+            }
+        }
+
+        private void CreateAttackTelegraphElement(Vector2Int pos, float opacity, Action<TargetPos> onClickAction)
+        {
+            TelegraphElement obj = InstantiateTelegraphElement(pos, onClickAction, AttackIndicator, attackTelegraphs);
+            TweakRenderer(obj, opacity);
+        }
+
+        private void TweakRenderer(TelegraphElement obj, float opacity)
+        {
+            var objRenderer = obj.GetComponent<SpriteRenderer>();
+            objRenderer.sortingLayerID = renderer.sortingLayerID;
+            objRenderer.sortingOrder = renderer.sortingOrder + 1;
+            objRenderer.color = new Color(1, 1, 1, opacity);
         }
 
         public void ClearAttack()
@@ -49,7 +73,7 @@ namespace ShadowWithNoPast.Entities
             }
         }
 
-        public void TelegraphAvailableMove(float opacity, Action<Vector2Int> OnClickAction = null)
+        public void TelegraphAvailableMove(float opacity, Action<TargetPos> onClickAction)
         {
             if (AvailableMoveIndicator is null)
             {
@@ -63,38 +87,48 @@ namespace ShadowWithNoPast.Entities
                 entity.MoveDistance,
                 movement.IsCellFree);
 
-            availableMoves = new GameObject("AvailableMovesCollection");
-            availableMoves.transform.SetParent(transform.parent);
+            availableMovesTelegraphs = new GameObject("AvailableMovesCollection");
+            availableMovesTelegraphs.transform.SetParent(transform.parent);
 
 
             foreach(var pos in availableMovesPos)
             {
-                CreateMoveTelegraphElement(pos, opacity, OnClickAction);
+                CreateMoveTelegraphElement(pos, opacity, onClickAction);
             }
         }
 
-        private void CreateMoveTelegraphElement(Vector2Int pos, float opacity, Action<Vector2Int> OnClickAction = null)
+        private void CreateMoveTelegraphElement(Vector2Int pos, float opacity, Action<TargetPos> OnClickAction = null)
         {
-            TelegraphElement obj = Instantiate(AvailableMoveIndicator);
-            obj.OnClick += OnClickAction;
+            TelegraphElement obj = InstantiateTelegraphElement(pos, OnClickAction, AvailableMoveIndicator, availableMovesTelegraphs);
+
+            TweakRenderer(obj, opacity);
+        }
+
+        private TelegraphElement InstantiateTelegraphElement(Vector2Int pos, Action<TargetPos> OnClickAction, TelegraphElement element, GameObject parent)
+        {
+            TelegraphElement obj = Instantiate(element);
+            if(OnClickAction != null)
+            {
+                obj.OnClick += OnClickAction;
+            }
+            else
+            {
+                obj.GetComponent<Collider2D>().enabled = false;
+            }
             var gridObj = obj.GetComponent<GridObject>();
             gridObj.YOffset = 0.5f;
             gridObj.Pos = pos;
 
-            gridObj.transform.SetParent(availableMoves.transform);
-
-            var objRenderer = obj.GetComponent<SpriteRenderer>();
-            objRenderer.sortingLayerID = renderer.sortingLayerID;
-            objRenderer.sortingOrder = renderer.sortingOrder + 1;
-            objRenderer.color = new Color(1, 1, 1, opacity);
+            gridObj.transform.SetParent(parent.transform);
+            return obj;
         }
 
         public void ClearAvalableMoves()
         {
-            if (availableMoves != null)
+            if (availableMovesTelegraphs != null)
             {
-                Destroy(availableMoves);
-                availableMoves = null;
+                Destroy(availableMovesTelegraphs);
+                availableMovesTelegraphs = null;
             }
         }
     }

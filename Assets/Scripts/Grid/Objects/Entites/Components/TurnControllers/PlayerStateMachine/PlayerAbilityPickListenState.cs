@@ -1,23 +1,34 @@
-﻿using UnityEngine;
+﻿using ShadowWithNoPast.Entities.Abilities;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace ShadowWithNoPast.Entities
 {
     public class PlayerAbilityPickListenState : PlayerTurnState
     {
-        public PlayerAbilityPickListenState(GridEntity player, PlayerStateMachine stateMachine) : base(player, stateMachine) { }
+        public PlayerAbilityPickListenState(GridEntity player, InputTurnsController stateMachine) : base(player, stateMachine) { }
 
         public override void EnterState()
         {
             base.EnterState();
 
             stateMachine.IsActiveTurn = true;
+
             stateMachine.Controls.AbilityUsage.Enable();
+            stateMachine.Abilities.AbilityUsedWithNoTarget += OnAbilityPicked;
         }
 
-        private void Ability1Used(InputAction.CallbackContext obj)
+        public override void LeaveState()
         {
-            Debug.Log("EventFired!!!!");
+            base.LeaveState();
+
+            stateMachine.Controls.AbilityUsage.Disable();
+            stateMachine.Abilities.AbilityUsedWithNoTarget -= OnAbilityPicked;
+        }
+
+        private void OnAbilityPicked(AbilityInstance abilityInstance)
+        {
+            stateMachine.SetState(new PlayerAbilityUseListenState(player, stateMachine, abilityInstance));
         }
     }
 }

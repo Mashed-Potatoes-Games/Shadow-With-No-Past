@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,9 +18,9 @@ namespace ShadowWithNoPast.Entities.Abilities
             EffectValues = effectValues;
         }
 
+        public event Action UsedWithNoTarget;
         public event Action Updated;
         public event Action Used;
-        [HideInInspector]
         public GridEntity Caller;
 
         public AudioClip AbilitySound => Ability.AbilitySound;
@@ -37,11 +38,24 @@ namespace ShadowWithNoPast.Entities.Abilities
         public List<TargetPos> CanAttackTargetFrom(TargetPos target) =>
             Ability.AvailableTargets(target);
 
-        public void UseAbility()
+        public IEnumerator UseAbility()
         {
-            Ability.Execute(Caller, new TargetPos(), EffectValues[0]);
+            if(Ability.Type == AbilityType.OnSelf)
+            {
+                yield return UseAbility(new TargetPos());
+                yield break;
+            }
+            UsedWithNoTarget?.Invoke();
+        }
 
+        public IEnumerator UseAbility(TargetPos target)
+        {
+            yield return Ability.Execute(Caller, target, EffectValues[0]);
 
+            FinishExecution();
+        }
+        private void FinishExecution()
+        {
             // "+ 1" is here, because after the ability is used it always decrement all abilities CD's by 1.
             //If there is better solution, I will gladly change this shitty pile of code.
             RemainingCooldown = CooldownOnUse + 1;

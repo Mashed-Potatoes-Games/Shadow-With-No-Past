@@ -29,9 +29,14 @@ public class AbilityUIButton : MonoBehaviour
 
         abilityInstance.Updated += Redraw;
         button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(abilityInstance.UseAbility);
+        button.onClick.AddListener(UseAbility);
 
         Redraw();
+    }
+
+    private void UseAbility()
+    {
+        StartCoroutine(abilityInstance.UseAbility());
     }
 
     private void Redraw()

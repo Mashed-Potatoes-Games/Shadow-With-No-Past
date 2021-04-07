@@ -11,27 +11,43 @@ using UnityEngine.InputSystem;
 
 namespace ShadowWithNoPast.Entities
 {
-    class InputTurnsController : PlayerStateMachine, ITurnController
+    public class InputTurnsController : MonoBehaviour, ITurnController
     {
+
         public event Action TurnPassed;
+        
+        [HideInInspector] public bool MadeMove;
+        [HideInInspector] public bool IsActiveTurn;
+
+
+        public GameControls Controls;
+        public IAbilitiesController Abilities;
+        public GridEntity Entity;
+        public IMovementController Movement;
+        public ITelegraphController Telegraph;
+
+        protected PlayerTurnState playerState;
 
         public TurnPriority Priority { get; set; } = TurnPriority.Player;
 
-        private GridEntity entity;
-        private IMovementController movement;
-        private ITelegraphController telegraph;
-        private IAbilitiesController abilities;
-
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
+            Controls = new GameControls();
+            Abilities = GetComponent<IAbilitiesController>();
+            Entity = GetComponent<GridEntity>();
+            Movement = GetComponent<IMovementController>();
+            Telegraph = GetComponent<ITelegraphController>();
 
-            entity = GetComponent<GridEntity>();
-            movement = GetComponent<IMovementController>();
-            telegraph = GetComponent<ITelegraphController>();
-            abilities = GetComponent<IAbilitiesController>();
-
-            abilities.AbilityUsed += OnAbilityUse;
+            Abilities.AbilityUsed += OnAbilityUse;
+        }
+        public void SetState(PlayerTurnState state)
+        {
+            if (playerState != null)
+            {
+                playerState.LeaveState();
+            }
+            playerState = state;
+            state.EnterState();
         }
 
         public IEnumerator MoveAndTelegraphAction()
@@ -41,23 +57,13 @@ namespace ShadowWithNoPast.Entities
 
         public IEnumerator ExecuteMove()
         {
-            SetState(new PlayerMoveListenState(entity, this));
-            telegraph.TelegraphAvailableMove(0.5f, OnAvailableMoveClick);
+            SetState(new PlayerMoveListenState(Entity, this));
             yield return ListenForInput();
-            telegraph.ClearAvalableMoves();
+            Telegraph.ClearAvalableMoves();
         }
 
-        private void OnAvailableMoveClick(Vector2Int pos)
-        {
-            var path = movement.GetPath(pos);
-            StartCoroutine(MoveAndEndTurn(path));
-        }
 
-        private IEnumerator MoveAndEndTurn(Queue<Vector2Int> path)
-        {
-            yield return movement.MoveWithDelay(path);
-            EndTurn();
-        }
+        
 
         public IEnumerator ListenForInput()
         {
@@ -68,14 +74,6 @@ namespace ShadowWithNoPast.Entities
             }
         }
 
-        public void OnFirstAbilityUse()
-        {
-            Debug.Log("First ability used!");
-            EndTurn();
-        }
-
-        
-
         private void OnAbilityUse(AbilityInstance abilityInstance)
         {
             if(abilityInstance.EndsTurn)
@@ -84,11 +82,13 @@ namespace ShadowWithNoPast.Entities
             }
         }
 
-        private void EndTurn()
+        public void EndTurn()
         {
             IsActiveTurn = false;
 
             TurnPassed?.Invoke();
+
+            SetState(new PlayerIdleState(Entity, this));
         }
     }
 }

@@ -9,7 +9,7 @@ namespace ShadowWithNoPast.Entities
     {
         public void OnPointerEnter(PointerEventData eventData)
         {
-            TelegraphAvailableMove(0.75f);
+            TelegraphAvailableMove(0.75f, null);
         }
 
         public void OnPointerExit(PointerEventData eventData)

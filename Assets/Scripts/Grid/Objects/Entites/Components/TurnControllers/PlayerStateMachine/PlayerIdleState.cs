@@ -2,7 +2,7 @@
 {
     public class PlayerIdleState : PlayerTurnState
     {
-        public PlayerIdleState(GridEntity player, PlayerStateMachine stateMachine) : base(player, stateMachine)
+        public PlayerIdleState(GridEntity player, InputTurnsController stateMachine) : base(player, stateMachine)
         {
         }
 

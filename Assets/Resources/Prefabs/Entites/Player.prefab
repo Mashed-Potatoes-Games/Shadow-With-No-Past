@@ -137,6 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MadeMove: 0
   IsActiveTurn: 0
+  Entity: {fileID: 0}
 --- !u!114 &6099638290796498177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,7 +204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Abilities:
-  - Caller: {fileID: 0}
+  - Caller: {fileID: 382708216090105643}
     Ability: {fileID: 11400000, guid: ccbb54b1b5f42d842898ecbb765d4c14, type: 2}
     EffectValues: 01000000
     CooldownOnUse: 4

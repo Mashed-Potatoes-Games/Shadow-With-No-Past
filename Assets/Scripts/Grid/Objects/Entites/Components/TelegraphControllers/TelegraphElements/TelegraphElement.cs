@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShadowWithNoPast.Entities.Abilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace ShadowWithNoPast.Entities
     [RequireComponent(typeof(SpriteRenderer))]
     public class TelegraphElement : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
-        public event Action<Vector2Int> OnClick;
+        public event Action<TargetPos> OnClick;
 
         [NonSerialized]
         public GridObject GridObj;
@@ -28,7 +29,7 @@ namespace ShadowWithNoPast.Entities
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            OnClick?.Invoke(GridObj.Pos);
+            OnClick?.Invoke(GridObj.GetGlobalPos());
         }
 
         public void OnPointerEnter(PointerEventData eventData)

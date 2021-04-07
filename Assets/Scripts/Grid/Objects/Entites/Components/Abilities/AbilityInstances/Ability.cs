@@ -29,6 +29,10 @@ namespace ShadowWithNoPast.Entities.Abilities
 
         public IEnumerator Execute(GridObject caller, TargetPos target, int effectValue)
         {
+            if(target.World == null)
+            {
+                target.World = caller.WorldGrid;
+            }
             if(!AvailableTargets(caller.GetGlobalPos()).Contains(target))
             {
                 Debug.LogError("System tried to apply ability, on the target, that is out of reach!");
@@ -84,7 +88,7 @@ namespace ShadowWithNoPast.Entities.Abilities
             {
                 var directionVector = CoordinateUtils.GetVectorFromDirection(direction);
 
-                for(int i = 1; i >= DistanceConstraint; i++)
+                for(int i = 1; i <= DistanceConstraint; i++)
                 {
 
                     Vector2Int targetDirection = directionVector * i;

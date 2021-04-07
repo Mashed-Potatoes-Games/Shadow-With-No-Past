@@ -13,6 +13,7 @@ namespace ShadowWithNoPast.Entities.Abilities
     public class AbilitiesController : MonoBehaviour, IAbilitiesController
     {
         public event Action<AbilityInstance> AbilityUsed;
+        public event Action<AbilityInstance> AbilityUsedWithNoTarget;
 
         private GridEntity entity;
         private ITurnController turnController;
@@ -39,6 +40,10 @@ namespace ShadowWithNoPast.Entities.Abilities
                 instance.Used += () =>
                 {
                     AbilityUsed.Invoke(instance);
+                };
+                instance.UsedWithNoTarget += () =>
+                {
+                    AbilityUsedWithNoTarget.Invoke(instance);
                 };
             }
         }
