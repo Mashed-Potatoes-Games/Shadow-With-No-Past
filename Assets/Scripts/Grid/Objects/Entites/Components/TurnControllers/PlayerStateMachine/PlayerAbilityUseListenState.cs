@@ -17,7 +17,7 @@ namespace ShadowWithNoPast.Entities
         {
             base.EnterState();
 
-            stateMachine.Telegraph.TelegraphAttack(abilityInstance.AvailableTargets(), 1, AbilityExecuted);
+            stateMachine.Telegraph.TelegraphAvailableAttacks(abilityInstance.AvailableTargets(), 1, AbilityExecuted);
         }
 
         private void AbilityExecuted(TargetPos pos)
@@ -29,7 +29,7 @@ namespace ShadowWithNoPast.Entities
         {
             base.LeaveState();
 
-            stateMachine.Telegraph.ClearAttack();
+            stateMachine.Telegraph.ClearAvailableAttacks();
         }
     }
 }

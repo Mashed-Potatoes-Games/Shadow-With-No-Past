@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6526480820260920974}
   - component: {fileID: 6526480820260920975}
   - component: {fileID: -3596309301984808076}
+  - component: {fileID: 8971233747194117457}
   - component: {fileID: 4948657265639925560}
   - component: {fileID: 4690787693294248073}
   m_Layer: 9
@@ -148,6 +149,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AvailableMoveIndicator: {fileID: 3273307110404952140, guid: 8e0d3f7de1ebcd24f8860e14ecb62c65, type: 3}
   AttackIndicator: {fileID: 0}
+--- !u!114 &8971233747194117457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6526480820260920973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c01dc04ce5ca94a89d9e033da161bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Abilities:
+  - Caller: {fileID: 6526480820260920969}
+    Ability: {fileID: 11400000, guid: ccbb54b1b5f42d842898ecbb765d4c14, type: 2}
+    EffectValues: 01000000
+    CooldownOnUse: 0
+    RemainingCooldown: 0
+    <ReadyToUse>k__BackingField: 1
+    <EndsTurn>k__BackingField: 1
 --- !u!114 &4948657265639925560
 MonoBehaviour:
   m_ObjectHideFlags: 0

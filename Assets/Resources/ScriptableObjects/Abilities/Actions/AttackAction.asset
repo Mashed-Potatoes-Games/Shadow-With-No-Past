@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ca8bd9adb90aa64ca07d77e0222d207, type: 3}
   m_Name: AttackAction
   m_EditorClassIdentifier: 
+  TelegraphElement: {fileID: 3273307110404952140, guid: 8e0d3f7de1ebcd24f8860e14ecb62c65, type: 3}

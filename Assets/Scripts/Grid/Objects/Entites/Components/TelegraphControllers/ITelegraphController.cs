@@ -9,9 +9,11 @@ namespace ShadowWithNoPast.Entities
 {
     public interface ITelegraphController
     {
-        public void TelegraphAvailableMove(float opacity, Action<TargetPos> OnClickAction);
+        public void TelegraphAvailableMove(Action<TargetPos> OnClickAction);
         public void ClearAvalableMoves();
-        public void TelegraphAttack(List<TargetPos> targets, float opacity, Action<TargetPos> OnClickAction);
+        public void TelegraphAttack(TargetPos target, AbilityInstance abilityInstance);
         public void ClearAttack();
+        public void TelegraphAvailableAttacks(List<TargetPos> targets, float opacity, Action<TargetPos> OnClickAction);
+        public void ClearAvailableAttacks();
     }
 }

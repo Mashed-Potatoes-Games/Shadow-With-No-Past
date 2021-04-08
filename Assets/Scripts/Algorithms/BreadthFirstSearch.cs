@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ShadowWithNoPast.Algorithms
 {
     /// <summary>
-    /// Simple BFS that can use delegat, which tells, is cell free.
+    /// Simple BFS that can use delegate, which tells, is cell free.
     /// </summary>
     public static class BreadthFirstSearch
     {
@@ -75,8 +75,8 @@ namespace ShadowWithNoPast.Algorithms
 
         public static List<Vector2Int> GetAvailableMoves(Vector2Int startPos, int moveDistance, IsPassable isPassable)
         {
-            var availableMoves = new List<Vector2Int>() { startPos }; 
-            
+            var availableMoves = new List<Vector2Int>() { startPos };
+
             Queue<PathNode> SearchQueue = new Queue<PathNode>();
             SearchQueue.Enqueue(new PathNode(startPos));
 
@@ -103,7 +103,6 @@ namespace ShadowWithNoPast.Algorithms
             }
             return availableMoves;
         }
-
     }
 
     /// <summary>
