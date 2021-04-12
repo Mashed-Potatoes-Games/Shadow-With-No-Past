@@ -5,6 +5,7 @@ using ShadowWithNoPast.Algorithms;
 using UnityEngine.EventSystems;
 using System;
 using ShadowWithNoPast.Entities.Abilities;
+using TMPro;
 
 namespace ShadowWithNoPast.Entities
 {
@@ -20,8 +21,9 @@ namespace ShadowWithNoPast.Entities
         private new SpriteRenderer renderer;
         private IMovementController movement;
 
-        private GameObject availableMovesTelegraphs;
         private GameObject attackTelegraphs;
+        private GameObject availableMovesTelegraphs;
+        private GameObject availableAttackTelegraphs;
 
         private void Start()
         {
@@ -30,7 +32,7 @@ namespace ShadowWithNoPast.Entities
             movement = GetComponent<IMovementController>();
         }
 
-        public void TelegraphAttack(List<TargetPos> targets, float opacity, Action<TargetPos> OnClickAction)
+        public void TelegraphAvailableAttacks(List<TargetPos> targets, float opacity, Action<TargetPos> OnClickAction)
         {
             if (AvailableMoveIndicator is null)
             {
@@ -39,41 +41,40 @@ namespace ShadowWithNoPast.Entities
             }
 
 
-            ClearAttack();
+            ClearAvailableAttacks();
 
-            attackTelegraphs = new GameObject("AvailableAttacksCollection");
-            attackTelegraphs.transform.SetParent(transform.parent);
+            availableAttackTelegraphs = new GameObject("AvailableAttacksCollection");
+            availableAttackTelegraphs.transform.SetParent(transform.parent);
 
             foreach (var target in targets)
             {
-                CreateAttackTelegraphElement(target.Pos, opacity, OnClickAction);
+                CreateAttackTelegraphElement(target.Pos, OnClickAction);
             }
         }
 
-        private void CreateAttackTelegraphElement(Vector2Int pos, float opacity, Action<TargetPos> onClickAction)
+        private void CreateAttackTelegraphElement(Vector2Int pos, Action<TargetPos> onClickAction)
         {
-            TelegraphElement obj = InstantiateTelegraphElement(pos, onClickAction, AttackIndicator, attackTelegraphs);
-            TweakRenderer(obj, opacity);
+            TelegraphElement obj = InstantiateTelegraphElement(pos, AttackIndicator, availableAttackTelegraphs, onClickAction);
+            TweakRenderer(obj);
         }
 
-        private void TweakRenderer(TelegraphElement obj, float opacity)
+        private void TweakRenderer(TelegraphElement obj)
         {
             var objRenderer = obj.GetComponent<SpriteRenderer>();
             objRenderer.sortingLayerID = renderer.sortingLayerID;
             objRenderer.sortingOrder = renderer.sortingOrder + 1;
-            objRenderer.color = new Color(1, 1, 1, opacity);
         }
 
-        public void ClearAttack()
+        public void ClearAvailableAttacks()
         {
-            if(attackTelegraphs != null)
+            if(availableAttackTelegraphs != null)
             {
-                Destroy(attackTelegraphs);
-                attackTelegraphs = null;
+                Destroy(availableAttackTelegraphs);
+                availableAttackTelegraphs = null;
             }
         }
 
-        public void TelegraphAvailableMove(float opacity, Action<TargetPos> onClickAction)
+        public void TelegraphAvailableMove(Action<TargetPos> onClickAction)
         {
             if (AvailableMoveIndicator is null)
             {
@@ -82,29 +83,30 @@ namespace ShadowWithNoPast.Entities
             }
 
             ClearAvalableMoves();
-            var availableMovesPos = BreadthFirstSearch.GetAvailableMoves(
-                entity.Pos,
-                entity.MoveDistance,
-                movement.IsCellFree);
+            var availableMovesPos = movement.GetAvailableMoves();
 
             availableMovesTelegraphs = new GameObject("AvailableMovesCollection");
             availableMovesTelegraphs.transform.SetParent(transform.parent);
 
 
-            foreach(var pos in availableMovesPos)
+            foreach (var pos in availableMovesPos)
             {
-                CreateMoveTelegraphElement(pos, opacity, onClickAction);
+                CreateMoveTelegraphElement(pos, onClickAction);
             }
         }
 
-        private void CreateMoveTelegraphElement(Vector2Int pos, float opacity, Action<TargetPos> OnClickAction = null)
+        private void CreateMoveTelegraphElement(Vector2Int pos, Action<TargetPos> OnClickAction = null)
         {
-            TelegraphElement obj = InstantiateTelegraphElement(pos, OnClickAction, AvailableMoveIndicator, availableMovesTelegraphs);
+            TelegraphElement obj = InstantiateTelegraphElement(pos, AvailableMoveIndicator, availableMovesTelegraphs, OnClickAction);
 
-            TweakRenderer(obj, opacity);
+            TweakRenderer(obj);
         }
 
-        private TelegraphElement InstantiateTelegraphElement(Vector2Int pos, Action<TargetPos> OnClickAction, TelegraphElement element, GameObject parent)
+        private TelegraphElement InstantiateTelegraphElement(
+            Vector2Int pos,
+            TelegraphElement element,
+            GameObject parent,
+            Action<TargetPos> OnClickAction = null)
         {
             TelegraphElement obj = Instantiate(element);
             if(OnClickAction != null)
@@ -129,6 +131,43 @@ namespace ShadowWithNoPast.Entities
             {
                 Destroy(availableMovesTelegraphs);
                 availableMovesTelegraphs = null;
+            }
+        }
+
+        public void TelegraphAttack(TargetPos target, AbilityInstance abilityInstance)
+        {
+            ClearAttack();
+            var telegraphDict = abilityInstance.GetTelegraphData(target);
+            foreach(var pair in telegraphDict)
+            {
+                TelegraphElement elementPrefab = pair.Key.Element;
+                int value = pair.Key.Value;
+
+                attackTelegraphs = new GameObject("AttackTelegraphs");
+                attackTelegraphs.transform.SetParent(transform.parent);
+
+                foreach (var targetPos in pair.Value)
+                {
+                    TelegraphElement elementInstance = InstantiateTelegraphElement(
+                        targetPos.Pos,
+                        elementPrefab,
+                        attackTelegraphs);
+
+                    if(value > 0)
+                    {
+                        var textComponent = elementInstance.gameObject.AddComponent<TextMeshProUGUI>();
+                        textComponent.text = value.ToString();
+                    }
+                }
+            }
+        }
+
+        public void ClearAttack()
+        {
+            if (attackTelegraphs != null)
+            {
+                Destroy(attackTelegraphs);
+                attackTelegraphs = null;
             }
         }
     }

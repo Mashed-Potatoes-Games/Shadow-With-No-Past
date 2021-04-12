@@ -10,7 +10,7 @@ using UnityEditor;
 namespace ShadowWithNoPast.Entities.Abilities
 {
     [RequireComponent(typeof(GridEntity))]
-    public class AbilitiesController : MonoBehaviour, IAbilitiesController
+    public class FiniteAbilitiesController : MonoBehaviour, IAbilitiesController
     {
         public event Action<AbilityInstance> AbilityUsed;
         public event Action<AbilityInstance> AbilityUsedWithNoTarget;
@@ -39,11 +39,11 @@ namespace ShadowWithNoPast.Entities.Abilities
             {
                 instance.Used += () =>
                 {
-                    AbilityUsed.Invoke(instance);
+                    AbilityUsed?.Invoke(instance);
                 };
                 instance.UsedWithNoTarget += () =>
                 {
-                    AbilityUsedWithNoTarget.Invoke(instance);
+                    AbilityUsedWithNoTarget?.Invoke(instance);
                 };
             }
         }
@@ -70,20 +70,30 @@ namespace ShadowWithNoPast.Entities.Abilities
                 ability.OnTurnPassed();
             }
         }
+
+        public IEnumerator<AbilityInstance> GetEnumerator()
+        {
+            return Abilities.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return Abilities.GetEnumerator();
+        }
     }
 
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(AbilitiesController))]
+    [CustomEditor(typeof(FiniteAbilitiesController))]
     public class AbilitiesControllerEditor : Editor
     {
-        private AbilitiesController abilitiesController;
+        private FiniteAbilitiesController abilitiesController;
         private int currentPickerWindow;
         private AbilityInstance focusedAbility;
 
         private void OnEnable()
         {
-            abilitiesController = (AbilitiesController)target;
+            abilitiesController = (FiniteAbilitiesController)target;
         }
 
         public override void OnInspectorGUI()

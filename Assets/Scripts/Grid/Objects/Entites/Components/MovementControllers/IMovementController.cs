@@ -10,6 +10,7 @@ namespace ShadowWithNoPast.Entities
         Queue<Vector2Int> FindClearPath(Vector2Int start, Vector2Int end);
         Queue<Vector2Int> FindPathThroughEntities(Vector2Int start, Vector2Int end);
         Queue<Vector2Int> GetPath(Vector2Int targetPos, bool isSearchStrict = true);
+        List<Vector2Int> GetAvailableMoves();
         bool IsCellFree(Vector2Int pos);
         IEnumerator MoveWithDelay(Queue<Vector2Int> path);
         bool TryInstantMoveTo(Direction direction);

@@ -1,7 +1,10 @@
+using ShadowWithNoPast.Entities.Abilities;
+using ShadowWithNoPast.Algorithms;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace ShadowWithNoPast.Entities
 {
@@ -15,40 +18,106 @@ namespace ShadowWithNoPast.Entities
         private GridEntity entity;
         private WorldManagement world;
         private IMovementController movement;
+        private IAbilitiesController abilities;
+        private ITelegraphController telegraphController;
+
+        private AbilityInstance savedAbility;
+        private TargetPos? savedTarget;
 
         public Queue<Vector2Int> MovementQueue = new Queue<Vector2Int>();
 
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
             entity = GetComponent<GridEntity>();
             world = entity.WorldGrid;
             movement = GetComponent<IMovementController>();
+            abilities = GetComponent<IAbilitiesController>();
+            telegraphController = GetComponent<ITelegraphController>();
         }
         public IEnumerator MoveAndTelegraphAction()
         {
             GridEntity player = FindPlayer();
-            if (player is null)
+            if (player is null || abilities is null)
             {
                 yield break;
             }
 
-            Queue<Vector2Int> path = movement.GetPath(player.Pos, false);
-
-            if (path != null)
+            var availableMoves = movement.GetAvailableMoves();
+            var availableAttacks = new Dictionary<AbilityInstance, List<Vector2Int>>();
+            var inavailableAttacks = new Dictionary<AbilityInstance, List<Vector2Int>>();
+            foreach (var ability in abilities)
             {
-                yield return movement.MoveWithDelay(path);
+                var attackTargets = ability.AvailableAttackPoints(player.GetGlobalPos());
+                var attackPos = attackTargets.Select(target => target.Pos).ToList();
+                //TODO CHANGE TO USING TARGET POS!!!
+                var placesToAttack = availableMoves.Intersect(attackPos).ToList();
+                if (placesToAttack.Count() > 0 && ability.ReadyToUse)
+                {
+                    availableAttacks.Add(ability, placesToAttack);
+                    continue;
+                }
+
+                inavailableAttacks.Add(ability, attackPos);
             }
+
+            AbilityInstance abilityInstance;
+            Queue<Vector2Int> path;
+
+            if (availableAttacks.Count > 0)
+            {
+                PickRandomAttackPoint(availableAttacks, true, out abilityInstance, out path);
+
+                if (path != null)
+                {
+                    savedAbility = abilityInstance;
+                    savedTarget = player.GetGlobalPos();
+
+                    yield return movement.MoveWithDelay(path);
+                    telegraphController.TelegraphAttack(player.GetGlobalPos(), abilityInstance);
+                    yield break;
+                }
+            }
+            
+            if(inavailableAttacks.Count > 0)
+            {
+                PickRandomAttackPoint(inavailableAttacks, false, out abilityInstance, out path);
+                if (path != null)
+                {
+                    yield return movement.MoveWithDelay(path);
+                }
+            }
+        }
+
+        private void PickRandomAttackPoint(Dictionary<AbilityInstance, List<Vector2Int>> availableAttacks, bool isStricts, out AbilityInstance abilityInstance, out Queue<Vector2Int> path)
+        {
+            int randomAbilityNumber = UnityEngine.Random.Range(0, availableAttacks.Count() - 1);
+            var randomAbilityPosPair = availableAttacks.ElementAt(randomAbilityNumber);
+
+            abilityInstance = randomAbilityPosPair.Key;
+            int randomPosNumber = UnityEngine.Random.Range(0, randomAbilityPosPair.Value.Count() - 1);
+
+            Vector2Int randomPos = randomAbilityPosPair.Value.ElementAt(randomPosNumber);
+
+
+            path = movement.GetPath(randomPos, true);
         }
 
         public IEnumerator ExecuteMove()
         {
+            if(savedAbility != null && savedTarget.HasValue)
+            {
+                yield return savedAbility.UseAbility(savedTarget.GetValueOrDefault());
+            }
             EndTurn();
             yield break;
         }
         private void EndTurn()
         {
             TurnPassed?.Invoke();
+            savedAbility = null;
+            savedTarget = null;
+            telegraphController.ClearAttack();
         }
 
         

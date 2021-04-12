@@ -18,7 +18,7 @@ namespace ShadowWithNoPast.Entities
             stateMachine.MadeMove = false;
 
 
-            stateMachine.Telegraph.TelegraphAvailableMove(0.5f, OnAvailableMoveClick);
+            stateMachine.Telegraph.TelegraphAvailableMove(OnAvailableMoveClick);
 
         }
 

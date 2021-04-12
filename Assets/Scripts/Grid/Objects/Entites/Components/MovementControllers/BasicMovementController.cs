@@ -124,5 +124,10 @@ namespace ShadowWithNoPast.Entities
                 }
             }
         }
+
+        public List<Vector2Int> GetAvailableMoves()
+        {
+            return BreadthFirstSearch.GetAvailableMoves(entity.Pos, entity.MoveDistance, CanMoveTo);
+        }
     }
 }

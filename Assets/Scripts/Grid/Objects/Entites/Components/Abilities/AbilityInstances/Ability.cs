@@ -27,7 +27,7 @@ namespace ShadowWithNoPast.Entities.Abilities
         public IAoePattern AoePattern;
         public Ability SecondaryEffect;
 
-        public IEnumerator Execute(GridObject caller, TargetPos target, int effectValue)
+        public IEnumerator Execute(GridEntity caller, TargetPos target, int effectValue)
         {
             if(target.World == null)
             {
@@ -38,13 +38,11 @@ namespace ShadowWithNoPast.Entities.Abilities
                 Debug.LogError("System tried to apply ability, on the target, that is out of reach!");
                 yield break;
             }
-            if (AoePattern is null)
+            var targets = TargetToExecutePositions(caller, target);
+            foreach(var targetPos in targets)
             {
-                Action.Execute(target, effectValue);
-                yield break;
+                Action.Execute(targetPos, effectValue);
             }
-
-            yield return ExecuteWithAoe(caller, target, effectValue);
         }
 
         public List<TargetPos> AvailableTargets(TargetPos executionPos)
@@ -65,20 +63,26 @@ namespace ShadowWithNoPast.Entities.Abilities
             }
         }
 
-        private IEnumerator ExecuteWithAoe(GridObject caller, TargetPos target, int effectValue)
+        public List<TargetPos> TargetToExecutePositions(GridEntity caller, TargetPos target)
         {
+            if(target.World is null)
+            {
+                target.World = caller.WorldGrid;
+            }
+            List<TargetPos> executePositions;
+            if(AoePattern is null)
+            {
+                executePositions = new List<TargetPos>() { target };
+                return executePositions;
+            }
             var directionVector = caller.Pos - target.Pos;
             var direction = CoordinateUtils.GetDirectionFromVector(directionVector);
 
             var AoeDirectionVectors = AoePattern.SingleToAoe(direction ?? Direction.Up);
-
-            foreach (Vector2Int aoeDirectionVector in AoeDirectionVectors)
-            {
-                TargetPos aoeTarget = new TargetPos(target.World, target.Pos + aoeDirectionVector);
-                Action.Execute(aoeTarget, effectValue);
-            }
-
-            yield break;
+            executePositions = AoeDirectionVectors.Select(
+                direction => new TargetPos(target.World, caller.Pos + direction)
+                ).ToList();
+            return executePositions;
         }
 
         private List<TargetPos> GetDirectionalTargets(TargetPos executionPos)

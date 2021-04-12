@@ -1,5 +1,6 @@
 ﻿using ShadowWithNoPast.Entities.Abilities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShadowWithNoPast.Entities.Abilities
 {
-    public interface IAbilitiesController
+    public interface IAbilitiesController : IEnumerable<AbilityInstance>
     {
         public event Action<AbilityInstance> AbilityUsed;
         event Action<AbilityInstance> AbilityUsedWithNoTarget;
