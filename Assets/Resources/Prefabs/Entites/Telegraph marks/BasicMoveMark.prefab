@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4841829072599543873}
   - component: {fileID: 7852372044953356676}
   m_Layer: 8
-  m_Name: BasicrMoveMark
+  m_Name: BasicMoveMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -105,8 +105,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1a1d1462996b5f7488a1de75cdac51d4, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 7cd822004e3ef6244a0f0b59514d291c, type: 3}
+  m_Color: {r: 0, g: 1, b: 0.011090994, a: 0.5019608}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

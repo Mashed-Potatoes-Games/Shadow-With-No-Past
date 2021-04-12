@@ -16,9 +16,23 @@ public class Healthpoint : MonoBehaviour
     [SerializeField]
     private Image fill;
 
-    private float animationUpdateRateInSeconds = 0.02f;
-    private float damageAnimationLengthInSeconds = 0.5f;
-    private float healAnimationLengthInSeconds = 0.25f;
+    private readonly float damageAnimationLenthInSeconds = 0.5f;
+    private readonly float healAnimationLengthInSeconds = 0.25f;
+
+    private readonly List<LinearAnimation> runningAnimations = new List<LinearAnimation>();
+
+
+    private void Update()
+    {
+        for(int i = runningAnimations.Count - 1; i >= 0; i--)
+        {
+            if(runningAnimations[i].ContinueAnimation())
+            {
+                runningAnimations.RemoveAt(i);
+            }
+        }
+    }
+
     public void Redraw(float elementSize, Color color)
     {
         if(background is null)
@@ -82,36 +96,53 @@ public class Healthpoint : MonoBehaviour
         if (Application.isPlaying)
         {
             Active = true;
-            Image image = Instantiate(fill, transform);
-            image.enabled = true;
-            StartCoroutine(AnimateHeal(image));
+            GameObject obj = new GameObject("HealParticle");
+            obj.transform.SetParent(transform, false);
+            obj.transform.position = obj.transform.position;
+
+            SpriteRenderer renderer = obj.AddComponent<SpriteRenderer>();
+            renderer.sortingOrder++;
+            renderer.sprite = fill.sprite;
+            renderer.material = fill.materialForRendering;
+            renderer.color = fill.color;
+
+
+            Color32 newColor = renderer.color;
+            newColor.a = 0;
+            StartHealAnimation(obj);
             return;
         }
 
         SetActiveInstant();
     }
 
-    private IEnumerator AnimateHeal(Image image)
+    private void StartHealAnimation(GameObject obj)
     {
-        Vector3 initialPos = image.transform.position;
+        Vector3 initialPos = obj.transform.position;
         Vector3 distance = new Vector3(0, 0.25f);
-        image.transform.position += distance;
+        obj.transform.position += distance;
 
-        float step = healAnimationLengthInSeconds * animationUpdateRateInSeconds;
-        for (float secLeft = healAnimationLengthInSeconds; secLeft > 0; secLeft -= animationUpdateRateInSeconds)
-        {
-            float completion = 1 - (secLeft / healAnimationLengthInSeconds);
-            image.transform.position = initialPos + (distance * (1 - completion));
-            var newColor = image.color;
-            newColor.a = completion;
-            image.color = newColor;
-            yield return new WaitForSeconds(animationUpdateRateInSeconds);
-        }
-        Destroy(image.gameObject);
-        if(Active)
-        {
-            fill.enabled = true;
-        }
+        Renderer renderer = obj.GetComponent<Renderer>();
+
+        var color = renderer.material.color;
+        color.a = 1;
+
+        runningAnimations.Add(new LinearAnimation(
+            obj,
+            initialPos,
+            null,
+            renderer,
+            color,
+            healAnimationLengthInSeconds,
+            () =>
+            {
+                Destroy(obj);
+                if (Active)
+                {
+                    fill.enabled = true;
+                    SetActiveInstant();
+                }
+            }));
     }
 
     private void SetInactiveInstant()
@@ -127,17 +158,17 @@ public class Healthpoint : MonoBehaviour
             return;
         }
         SetInactiveInstant();
-        AnimateDamage();
+        StartDamageAnimation();
     }
 
-    private void AnimateDamage()
+    private void StartDamageAnimation()
     {
         if(Application.isPlaying)
         {
             foreach (var maskSprite in HPObj.MasksToCreateParticles)
             {
                 SpriteRenderer sprite = CreateCutSprite(maskSprite);
-                StartCoroutine(AnimateElementFall(sprite));
+                AnimateElementFall(sprite.gameObject);
             }
         }
 
@@ -158,27 +189,113 @@ public class Healthpoint : MonoBehaviour
         return sprite;
     }
 
-    private IEnumerator AnimateElementFall(SpriteRenderer sprite)
+    private void AnimateElementFall(GameObject obj)
     {
         Vector3 distance = new Vector3(UnityEngine.Random.Range(-1f, 1f), -0.5f);
+        Vector3 endPos = obj.transform.position + distance;
+        Vector3 rotation = Vector3.forward * UnityEngine.Random.Range(-360f, 360f);
+        Vector3 endRotation = obj.transform.rotation.eulerAngles + rotation;
+        Renderer renderer= obj.GetComponent<Renderer>();
+        Color32 color = renderer.material.color;
+        color.a = 0;
 
-        float step = damageAnimationLengthInSeconds * animationUpdateRateInSeconds;
-        for (float secLeft = damageAnimationLengthInSeconds; secLeft >= 0; secLeft -= animationUpdateRateInSeconds)
-        {
-            float completion = secLeft / damageAnimationLengthInSeconds;
+        runningAnimations.Add(new LinearAnimation(
+            obj,
+            endPos,
+            endRotation,
+            renderer,
+            color,
+            damageAnimationLenthInSeconds,
+            () => 
+            {
+                Destroy(obj);
+            }));
 
-            sprite.transform.position += distance * step;
-            sprite.transform.Rotate(Vector3.forward * step * 180f);
-            var newColor = sprite.color;
-            newColor.a = completion;
-            sprite.color = newColor;
-            yield return new WaitForSeconds(animationUpdateRateInSeconds);
-        }
-        Destroy(sprite.gameObject);
     }
     public void UpdateInEdtior()
     {
         EditorUtil.UpdateInEditor(fill);
         EditorUtil.UpdateInEditor(background);
+    }
+
+    private class LinearAnimation {
+
+        public GameObject AnimatedObject;
+
+        private readonly float animationLengthInSeconds;
+        private float animationTimeProgress = 0;
+        private Vector3 startingPos;
+        private Vector3? endPos;
+        private Vector3 startingRotation;
+        private Vector3? endRotation;
+        private readonly Renderer renderer;
+        private Color32 startColor;
+        private Color32? endColor;
+        private readonly Action endAction;
+
+        public LinearAnimation(GameObject animatedObject,
+                               Vector3? endPos,
+                               Vector3? endRotation,
+                               Renderer renderer,
+                               Color32? endColor,
+                               float lengthInSec,
+                               Action endAction = null) {
+            if(animatedObject is null)
+            {
+                throw new Exception("Animated object can't be null!");
+            }
+            this.AnimatedObject = animatedObject;
+            this.startingPos = animatedObject.transform.position;
+            this.startingRotation = animatedObject.transform.eulerAngles;
+            this.endPos = endPos;
+            this.endRotation = endRotation;
+            this.renderer = renderer;
+
+            this.startColor = renderer.material.color;
+            this.endColor = endColor;
+            if(lengthInSec <= 0)
+            {
+                throw new Exception("Animation length can't be less or equal to zero!");
+            }
+
+            this.animationLengthInSeconds = lengthInSec;
+            this.endAction = endAction;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Returns true if animation is over</returns>
+        public bool ContinueAnimation()
+        {
+            animationTimeProgress += Time.deltaTime;
+            float percentileProgress = animationTimeProgress / animationLengthInSeconds;
+
+            if(endPos != null)
+            {
+                AnimatedObject.transform.position = 
+                    Vector3.Lerp(startingPos, endPos.Value, percentileProgress);
+            }
+
+            if(endRotation != null)
+            {
+                var newRotation = Vector3.Lerp(startingRotation, endRotation.Value, percentileProgress);
+                AnimatedObject.transform.rotation = Quaternion.Euler(newRotation);
+            }
+
+            if(endColor != null)
+            {
+                renderer.material.color = Color32.Lerp(startColor, endColor.Value, percentileProgress);
+            }
+
+            if(animationTimeProgress >= animationLengthInSeconds)
+            {
+                endAction?.Invoke();
+                return true;
+            }
+
+            return false;
+        }
     }
 }

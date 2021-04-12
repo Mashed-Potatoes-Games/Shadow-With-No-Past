@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: MeleeAttack
   m_EditorClassIdentifier: 
   AbilitySound: {fileID: 0}
-  Icon: {fileID: 21300000, guid: 300a38c8a36c59447be3401d9acbbd81, type: 3}
+  Icon: {fileID: 21300000, guid: 422bbb20fe9e12f49be2e90e7d02692d, type: 3}
   Action: {fileID: 11400000, guid: f16791c085d9baf40a8f7af76d972d32, type: 2}
   Type: 1
   DistanceConstraint: 1
-  CooldownInTurns: 0
+  DefaultCooldown: 0
   WorldTarget: 0
   SecondaryEffect: {fileID: 0}

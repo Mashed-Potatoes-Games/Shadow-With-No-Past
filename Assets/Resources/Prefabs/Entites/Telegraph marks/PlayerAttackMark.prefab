@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &7895144660357360440
+--- !u!1001 &400342577686023629
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -9,11 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1167014526319657652, guid: 35b8805632124204e8ad9fa3431d4f74, type: 3}
       propertyPath: m_Name
-      value: EnemyMoveMark
-      objectReference: {fileID: 0}
-    - target: {fileID: 4841829072599543873, guid: 35b8805632124204e8ad9fa3431d4f74, type: 3}
-      propertyPath: m_Enabled
-      value: 0
+      value: PlayerAttackMark
       objectReference: {fileID: 0}
     - target: {fileID: 5122777783985813692, guid: 35b8805632124204e8ad9fa3431d4f74, type: 3}
       propertyPath: m_RootOrder
@@ -60,23 +56,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5201073931055528245, guid: 35b8805632124204e8ad9fa3431d4f74, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 7cd822004e3ef6244a0f0b59514d291c, type: 3}
-    - target: {fileID: 5201073931055528245, guid: 35b8805632124204e8ad9fa3431d4f74, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 0.018795967
       objectReference: {fileID: 0}
     - target: {fileID: 5201073931055528245, guid: 35b8805632124204e8ad9fa3431d4f74, type: 3}
       propertyPath: m_Color.g
-      value: 0.7988266
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5201073931055528245, guid: 35b8805632124204e8ad9fa3431d4f74, type: 3}
       propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5201073931055528245, guid: 35b8805632124204e8ad9fa3431d4f74, type: 3}
-      propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
