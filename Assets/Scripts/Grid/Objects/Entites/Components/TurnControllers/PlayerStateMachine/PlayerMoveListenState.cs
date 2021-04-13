@@ -17,8 +17,20 @@ namespace ShadowWithNoPast.Entities
 
             stateMachine.MadeMove = false;
 
+            var actions = new PointerActions()
+            {
+                OnClick = OnAvailableMoveClick,
+                OnPointerEnter = (caller, target) =>
+                {
+                    caller.Highlight();
+                },
+                OnPointerLeave = (caller, target) =>
+                {
+                    caller.RemoveHighligh();
+                }
+            };
 
-            stateMachine.Telegraph.TelegraphAvailableMove(OnAvailableMoveClick);
+            stateMachine.Telegraph.TelegraphAvailableMove(actions);
 
         }
 
@@ -29,7 +41,7 @@ namespace ShadowWithNoPast.Entities
             stateMachine.Telegraph.ClearAvalableMoves();
         }
 
-        private void OnAvailableMoveClick(TargetPos target)
+        private void OnAvailableMoveClick(TelegraphElement caller, TargetPos target)
         {
             var path = stateMachine.Movement.GetPath(target.Pos);
             stateMachine.StartCoroutine(MoveAndEndTurn(path));

@@ -17,7 +17,20 @@ namespace ShadowWithNoPast.Entities
         {
             base.EnterState();
 
-            stateMachine.Telegraph.TelegraphAvailableAttacks(abilityInstance.AvailableTargets(), 1, AbilityExecuted);
+            PointerActions actions = new PointerActions()
+            {
+                OnClick = (caller, target) => AbilityExecuted(target),
+
+                OnPointerEnter = (caller, target) =>
+                {
+                    stateMachine.Telegraph.TelegraphAbility(target, abilityInstance, true);
+                },
+
+                OnPointerLeave = (caller, target) =>
+                stateMachine.Telegraph.ClearAbility()
+            };
+
+            stateMachine.Telegraph.TelegraphAvailableAttacks(abilityInstance.AvailableTargets(), 1, actions);
         }
 
         private void AbilityExecuted(TargetPos pos)

@@ -9,12 +9,14 @@ namespace ShadowWithNoPast.Entities
     {
         public void OnPointerEnter(PointerEventData eventData)
         {
-            TelegraphAvailableMove(null);
+            TelegraphAvailableMove();
+            HighlighAbility();
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             ClearAvalableMoves();
+            RemoveHighlighAbility();
         }
     }
 }

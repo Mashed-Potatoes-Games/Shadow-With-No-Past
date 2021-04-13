@@ -74,7 +74,7 @@ namespace ShadowWithNoPast.Entities
                     savedTarget = player.GetGlobalPos();
 
                     yield return movement.MoveWithDelay(path);
-                    telegraphController.TelegraphAttack(player.GetGlobalPos(), abilityInstance);
+                    telegraphController.TelegraphAbility(player.GetGlobalPos(), abilityInstance, false);
                     yield break;
                 }
             }
@@ -117,7 +117,7 @@ namespace ShadowWithNoPast.Entities
             TurnPassed?.Invoke();
             savedAbility = null;
             savedTarget = null;
-            telegraphController.ClearAttack();
+            telegraphController.ClearAbility();
         }
 
         

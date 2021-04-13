@@ -21,8 +21,9 @@ namespace ShadowWithNoPast.Entities
 
 
         public GameControls Controls;
-        public IAbilitiesController Abilities;
         public GridEntity Entity;
+
+        public IAbilitiesController Abilities;
         public IMovementController Movement;
         public ITelegraphController Telegraph;
 
@@ -33,8 +34,8 @@ namespace ShadowWithNoPast.Entities
         private void Awake()
         {
             Controls = new GameControls();
-            Abilities = GetComponent<IAbilitiesController>();
             Entity = GetComponent<GridEntity>();
+            Abilities = GetComponent<IAbilitiesController>();
             Movement = GetComponent<IMovementController>();
             Telegraph = GetComponent<ITelegraphController>();
 

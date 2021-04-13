@@ -10,6 +10,7 @@ namespace ShadowWithNoPast.Entities.Abilities
     {
 
         public TelegraphElement TelegraphElement;
+        public virtual bool IsValueDependent => true;
 
         // All of the thing needed to be done, when skill is executed,
         // exact actions should be overriden in the innerhited abilities.

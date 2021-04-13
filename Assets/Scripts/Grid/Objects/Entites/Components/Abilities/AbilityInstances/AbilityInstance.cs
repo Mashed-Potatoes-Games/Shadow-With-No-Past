@@ -81,7 +81,7 @@ namespace ShadowWithNoPast.Entities.Abilities
             do
             {
                 var elementWithValue = new TelegraphElementWithValue(
-                    currentAbility.Action.TelegraphElement, 
+                    currentAbility.Action,
                     EffectValues[i]
                     );
 
@@ -100,11 +100,20 @@ namespace ShadowWithNoPast.Entities.Abilities
         public struct TelegraphElementWithValue
         {
             public TelegraphElement Element;
+            public bool IsValueDependent;
             public int Value;
 
-            public TelegraphElementWithValue(TelegraphElement element, int value)
+            public TelegraphElementWithValue(TelegraphElement element, bool isValueDependent = false, int value = 0)
             {
                 Element = element;
+                IsValueDependent = isValueDependent;
+                Value = value;
+            }
+
+            public TelegraphElementWithValue(AbilityAction action, int value = 0)
+            {
+                Element = action.TelegraphElement;
+                IsValueDependent = action.IsValueDependent;
                 Value = value;
             }
         }

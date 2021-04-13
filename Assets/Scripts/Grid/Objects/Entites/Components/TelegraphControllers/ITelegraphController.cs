@@ -9,11 +9,11 @@ namespace ShadowWithNoPast.Entities
 {
     public interface ITelegraphController
     {
-        public void TelegraphAvailableMove(Action<TargetPos> OnClickAction);
+        public void TelegraphAvailableMove(PointerActions actions = null);
         public void ClearAvalableMoves();
-        public void TelegraphAttack(TargetPos target, AbilityInstance abilityInstance);
-        public void ClearAttack();
-        public void TelegraphAvailableAttacks(List<TargetPos> targets, float opacity, Action<TargetPos> OnClickAction);
+        public void TelegraphAbility(TargetPos target, AbilityInstance abilityInstance, bool showAttackValue, PointerActions actions = null);
+        public void ClearAbility();
+        public void TelegraphAvailableAttacks(List<TargetPos> targets, float opacity, PointerActions actions = null);
         public void ClearAvailableAttacks();
     }
 }
