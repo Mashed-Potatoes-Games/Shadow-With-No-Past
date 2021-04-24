@@ -131,6 +131,8 @@ namespace ShadowWithNoPast.Entities
             gridObj.Pos = pos;
 
             gridObj.transform.SetParent(parent.transform);
+            obj.Renderer.sortingLayerID = renderer.sortingLayerID;
+
             if(collection != null)
             {
                 collection.Add(obj);

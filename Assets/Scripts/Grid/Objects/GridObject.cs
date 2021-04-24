@@ -10,6 +10,8 @@ namespace ShadowWithNoPast.Entities
     [ExecuteAlways]
     public class GridObject : MonoBehaviour
     {
+        public event Action<GridObject> Moved;
+
         public WorldManagement WorldGrid;
 
         //Get: returns global position to the entity.
@@ -25,6 +27,7 @@ namespace ShadowWithNoPast.Entities
             {
                 pos = value;
                 SnapToGrid();
+                Moved?.Invoke(this);
             }
         }
         [SerializeField]
