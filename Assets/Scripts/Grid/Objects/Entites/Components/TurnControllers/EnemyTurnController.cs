@@ -46,6 +46,7 @@ namespace ShadowWithNoPast.Entities
             var availableMoves = movement.GetAvailableMoves();
             var availableAttacks = new Dictionary<AbilityInstance, List<Vector2Int>>();
             var inavailableAttacks = new Dictionary<AbilityInstance, List<Vector2Int>>();
+
             foreach (var ability in abilities)
             {
                 var attackTargets = ability.AvailableAttackPoints(player.GetGlobalPos());
@@ -57,9 +58,11 @@ namespace ShadowWithNoPast.Entities
                     availableAttacks.Add(ability, placesToAttack);
                     continue;
                 }
-
                 inavailableAttacks.Add(ability, attackPos);
             }
+
+            Debug.Log(availableAttacks);
+            Debug.Log(inavailableAttacks);
 
             AbilityInstance abilityInstance;
             Queue<Vector2Int> path;
@@ -78,8 +81,8 @@ namespace ShadowWithNoPast.Entities
                     yield break;
                 }
             }
-            
-            if(inavailableAttacks.Count > 0)
+
+            if (inavailableAttacks.Count > 0)
             {
                 PickRandomAttackPoint(inavailableAttacks, false, out abilityInstance, out path);
                 if (path != null)
@@ -105,7 +108,7 @@ namespace ShadowWithNoPast.Entities
 
         public IEnumerator ExecuteMove()
         {
-            if(savedAbility != null && savedTarget.HasValue)
+            if (savedAbility != null && savedTarget.HasValue)
             {
                 yield return savedAbility.UseAbility(savedTarget.GetValueOrDefault());
             }
@@ -120,7 +123,7 @@ namespace ShadowWithNoPast.Entities
             telegraphController.ClearAbility();
         }
 
-        
+
 
         public GridEntity FindPlayer()
         {

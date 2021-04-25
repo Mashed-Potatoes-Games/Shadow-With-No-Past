@@ -21,9 +21,11 @@ namespace ShadowWithNoPast.Entities
         [field: SerializeField, HideInInspector] public int MaxHealth { get; private set; }
         public int Health { get => health; private set {
                 health = value;
-                if(health < 0)
+                if(health <= 0)
                 {
+
                     health = 0;
+                    return;
                 }
                 if(health > MaxHealth)
                 {
@@ -40,17 +42,27 @@ namespace ShadowWithNoPast.Entities
         protected IMovementController movementController;
         protected ITurnController turnController;
         protected ITelegraphController telegraphController;
+        protected ISpriteController spriteController;
+
         [SerializeField]
         protected Healthbar healthbar;
+
 
         #region Ability to face, flipping SpriteRenderer
 
         protected Direction facing;
 
+        protected override void Awake()
+        {
+            base.Awake();
+            spriteController = GetComponent<ISpriteController>();
+        }
+
 
         protected override void Start()
         {
             base.Start();
+
             if(healthbar != null)
             {
                 healthbar.SetMaxHealth(MaxHealth);
@@ -86,9 +98,26 @@ namespace ShadowWithNoPast.Entities
             {
                 Debug.LogError("Damage can't be negative!");
             }
+
             Health -= damage;
 
+            StartCoroutine(AnimateDamage());
+
             UpdateHealthbar();
+        }
+
+        public IEnumerator AnimateDamage()
+        {
+            spriteController.SetSprite(SpriteType.Damage);
+            yield return new WaitForSeconds(0.5f);
+
+            if(health == 0)
+            { 
+                Destroy(gameObject);
+                yield break;
+            }
+
+            spriteController.SetSprite(SpriteType.Idle);
         }
 
         public void Heal(int healing)
