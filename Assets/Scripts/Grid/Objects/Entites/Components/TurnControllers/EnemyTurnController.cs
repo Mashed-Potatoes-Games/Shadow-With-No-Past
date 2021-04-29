@@ -22,15 +22,15 @@ namespace ShadowWithNoPast.Entities
         private ITelegraphController telegraphController;
 
         private AbilityInstance savedAbility;
-        private TargetPos? savedTarget;
+        private WorldPos? savedTarget;
 
-        public Queue<Vector2Int> MovementQueue = new Queue<Vector2Int>();
+        public Queue<WorldPos> MovementQueue = new Queue<WorldPos>();
 
         // Start is called before the first frame update
         void Awake()
         {
             entity = GetComponent<GridEntity>();
-            world = entity.WorldGrid;
+            world = entity.World;
             movement = GetComponent<IMovementController>();
             abilities = GetComponent<IAbilitiesController>();
             telegraphController = GetComponent<ITelegraphController>();
@@ -44,13 +44,12 @@ namespace ShadowWithNoPast.Entities
             }
 
             var availableMoves = movement.GetAvailableMoves();
-            var availableAttacks = new Dictionary<AbilityInstance, List<Vector2Int>>();
-            var inavailableAttacks = new Dictionary<AbilityInstance, List<Vector2Int>>();
+            var availableAttacks = new Dictionary<AbilityInstance, List<WorldPos>>();
+            var inavailableAttacks = new Dictionary<AbilityInstance, List<WorldPos>>();
             foreach (var ability in abilities)
             {
                 var attackTargets = ability.AvailableAttackPoints(player.GetGlobalPos());
-                var attackPos = attackTargets.Select(target => target.Pos).ToList();
-                //TODO CHANGE TO USING TARGET POS!!!
+                var attackPos = attackTargets.positions;
                 var placesToAttack = availableMoves.Intersect(attackPos).ToList();
                 if (placesToAttack.Count() > 0 && ability.ReadyToUse)
                 {
@@ -62,7 +61,7 @@ namespace ShadowWithNoPast.Entities
             }
 
             AbilityInstance abilityInstance;
-            Queue<Vector2Int> path;
+            Queue<WorldPos> path;
 
             if (availableAttacks.Count > 0)
             {
@@ -89,7 +88,7 @@ namespace ShadowWithNoPast.Entities
             }
         }
 
-        private void PickRandomAttackPoint(Dictionary<AbilityInstance, List<Vector2Int>> availableAttacks, bool isStricts, out AbilityInstance abilityInstance, out Queue<Vector2Int> path)
+        private void PickRandomAttackPoint(Dictionary<AbilityInstance, List<WorldPos>> availableAttacks, bool isStricts, out AbilityInstance abilityInstance, out Queue<WorldPos> path)
         {
             int randomAbilityNumber = UnityEngine.Random.Range(0, availableAttacks.Count() - 1);
             var randomAbilityPosPair = availableAttacks.ElementAt(randomAbilityNumber);
@@ -97,7 +96,7 @@ namespace ShadowWithNoPast.Entities
             abilityInstance = randomAbilityPosPair.Key;
             int randomPosNumber = UnityEngine.Random.Range(0, randomAbilityPosPair.Value.Count() - 1);
 
-            Vector2Int randomPos = randomAbilityPosPair.Value.ElementAt(randomPosNumber);
+            WorldPos randomPos = randomAbilityPosPair.Value.ElementAt(randomPosNumber);
 
 
             path = movement.GetPath(randomPos, true);

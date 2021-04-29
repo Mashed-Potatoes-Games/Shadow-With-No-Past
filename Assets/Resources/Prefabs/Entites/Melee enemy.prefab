@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e796dc3f883ba24381667174b8fcc5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WorldGrid: {fileID: 0}
+  World: {fileID: 0}
   pos: {x: 0, y: 0}
   <XOffset>k__BackingField: 0.5
   <YOffset>k__BackingField: 1.1
@@ -147,8 +147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4351debf477f9bf4e9b36a5c53e4bb17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AvailableMoveIndicator: {fileID: 3273307110404952140, guid: 8e0d3f7de1ebcd24f8860e14ecb62c65, type: 3}
-  AttackIndicator: {fileID: 0}
+  MoveIndicator: {fileID: 3273307110404952140, guid: 8e0d3f7de1ebcd24f8860e14ecb62c65, type: 3}
+  AttackIndicator: {fileID: 5004170096104322745, guid: 5575e61c9e74c8f448c0b913457d56a6, type: 3}
 --- !u!114 &8971233747194117457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,8 +163,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Abilities:
   - Caller: {fileID: 6526480820260920969}
-    Ability: {fileID: 11400000, guid: ccbb54b1b5f42d842898ecbb765d4c14, type: 2}
+    Ability: {fileID: 11400000, guid: 1d7c7b5081ed4fc46991accef076af5e, type: 2}
     EffectValues: 01000000
+    DistanceConstraint: 0
     CooldownOnUse: 0
     RemainingCooldown: 0
     <ReadyToUse>k__BackingField: 1

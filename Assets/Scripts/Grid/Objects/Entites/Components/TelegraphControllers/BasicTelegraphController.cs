@@ -13,7 +13,7 @@ namespace ShadowWithNoPast.Entities
     public class BasicTelegraphController : MonoBehaviour, ITelegraphController
     {
         
-        public TelegraphElement AvailableMoveIndicator;
+        public TelegraphElement MoveIndicator;
         public TelegraphElement AttackIndicator;
 
 
@@ -33,9 +33,9 @@ namespace ShadowWithNoPast.Entities
             movement = GetComponent<IMovementController>();
         }
 
-        public void TelegraphAvailableAttacks(List<TargetPos> targets, float opacity, PointerActions actions = null)
+        public void TelegraphAvailableAttacks(AbilityTargets targets, float opacity, PointerActions actions = null)
         {
-            if (AvailableMoveIndicator is null)
+            if (AttackIndicator is null)
             {
                 Debug.LogWarning("Attack indicator was not assigned, but the method creating it was called anyway.");
                 return;
@@ -44,16 +44,31 @@ namespace ShadowWithNoPast.Entities
 
             ClearAvailableAttacks();
 
+            if(targets.type == AbilityTargetType.OnSelf)
+            {
+                Debug.LogWarning("Ability is used without the target, and you are trying to telegraph available attacks.");
+            }
+
             availableAttackTelegraphs = new GameObject("AvailableAttacksCollection");
             availableAttackTelegraphs.transform.SetParent(transform.parent);
 
-            foreach (var target in targets)
+            if(targets.type == AbilityTargetType.Pickable)
             {
-                CreateAttackTelegraphElement(target.Pos, actions);
+                foreach (var target in targets.positions)
+                {
+                    CreateAttackTelegraphElement(target, actions);
+                }
+            }
+            if(targets.type == AbilityTargetType.Directional)
+            {
+                foreach(var target in targets.positions)
+                {
+                    CreateAttackTelegraphElement(target, actions);
+                }
             }
         }
 
-        private void CreateAttackTelegraphElement(Vector2Int pos, PointerActions actions)
+        private void CreateAttackTelegraphElement(WorldPos pos, PointerActions actions)
         {
             TelegraphElement obj = InstantiateTelegraphElement(pos, AttackIndicator, availableAttackTelegraphs, actions);
             TweakRenderer(obj);
@@ -77,7 +92,7 @@ namespace ShadowWithNoPast.Entities
 
         public void TelegraphAvailableMove(PointerActions actions = null)
         {
-            if (AvailableMoveIndicator is null)
+            if (MoveIndicator is null)
             {
                 Debug.LogWarning("Move indicator was not assigned, but the method creating it was called anyway.");
                 return;
@@ -96,15 +111,15 @@ namespace ShadowWithNoPast.Entities
             }
         }
 
-        private void CreateMoveTelegraphElement(Vector2Int pos, PointerActions actions = null)
+        private void CreateMoveTelegraphElement(WorldPos pos, PointerActions actions = null)
         {
-            TelegraphElement obj = InstantiateTelegraphElement(pos, AvailableMoveIndicator, availableMovesTelegraphs, actions);
+            TelegraphElement obj = InstantiateTelegraphElement(pos, MoveIndicator, availableMovesTelegraphs, actions);
 
             TweakRenderer(obj);
         }
 
         private TelegraphElement InstantiateTelegraphElement(
-            Vector2Int pos,
+            WorldPos pos,
             TelegraphElement element,
             GameObject parent,
             PointerActions actions = null,
@@ -128,7 +143,8 @@ namespace ShadowWithNoPast.Entities
             }
             var gridObj = obj.GetComponent<GridObject>();
             gridObj.YOffset = 0.5f;
-            gridObj.Pos = pos;
+            gridObj.Pos = pos.Vector;
+            gridObj.World = pos.World;
 
             gridObj.transform.SetParent(parent.transform);
             if(collection != null)
@@ -148,7 +164,7 @@ namespace ShadowWithNoPast.Entities
             }
         }
 
-        public void TelegraphAbility(TargetPos target, AbilityInstance abilityInstance, bool showAttackValue = false, PointerActions actions = null)
+        public void TelegraphAbility(WorldPos target, AbilityInstance abilityInstance, bool showAttackValue = false, PointerActions actions = null)
         {
             ClearAbility();
             var telegraphDict = abilityInstance.GetTelegraphData(target);
@@ -163,7 +179,7 @@ namespace ShadowWithNoPast.Entities
                 foreach (var targetPos in pair.Value)
                 {
                     TelegraphElement elementInstance = InstantiateTelegraphElement(
-                        targetPos.Pos,
+                        targetPos,
                         elementPrefab,
                         abilityTelegraphs,
                         null,

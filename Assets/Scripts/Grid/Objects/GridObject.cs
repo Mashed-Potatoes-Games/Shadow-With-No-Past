@@ -10,7 +10,7 @@ namespace ShadowWithNoPast.Entities
     [ExecuteAlways]
     public class GridObject : MonoBehaviour
     {
-        public WorldManagement WorldGrid;
+        public WorldManagement World;
 
         //Get: returns global position to the entity.
         //Set: changes the value AND moves the GameObject (Adding the offset values).
@@ -52,17 +52,17 @@ namespace ShadowWithNoPast.Entities
 
         }
 
-        internal TargetPos GetGlobalPos()
-        {
-            return new TargetPos(WorldGrid, Pos);
-        }
-
         // Update is called once per frame
         protected virtual void Update()
         {
 
         }
         #endregion
+
+        internal WorldPos GetGlobalPos()
+        {
+            return new WorldPos(World, Pos);
+        }
 
         public void SnapToGrid()
         {

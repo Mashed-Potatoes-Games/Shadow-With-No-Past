@@ -1,4 +1,5 @@
 using ShadowWithNoPast.Algorithms;
+using ShadowWithNoPast.Entities.Abilities;
 using ShadowWithNoPast.Utils;
 using System;
 using System.Collections;
@@ -18,17 +19,17 @@ namespace ShadowWithNoPast.Entities
         void Start()
         {
             entity = GetComponent<GridEntity>();
-            world = entity.WorldGrid;
+            world = entity.World;
         }
 
-        public Queue<Vector2Int> GetPath(Vector2Int targetPos, bool isSearchStrict = true)
+        public Queue<WorldPos> GetPath(WorldPos targetPos, bool isSearchStrict = true)
         {
             if (!CanCellBePassable(targetPos))
             {
                 return null;
             }
 
-            Queue<Vector2Int> pathQueue = FindClearPath(entity.Pos, targetPos);
+            Queue<WorldPos> pathQueue = FindClearPath(entity.GetGlobalPos(), targetPos);
 
             if (pathQueue is null)
             {
@@ -37,10 +38,10 @@ namespace ShadowWithNoPast.Entities
                     return null;
                 }
 
-                pathQueue = FindPathThroughEntities(entity.Pos, targetPos);
+                pathQueue = FindPathThroughEntities(entity.GetGlobalPos(), targetPos);
             }
 
-            if (pathQueue != null && pathQueue.Peek() == entity.Pos)
+            if (pathQueue != null && pathQueue.Peek().Equals(entity.GetGlobalPos()))
             {
                 pathQueue.Dequeue();
             }
@@ -48,8 +49,27 @@ namespace ShadowWithNoPast.Entities
             return pathQueue;
         }
 
+        private bool CanMoveTo(WorldPos targetPos)
+        {
+            if (entity.World != targetPos.World)
+            {
+                Debug.LogError("This movement controller doesn't allow moving between worlds!");
+                return false;
+            }
+            return targetPos.GetStatus() == CellStatus.Free;
+        }
+
+        //According to direction tries to move to calculated coordinate.
+        public virtual bool TryInstantMoveTo(Direction direction)
+        {
+            Vector2Int MovementVector = CoordinateUtils.GetVectorFromDirection(direction);
+
+            WorldPos TargetPosition = new WorldPos(entity.World, entity.Pos + MovementVector);
+            return TryInstantMoveTo(TargetPosition);
+        }
+
         //check for an available space before moving
-        public bool TryInstantMoveTo(Vector2Int targetPos)
+        public bool TryInstantMoveTo(WorldPos targetPos)
         {
             if (CanMoveTo(targetPos))
             {
@@ -62,31 +82,27 @@ namespace ShadowWithNoPast.Entities
             }
         }
 
-        private bool CanMoveTo(Vector2Int targetPos)
+
+        private void InstantMoveTo(WorldPos targetPos)
         {
-            return world.GetCellStatus(targetPos) == CellStatus.Free;
-        }
-
-        //According to direction tries to move to calculated coordinate.
-        public virtual bool TryInstantMoveTo(Direction direction)
-        {
-            Vector2Int MovementVector = CoordinateUtils.GetVectorFromDirection(direction);
-
-            Vector2Int TargetPosition = entity.Pos + MovementVector;
-            return TryInstantMoveTo(TargetPosition);
-        }
-
-
-        private void InstantMoveTo(Vector2Int targetPos)
-        {
-            entity.FaceTo(targetPos);
+            entity.FaceTo(targetPos.Vector);
             world.MoveInstantTo(entity, targetPos);
             world.EventManager.EntityMoved.Invoke(entity);
         }
 
-        public Queue<Vector2Int> FindClearPath(Vector2Int start, Vector2Int end)
+        public Queue<WorldPos> FindClearPath(WorldPos start, WorldPos end)
         {
-            return BreadthFirstSearch.FindPath(start, end, IsCellFree);
+            if(start.World != end.World)
+            {
+                throw new NotImplementedException();
+            }
+            var posQueue = BreadthFirstSearch.FindPath(start, end, IsCellFree);
+            return posQueue;
+        }
+
+        public bool IsCellFree(WorldPos pos)
+        {
+            return pos.GetStatus() == CellStatus.Free;
         }
 
         public bool IsCellFree(Vector2Int pos)
@@ -94,25 +110,25 @@ namespace ShadowWithNoPast.Entities
             return world.GetCellStatus(pos) == CellStatus.Free;
         }
 
-        public Queue<Vector2Int> FindPathThroughEntities(Vector2Int start, Vector2Int end)
+        public Queue<WorldPos> FindPathThroughEntities(WorldPos start, WorldPos end)
         {
             return BreadthFirstSearch.FindPath(start, end, CanCellBePassable);
         }
 
-        public bool CanCellBePassable(Vector2Int pos)
+        public bool CanCellBePassable(WorldPos pos)
         {
-            CellStatus status = world.GetCellStatus(pos);
+            CellStatus status = pos.GetStatus();
             bool CanPass = status != CellStatus.NoGround &&
                            status != CellStatus.Obstacle;
             return CanPass;
         }
 
-        public IEnumerator MoveWithDelay(Queue<Vector2Int> path)
+        public IEnumerator MoveWithDelay(Queue<WorldPos> path)
         {
             int movesLeft = entity.MoveDistance;
             while (path.Count > 0 && movesLeft > 0)
             {
-                Vector2Int pos = path.Dequeue();
+                WorldPos pos = path.Dequeue();
                 if (!TryInstantMoveTo(pos))
                 {
                     yield break;
@@ -125,9 +141,9 @@ namespace ShadowWithNoPast.Entities
             }
         }
 
-        public List<Vector2Int> GetAvailableMoves()
+        public List<WorldPos> GetAvailableMoves()
         {
-            return BreadthFirstSearch.GetAvailableMoves(entity.Pos, entity.MoveDistance, CanMoveTo);
+            return BreadthFirstSearch.GetAvailableMoves(entity.GetGlobalPos(), entity.MoveDistance, CanMoveTo);
         }
     }
 }

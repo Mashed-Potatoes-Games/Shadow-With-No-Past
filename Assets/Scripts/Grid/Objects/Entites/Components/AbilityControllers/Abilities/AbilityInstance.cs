@@ -16,41 +16,44 @@ namespace ShadowWithNoPast.Entities.Abilities
             Caller = caller;
             Ability = ability;
             EffectValues = effectValues;
+            CooldownOnUse = Ability.DefaultCooldown;
         }
 
         public event Action UsedWithNoTarget;
+        public event Action Cancelled;
         public event Action Updated;
         public event Action Used;
-        public GridEntity Caller;
 
+        [HideInInspector]
+        public GridEntity Caller;
+        public Ability Ability;
         public AudioClip AbilitySound => Ability.AbilitySound;
         public Sprite Icon => Ability.Icon;
-        public Ability Ability;
         public int[] EffectValues = { 1 };
+        public int DistanceConstraint => Ability.DistanceConstraint;
         public int CooldownOnUse;
+        [HideInInspector]
         public int RemainingCooldown = 0;
 
         [field: SerializeField] public bool ReadyToUse { get; private set; } = true;
         [field: SerializeField] public bool EndsTurn { get; private set; } = true;
 
-        public List<TargetPos> AvailableTargets() => 
+        public AbilityTargets AvailableTargets() =>
             Ability.AvailableTargets(Caller.GetGlobalPos());
-        public List<TargetPos> AvailableAttackPoints(TargetPos target) =>
-            Ability.AvailableTargets(target);
-        public List<TargetPos> CanAttackTargetFrom(TargetPos target) =>
-            Ability.AvailableTargets(target);
+        public AbilityTargets AvailableAttackPoints(WorldPos target) =>
+            Ability.AvailableAttackPoints(target);
 
         public IEnumerator UseAbility()
         {
-            if(Ability.Type == AbilityType.OnSelf)
+            if (Ability.Type == AbilityTargetType.OnSelf)
             {
-                yield return UseAbility(new TargetPos());
+                yield return UseAbility(Caller.GetGlobalPos());
                 yield break;
             }
             UsedWithNoTarget?.Invoke();
         }
 
-        public IEnumerator UseAbility(TargetPos target)
+        public IEnumerator UseAbility(WorldPos target)
         {
             if(EffectValues is null || EffectValues.Length == 0)
             {
@@ -73,10 +76,15 @@ namespace ShadowWithNoPast.Entities.Abilities
             FinishExecution();
         }
 
-        public Dictionary<TelegraphElementWithValue, List<TargetPos>> GetTelegraphData(TargetPos target)
+        public void Cancel()
+        {
+            Cancelled?.Invoke();
+        }
+
+        public Dictionary<TelegraphElementWithValue, List<WorldPos>> GetTelegraphData(WorldPos target)
         {
             var i = 0;
-            var telegraphData = new Dictionary<TelegraphElementWithValue, List<TargetPos>>();
+            var telegraphData = new Dictionary<TelegraphElementWithValue, List<WorldPos>>();
             var currentAbility = Ability;
             do
             {
@@ -87,7 +95,7 @@ namespace ShadowWithNoPast.Entities.Abilities
 
                 telegraphData.Add(
                     elementWithValue, 
-                    currentAbility.TargetToExecutePositions(Caller, target));
+                    currentAbility.TargetToAoe(Caller, target));
 
                 i++;
                 currentAbility = Ability.SecondaryEffect;
@@ -120,8 +128,8 @@ namespace ShadowWithNoPast.Entities.Abilities
 
         private void FinishExecution()
         {
-            // "+ 1" is here, because after the ability is used it always decrement all abilities CD's by 1.
-            //If there is better solution, I will gladly change this shitty pile of code.
+            // "+ 1" is here, because after the turn is over, it always decrement all abilities CD's by 1.
+            //If there is better solution without adding complication, I will gladly change this shitty pile of code.
             RemainingCooldown = CooldownOnUse + 1;
             ReadyToUse = false;
 

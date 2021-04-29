@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e796dc3f883ba24381667174b8fcc5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WorldGrid: {fileID: 0}
+  World: {fileID: 0}
   pos: {x: 0, y: 0}
   <XOffset>k__BackingField: 0.5
   <YOffset>k__BackingField: 1.1
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 076bdc1591c4548498b8fc7ed65b09db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AvailableMoveIndicator: {fileID: 4682669683384433524, guid: 35b8805632124204e8ad9fa3431d4f74, type: 3}
+  MoveIndicator: {fileID: 4682669683384433524, guid: 35b8805632124204e8ad9fa3431d4f74, type: 3}
   AttackIndicator: {fileID: 5004170096104322745, guid: 5575e61c9e74c8f448c0b913457d56a6, type: 3}
 --- !u!61 &-4723078435411625061
 BoxCollider2D:
@@ -205,16 +205,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Abilities:
   - Caller: {fileID: 382708216090105643}
-    Ability: {fileID: 11400000, guid: ccbb54b1b5f42d842898ecbb765d4c14, type: 2}
+    Ability: {fileID: 11400000, guid: 1d7c7b5081ed4fc46991accef076af5e, type: 2}
     EffectValues: 01000000
-    CooldownOnUse: 4
-    RemainingCooldown: 0
-    <ReadyToUse>k__BackingField: 1
-    <EndsTurn>k__BackingField: 1
-  - Caller: {fileID: 382708216090105643}
-    Ability: {fileID: 11400000, guid: ccbb54b1b5f42d842898ecbb765d4c14, type: 2}
-    EffectValues: 01000000
-    CooldownOnUse: 2
+    DistanceConstraint: 2
+    CooldownOnUse: 0
     RemainingCooldown: 0
     <ReadyToUse>k__BackingField: 1
     <EndsTurn>k__BackingField: 1

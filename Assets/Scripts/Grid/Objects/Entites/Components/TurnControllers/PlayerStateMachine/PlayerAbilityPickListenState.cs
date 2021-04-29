@@ -14,7 +14,6 @@ namespace ShadowWithNoPast.Entities
 
             stateMachine.IsActiveTurn = true;
 
-            stateMachine.Controls.AbilityUsage.Enable();
             stateMachine.Abilities.AbilityUsedWithNoTarget += OnAbilityPicked;
         }
 
@@ -22,7 +21,6 @@ namespace ShadowWithNoPast.Entities
         {
             base.LeaveState();
 
-            stateMachine.Controls.AbilityUsage.Disable();
             stateMachine.Abilities.AbilityUsedWithNoTarget -= OnAbilityPicked;
         }
 

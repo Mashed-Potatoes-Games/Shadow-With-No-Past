@@ -2,6 +2,7 @@ using ShadowWithNoPast.Entities.Abilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,24 +12,36 @@ public class AbilityUIButton : MonoBehaviour
     [SerializeField]
     private Button button;
     [SerializeField]
+    private Image buttonImage;
+    [SerializeField]
     private Image abilityIcon;
     [SerializeField]
     private Image circularTint;
     [SerializeField]
-    private TMPro.TextMeshProUGUI cooldownText;
+    private TextMeshProUGUI cooldownText;
     [SerializeField]
     private AbilityInstance abilityInstance;
+
+    private Color32 defaultColor;
+
+    private void Awake()
+    {
+        defaultColor = button.image.color;
+    }
 
     public void TieToAbility(AbilityInstance instance)
     {
         if(abilityInstance != null)
         {
             abilityInstance.Updated -= Redraw;
+            abilityInstance.UsedWithNoTarget -= SetInUse;
         }
         abilityInstance = instance;
 
         abilityInstance.Updated += Redraw;
-        button.onClick.RemoveAllListeners();
+        abilityInstance.UsedWithNoTarget += SetInUse;
+
+        //button.onClick.RemoveAllListeners();
         button.onClick.AddListener(UseAbility);
 
         Redraw();
@@ -37,6 +50,13 @@ public class AbilityUIButton : MonoBehaviour
     private void UseAbility()
     {
         StartCoroutine(abilityInstance.UseAbility());
+        button.image.color = defaultColor;
+    }
+
+    private void SetInUse()
+    {
+        var newColor = Color32.Lerp(defaultColor, new Color32(255, 255, 0, 255), 0.3f);
+        button.image.color = newColor;
     }
 
     private void Redraw()
@@ -47,6 +67,8 @@ public class AbilityUIButton : MonoBehaviour
         }
 
         abilityIcon.sprite = abilityInstance.Icon;
+        button.image.color = defaultColor;
+
 
         if (abilityInstance.ReadyToUse)
         {

@@ -1,5 +1,7 @@
 ﻿using ShadowWithNoPast.Entities.Abilities;
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace ShadowWithNoPast.Entities
 {
@@ -22,18 +24,24 @@ namespace ShadowWithNoPast.Entities
                 OnClick = (caller, target) => AbilityExecuted(target),
 
                 OnPointerEnter = (caller, target) =>
-                {
-                    stateMachine.Telegraph.TelegraphAbility(target, abilityInstance, true);
-                },
+                    stateMachine.Telegraph.TelegraphAbility(target, abilityInstance, true),
 
                 OnPointerLeave = (caller, target) =>
-                stateMachine.Telegraph.ClearAbility()
+                    stateMachine.Telegraph.ClearAbility()
             };
 
             stateMachine.Telegraph.TelegraphAvailableAttacks(abilityInstance.AvailableTargets(), 1, actions);
+            InputControls.Instance.Enable();
+            InputControls.Instance.InGameMenu.Cancel.performed += CancelAbility;
         }
 
-        private void AbilityExecuted(TargetPos pos)
+        private void CancelAbility(InputAction.CallbackContext context)
+        {
+            abilityInstance.Cancel();
+            stateMachine.SetState(new PlayerMoveListenState(player, stateMachine));
+        }
+
+        private void AbilityExecuted(WorldPos pos)
         {
             stateMachine.StartCoroutine(abilityInstance.UseAbility(pos));
         }
@@ -43,6 +51,8 @@ namespace ShadowWithNoPast.Entities
             base.LeaveState();
 
             stateMachine.Telegraph.ClearAvailableAttacks();
+            stateMachine.Telegraph.ClearAbility();
+            InputControls.Instance.InGameMenu.Cancel.performed -= CancelAbility;
         }
     }
 }

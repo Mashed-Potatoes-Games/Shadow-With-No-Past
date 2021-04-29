@@ -102,16 +102,16 @@ namespace ShadowWithNoPast.Entities.Abilities
 
             if (GUILayout.Button("Add new ability"))
             {
-                CreateNewAbilityInstance();
                 ShowPicker();
             }
 
             if (Event.current.commandName == "ObjectSelectorUpdated" && 
                 EditorGUIUtility.GetObjectPickerControlID() == currentPickerWindow)
             {
-
-                focusedAbility.Ability = (Ability)EditorGUIUtility.GetObjectPickerObject();
+                currentPickerWindow = -1;
+                CreateNewAbilityInstance((Ability)EditorGUIUtility.GetObjectPickerObject());
                 EditorUtility.SetDirty(abilitiesController);
+
             }
 
             if (GUI.changed)
@@ -128,9 +128,9 @@ namespace ShadowWithNoPast.Entities.Abilities
             EditorGUIUtility.ShowObjectPicker<Ability>(null, false, "", currentPickerWindow);
         }
 
-        private void CreateNewAbilityInstance()
+        private void CreateNewAbilityInstance(Ability ability)
         {
-            focusedAbility = new AbilityInstance(abilitiesController.GetComponent<GridEntity>(), null, 1);
+            focusedAbility = new AbilityInstance(abilitiesController.GetComponent<GridEntity>(), ability, 1);
             abilitiesController.Abilities.Add(focusedAbility);
         }
     }

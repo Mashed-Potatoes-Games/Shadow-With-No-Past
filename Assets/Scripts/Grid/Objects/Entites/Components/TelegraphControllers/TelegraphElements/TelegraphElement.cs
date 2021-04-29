@@ -15,9 +15,9 @@ namespace ShadowWithNoPast.Entities
     [RequireComponent(typeof(SpriteRenderer))]
     public class TelegraphElement : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
-        public event Action<TelegraphElement, TargetPos> Clicked;
-        public event Action<TelegraphElement, TargetPos> PointerEntered;
-        public event Action<TelegraphElement, TargetPos> PointerLeft;
+        public event Action<TelegraphElement, WorldPos> Clicked;
+        public event Action<TelegraphElement, WorldPos> PointerEntered;
+        public event Action<TelegraphElement, WorldPos> PointerLeft;
 
         [NonSerialized]
         public GridObject GridObj;
@@ -97,15 +97,15 @@ namespace ShadowWithNoPast.Entities
 
     public class PointerActions 
     {
-        public Action<TelegraphElement, TargetPos> OnClick;
-        public Action<TelegraphElement, TargetPos> OnPointerEnter;
-        public Action<TelegraphElement, TargetPos> OnPointerLeave;
+        public Action<TelegraphElement, WorldPos> OnClick;
+        public Action<TelegraphElement, WorldPos> OnPointerEnter;
+        public Action<TelegraphElement, WorldPos> OnPointerLeave;
 
         public PointerActions() { }
 
-        public PointerActions(Action<TelegraphElement, TargetPos> onClick,
-                              Action<TelegraphElement, TargetPos> pointerEntered,
-                              Action<TelegraphElement, TargetPos> pointerLeft)
+        public PointerActions(Action<TelegraphElement, WorldPos> onClick,
+                              Action<TelegraphElement, WorldPos> pointerEntered,
+                              Action<TelegraphElement, WorldPos> pointerLeft)
         {
             OnClick = onClick;
             OnPointerEnter = pointerEntered;

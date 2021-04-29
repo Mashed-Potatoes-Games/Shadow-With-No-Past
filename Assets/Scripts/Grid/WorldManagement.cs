@@ -6,6 +6,7 @@ using ShadowWithNoPast.Algorithms;
 using UnityEngine.Rendering;
 using System.Collections;
 using ShadowWithNoPast.Utils;
+using ShadowWithNoPast.Entities.Abilities;
 
 [ExecuteAlways]
 [RequireComponent(typeof(Grid))]
@@ -101,6 +102,20 @@ public class WorldManagement : MonoBehaviour
             throw new CannotMoveHereException();
         }
     }
+
+    //Use it only after ensuring the cell is free
+    public void MoveInstantTo(GridObject obj, WorldPos target)
+    {
+        if(target.World == this)
+        {
+            MoveInstantTo(obj, target.Vector);
+            return;
+        }
+
+        RemoveAt(obj, target.Vector);
+        target.World.SetNewObjectTo(obj, target.Vector);
+    }
+
     /// <summary>
     /// It initiates the chosen objects on the grid.
     /// Don't try to move objects with it, because it won't delete previous object position.

@@ -19,8 +19,6 @@ namespace ShadowWithNoPast.Entities
         [HideInInspector] public bool MadeMove;
         [HideInInspector] public bool IsActiveTurn;
 
-
-        public GameControls Controls;
         public GridEntity Entity;
 
         public IAbilitiesController Abilities;
@@ -33,7 +31,6 @@ namespace ShadowWithNoPast.Entities
 
         private void Awake()
         {
-            Controls = new GameControls();
             Entity = GetComponent<GridEntity>();
             Abilities = GetComponent<IAbilitiesController>();
             Movement = GetComponent<IMovementController>();

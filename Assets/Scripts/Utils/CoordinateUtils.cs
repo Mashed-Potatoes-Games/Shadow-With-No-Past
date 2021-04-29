@@ -10,10 +10,10 @@ namespace ShadowWithNoPast.Utils
         {
             return direction switch
             {
-                Direction.Up => new Vector2Int(0, 1),
-                Direction.Right => new Vector2Int(1, 0),
-                Direction.Down => new Vector2Int(0, -1),
-                Direction.Left => new Vector2Int(-1, 0),
+                Direction.Up => Vector2Int.up,
+                Direction.Right => Vector2Int.right,
+                Direction.Down => Vector2Int.down,
+                Direction.Left => Vector2Int.left,
                 _ => throw new NotImplementedException(),
             };
         }
@@ -49,16 +49,18 @@ namespace ShadowWithNoPast.Utils
 
         public static Vector2Int RotateFromUpDirectionTo(Vector2Int pos, Direction direction)
         {
-            switch (direction) {
-                case Direction.Down:
-                    return new Vector2Int(-pos.x, -pos.y);
-                case Direction.Right:
-                    return new Vector2Int(pos.y, -pos.x);
-                case Direction.Left:
-                    return new Vector2Int(-pos.y, pos.x);
-                default:
-                    return pos;
-            }
+            return direction switch
+            {
+                Direction.Down => new Vector2Int(-pos.x, -pos.y),
+                Direction.Right => new Vector2Int(pos.y, -pos.x),
+                Direction.Left => new Vector2Int(-pos.y, pos.x),
+                _ => pos,
+            };
+        }
+
+        public static Direction[] AllDirections()
+        {
+            return (Direction[])Enum.GetValues(typeof(Direction));
         }
     }
 }

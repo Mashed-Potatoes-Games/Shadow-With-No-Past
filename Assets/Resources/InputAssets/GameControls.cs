@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/Resources/InputActions/GameControls.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Resources/InputAssets/GameControls.inputactions'
 
 using System;
 using System.Collections;
@@ -40,6 +40,33 @@ public class @GameControls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""InGameMenu"",
+            ""id"": ""a5fb702c-0295-4cf0-a8a8-ca13f97ba7ae"",
+            ""actions"": [
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""cdd0985a-c5f7-47c9-b80b-2ed26ab79909"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b0504dfb-acc9-48b8-bb9a-00be2745c946"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -47,6 +74,9 @@ public class @GameControls : IInputActionCollection, IDisposable
         // AbilityUsage
         m_AbilityUsage = asset.FindActionMap("AbilityUsage", throwIfNotFound: true);
         m_AbilityUsage_Ability1 = m_AbilityUsage.FindAction("Ability 1", throwIfNotFound: true);
+        // InGameMenu
+        m_InGameMenu = asset.FindActionMap("InGameMenu", throwIfNotFound: true);
+        m_InGameMenu_Cancel = m_InGameMenu.FindAction("Cancel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -125,8 +155,45 @@ public class @GameControls : IInputActionCollection, IDisposable
         }
     }
     public AbilityUsageActions @AbilityUsage => new AbilityUsageActions(this);
+
+    // InGameMenu
+    private readonly InputActionMap m_InGameMenu;
+    private IInGameMenuActions m_InGameMenuActionsCallbackInterface;
+    private readonly InputAction m_InGameMenu_Cancel;
+    public struct InGameMenuActions
+    {
+        private @GameControls m_Wrapper;
+        public InGameMenuActions(@GameControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Cancel => m_Wrapper.m_InGameMenu_Cancel;
+        public InputActionMap Get() { return m_Wrapper.m_InGameMenu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InGameMenuActions set) { return set.Get(); }
+        public void SetCallbacks(IInGameMenuActions instance)
+        {
+            if (m_Wrapper.m_InGameMenuActionsCallbackInterface != null)
+            {
+                @Cancel.started -= m_Wrapper.m_InGameMenuActionsCallbackInterface.OnCancel;
+                @Cancel.performed -= m_Wrapper.m_InGameMenuActionsCallbackInterface.OnCancel;
+                @Cancel.canceled -= m_Wrapper.m_InGameMenuActionsCallbackInterface.OnCancel;
+            }
+            m_Wrapper.m_InGameMenuActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Cancel.started += instance.OnCancel;
+                @Cancel.performed += instance.OnCancel;
+                @Cancel.canceled += instance.OnCancel;
+            }
+        }
+    }
+    public InGameMenuActions @InGameMenu => new InGameMenuActions(this);
     public interface IAbilityUsageActions
     {
         void OnAbility1(InputAction.CallbackContext context);
+    }
+    public interface IInGameMenuActions
+    {
+        void OnCancel(InputAction.CallbackContext context);
     }
 }

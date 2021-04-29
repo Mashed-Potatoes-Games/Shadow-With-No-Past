@@ -11,9 +11,9 @@ namespace ShadowWithNoPast.Entities
     {
         public void TelegraphAvailableMove(PointerActions actions = null);
         public void ClearAvalableMoves();
-        public void TelegraphAbility(TargetPos target, AbilityInstance abilityInstance, bool showAttackValue, PointerActions actions = null);
+        public void TelegraphAbility(WorldPos target, AbilityInstance abilityInstance, bool showAttackValue, PointerActions actions = null);
         public void ClearAbility();
-        public void TelegraphAvailableAttacks(List<TargetPos> targets, float opacity, PointerActions actions = null);
+        public void TelegraphAvailableAttacks(AbilityTargets targets, float opacity, PointerActions actions = null);
         public void ClearAvailableAttacks();
     }
 }

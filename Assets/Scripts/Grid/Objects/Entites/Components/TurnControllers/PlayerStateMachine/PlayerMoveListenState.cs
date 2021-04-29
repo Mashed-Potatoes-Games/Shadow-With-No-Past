@@ -31,7 +31,6 @@ namespace ShadowWithNoPast.Entities
             };
 
             stateMachine.Telegraph.TelegraphAvailableMove(actions);
-
         }
 
         public override void LeaveState()
@@ -41,12 +40,12 @@ namespace ShadowWithNoPast.Entities
             stateMachine.Telegraph.ClearAvalableMoves();
         }
 
-        private void OnAvailableMoveClick(TelegraphElement caller, TargetPos target)
+        private void OnAvailableMoveClick(TelegraphElement caller, WorldPos target)
         {
-            var path = stateMachine.Movement.GetPath(target.Pos);
+            var path = stateMachine.Movement.GetPath(target);
             stateMachine.StartCoroutine(MoveAndEndTurn(path));
         }
-        private IEnumerator MoveAndEndTurn(Queue<Vector2Int> path)
+        private IEnumerator MoveAndEndTurn(Queue<WorldPos> path)
         {
             yield return stateMachine.Movement.MoveWithDelay(path);
             stateMachine.EndTurn();

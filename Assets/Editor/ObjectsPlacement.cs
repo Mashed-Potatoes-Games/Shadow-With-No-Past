@@ -78,7 +78,7 @@ class ObjectsPlacement : Editor
         //We tweak instantiated obj values, so it will stick to a grid and occur on mouse position.
         Transform objGrid = grid.GetComponentInChildren<ObjectsGrid>().transform;
         InstantiatedObj.transform.SetParent(objGrid);
-        InstantiatedGridObj.WorldGrid = grid;
+        InstantiatedGridObj.World = grid;
         InstantiatedGridObj.Pos = cellPos;
 
         grid.SetNewObjectTo(InstantiatedGridObj, cellPos);

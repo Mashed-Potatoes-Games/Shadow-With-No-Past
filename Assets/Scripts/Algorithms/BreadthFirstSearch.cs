@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ShadowWithNoPast.Algorithms
@@ -8,14 +9,19 @@ namespace ShadowWithNoPast.Algorithms
     /// </summary>
     public static class BreadthFirstSearch
     {
-        public delegate bool IsPassable(Vector2Int pos);
+        public delegate bool IsPassable<T>(T pos);
 
-
-        public static Queue<Vector2Int> FindPath(Vector2Int start, Vector2Int end, IsPassable isCellFree)
+        public static Queue<WorldPos> FindPath(WorldPos start, WorldPos end, IsPassable<WorldPos> isCellFree)
         {
-            if (start == end)
+            if(start.World != end.World)
             {
-                var result = new Queue<Vector2Int>();
+                Debug.LogError("BFSearch works only with 1 world. Add between worlds search implementation!");
+                return null;
+            }
+
+            if (start.Equals(end))
+            {
+                var result = new Queue<WorldPos>();
                 result.Enqueue(start);
                 return result;
             }
@@ -25,47 +31,37 @@ namespace ShadowWithNoPast.Algorithms
 
             
 
-            List<Vector2Int> Visited = new List<Vector2Int>() { start };
+            List<WorldPos> Visited = new List<WorldPos>() { start };
             while (SearchQueue.Count > 0)
             {
                 PathNode Current = SearchQueue.Dequeue();
 
-                foreach(Vector2Int pos in Current.GetNeighbours())
+                foreach(WorldPos target in Current.GetNeighbours())
                 {
-                    PathNode NeighbourToCurrent = new PathNode(pos, Current);
+                    PathNode NeighbourToCurrent = new PathNode(target, Current);
 
-                    if (pos == end)
+                    if (target == end)
                     {
                         return PathNodeToQueue(NeighbourToCurrent);
                     }
-                    else if (!Visited.Contains(pos) && isCellFree(pos))
+                    else if (!Visited.Contains(target) && isCellFree(target))
                     {
                         
                         SearchQueue.Enqueue(NeighbourToCurrent);
-                        Visited.Add(pos);
+                        Visited.Add(target);
                     }
                 }
             }
             return null;
         }
 
-        public static Queue<Vector2Int> PathNodeToQueue(PathNode node)
+        public static Queue<WorldPos> PathNodeToQueue(PathNode node)
         {
-            Queue<Vector2Int> queue = new Queue<Vector2Int>();
+            Queue<WorldPos> queue = new Queue<WorldPos>();
 
-            List<Vector2Int> list = new List<Vector2Int>();
-            list.Add(node.Pos);
+            var list = PathNodeToList(node);
 
-            PathNode previous = node.Previous;
-            while(previous != null)
-            {
-                list.Add(previous.Pos);
-                previous = previous.Previous;
-            }
-
-            list.Reverse();
-
-            foreach(Vector2Int pos in list)
+            foreach(WorldPos pos in list)
             {
                 queue.Enqueue(pos);
             }
@@ -73,19 +69,35 @@ namespace ShadowWithNoPast.Algorithms
             return queue;
         }
 
-        public static List<Vector2Int> GetAvailableMoves(Vector2Int startPos, int moveDistance, IsPassable isPassable)
+        private static List<WorldPos> PathNodeToList(PathNode node)
         {
-            var availableMoves = new List<Vector2Int>() { startPos };
+            var list = new List<WorldPos> { node.TargetPos };
+
+            PathNode previous = node.Previous;
+
+            while (previous != null)
+            {
+                list.Add(previous.TargetPos);
+                previous = previous.Previous;
+            }
+
+            list.Reverse();
+            return list;
+        }
+
+        public static List<WorldPos> GetAvailableMoves(WorldPos start, int moveDistance, IsPassable<WorldPos> isPassable)
+        {
+            var availableMoves = new List<WorldPos>() { start };
 
             Queue<PathNode> SearchQueue = new Queue<PathNode>();
-            SearchQueue.Enqueue(new PathNode(startPos));
+            SearchQueue.Enqueue(new PathNode(start));
 
-            List<Vector2Int> Visited = new List<Vector2Int>() { startPos };
+            List<WorldPos> Visited = new List<WorldPos>() { start };
             while (SearchQueue.Count > 0)
             {
                 PathNode Current = SearchQueue.Dequeue();
 
-                foreach (Vector2Int pos in Current.GetNeighbours())
+                foreach (WorldPos pos in Current.GetNeighbours())
                 {
                     if (!Visited.Contains(pos) && isPassable(pos))
                     {
@@ -110,45 +122,52 @@ namespace ShadowWithNoPast.Algorithms
     /// </summary>
     public class PathNode
     {
+        public WorldManagement World;
         public Vector2Int Pos;
         public PathNode Previous;
+
+        public WorldPos TargetPos => new WorldPos(World, Pos);
 
         public int PathLength { get
             {
                 return Previous is null ? 0 : Previous.PathLength + 1;
             } }
 
-        public PathNode(Vector2Int pos)
+        public PathNode(WorldManagement world, Vector2Int pos)
         {
+            World = world;
             Pos = pos;
         }
 
-        public PathNode(Vector2Int pos, PathNode previous)
+        public PathNode(WorldPos target) : this(target.World, target.Vector) { }
+
+        public PathNode(WorldManagement world, Vector2Int pos, PathNode previous) : this(world, pos)
         {
-            Pos = pos;
             Previous = previous;
         }
 
+        public PathNode(WorldPos target, PathNode previous) : this(target.World, target.Vector, previous) { }
+
         #region All existing Neighbours
-        public Vector2Int TopPos()
+        public WorldPos TopPos()
         {
-            return Pos + new Vector2Int(0, 1);
+            return new WorldPos(World, Pos + Vector2Int.up);
         }
-        public Vector2Int RightPos()
+        public WorldPos RightPos()
         {
-            return Pos + new Vector2Int(1, 0);
+            return new WorldPos(World, Pos + Vector2Int.right);
         }
-        public Vector2Int BottomPos()
+        public WorldPos BottomPos()
         {
-            return Pos + new Vector2Int(0, -1);
+            return new WorldPos(World, Pos + Vector2Int.down);
         }
-        public Vector2Int LeftPos()
+        public WorldPos LeftPos()
         {
-            return Pos + new Vector2Int(-1, 0);
+            return new WorldPos(World, Pos + Vector2Int.left);
         }
         #endregion
 
-        public IEnumerable<Vector2Int> GetNeighbours()
+        public IEnumerable<WorldPos> GetNeighbours()
         {
             yield return TopPos();
             yield return RightPos();
