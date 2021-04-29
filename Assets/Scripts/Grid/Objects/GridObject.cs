@@ -12,6 +12,8 @@ namespace ShadowWithNoPast.Entities
     {
         public WorldManagement World;
 
+        public event Action<GridObject> Moved;
+
         //Get: returns global position to the entity.
         //Set: changes the value AND moves the GameObject (Adding the offset values).
         public Vector2Int Pos
@@ -25,6 +27,7 @@ namespace ShadowWithNoPast.Entities
             {
                 pos = value;
                 SnapToGrid();
+                Moved?.Invoke(this);
             }
         }
         [SerializeField]
