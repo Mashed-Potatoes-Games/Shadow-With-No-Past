@@ -14,9 +14,6 @@ namespace ShadowWithNoPast.Entities.Abilities
 
         // All of the thing needed to be done, when skill is executed,
         // exact actions should be overriden in the innerhited abilities.
-        public virtual void Execute(WorldPos targetPos, int effectValue)
-        {
-
-        }
+        public abstract IEnumerator Execute(WorldPos targetPos, int effectValue);
     }
 }

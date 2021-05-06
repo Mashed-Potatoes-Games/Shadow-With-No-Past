@@ -15,14 +15,20 @@ public class WorldManagement : MonoBehaviour
 {
     public class CannotMoveHereException : Exception { }
 
+    public event Action<WorldManagement> Activated;
+    public event Action<WorldManagement> Inactivated;
+
+    public event Action<GridObject> ObjectAdded;
+    public event Action<GridObject> ObjectRemoved;
+
     public WorldType Type;
 
     [SerializeField]
     private ObstacleTilemap obstacles;
     [SerializeField]
     private GroundTilemap ground;
-
-    public ObjectsGrid objects;
+    [SerializeField]
+    private ObjectsGrid objects;
 
     public WorldEventManager EventManager;
 
@@ -37,9 +43,12 @@ public class WorldManagement : MonoBehaviour
     //Needed for the editor script
     public bool ShowTileCoordinates = false;
 
-    public void Start()
+    public void Awake()
     {
-        EventManager = GetComponent<WorldEventManager>();
+        obstacles ??= GetComponentInChildren<ObstacleTilemap>();
+        ground ??= GetComponentInChildren<GroundTilemap>();
+        objects ??= GetComponentInChildren<ObjectsGrid>();
+        EventManager ??= GetComponentInChildren<WorldEventManager>();
     }
 
     public void SetActive()
@@ -48,6 +57,8 @@ public class WorldManagement : MonoBehaviour
 
         const string activeWorldLayerName = "FrontWorld/";
         SwitchAllRenderersToMainLayer(activeWorldLayerName);
+
+        Activated?.Invoke(this);
     }
 
     public void SetInactive()
@@ -57,6 +68,12 @@ public class WorldManagement : MonoBehaviour
         const string inactiveWorldLayerName = "BackWorld/";
         SwitchAllRenderersToMainLayer(inactiveWorldLayerName);
 
+        Inactivated?.Invoke(this);
+    }
+
+    public List<GridEntity> GetEntities()
+    {
+        return objects.GetEntities();
     }
 
     private void SwitchAllRenderersToMainLayer(string worldLayerName)
@@ -125,11 +142,11 @@ public class WorldManagement : MonoBehaviour
         if (GetCellStatus(pos) == CellStatus.Free)
         {
             objects.SetNewObjectTo(obj, pos);
+            ObjectAdded?.Invoke(obj);
+            return;
         }
-        else
-        {
-            throw new CannotMoveHereException();
-        }
+
+        throw new CannotMoveHereException();
     }
 
     public GridEntity GetEntityAt(Vector2Int pos)
@@ -140,6 +157,7 @@ public class WorldManagement : MonoBehaviour
     public void RemoveAt(GridObject obj, Vector2Int pos)
     {
         objects.RemoveAt(obj, pos);
+        ObjectRemoved?.Invoke(obj);
     }
 
 

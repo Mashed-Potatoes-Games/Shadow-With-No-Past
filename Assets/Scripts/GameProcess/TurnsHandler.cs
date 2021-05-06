@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ShadowWithNoPast.Entities;
+using System.Linq;
 
 namespace ShadowWithNoPast.GameProcess
 {
@@ -11,7 +12,7 @@ namespace ShadowWithNoPast.GameProcess
         public bool IsWorking;
 
         private const float SecondsBetweenEnemiesMove = 0.1f;
-        private Queue<ITurnController> TurnsQueue = new Queue<ITurnController>();
+        private Queue<GridEntity> EntitiesQueue = new Queue<GridEntity>();
 
         private WorldsChanger changer;
 
@@ -42,35 +43,39 @@ namespace ShadowWithNoPast.GameProcess
             yield return AddToQueueAndTelegraphFromWorld(changer.CurrentlyInactive);
         }
 
-        public IEnumerator AddToQueueAndTelegraphFromWorld(WorldManagement world)
+        private IEnumerator AddToQueueAndTelegraphFromWorld(WorldManagement world)
         {
             if(world is null)
             {
                 yield break;
             }
 
+
             var priorities = Enum.GetValues(typeof(TurnPriority));
             foreach (TurnPriority priority in priorities)
             {
-                var turnControllers = world.objects.GetComponentsInChildren<ITurnController>();
-                foreach (var turnController in turnControllers)
+                var entities = world.GetEntities();
+                foreach (var entity in entities)
                 {
-                    if (turnController.Priority == priority)
+                    if (entity == null) continue;
+
+                    if (entity.TurnController.Priority == priority)
                     {
-                        yield return turnController.MoveAndTelegraphAction();
-                        TurnsQueue.Enqueue(turnController);
+                        yield return entity.TurnController.MoveAndTelegraphAction();
+                        EntitiesQueue.Enqueue(entity);
                         yield return new WaitForSeconds(SecondsBetweenEnemiesMove);
                     }
                 }
             }
         }
 
-        public IEnumerator MakeTurns()
+        private IEnumerator MakeTurns()
         {
-            while (TurnsQueue.Count > 0)
+            while (EntitiesQueue.Count > 0)
             {
-                var turnController = TurnsQueue.Dequeue();
-                yield return turnController.ExecuteMove();
+                var entity = EntitiesQueue.Dequeue();
+                if (entity == null) continue;
+                yield return entity.TurnController.ExecuteMove();
                 yield return new WaitForSeconds(SecondsBetweenEnemiesMove);
             }
         }

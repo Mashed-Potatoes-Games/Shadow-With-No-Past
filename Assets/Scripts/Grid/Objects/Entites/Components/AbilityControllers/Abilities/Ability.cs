@@ -15,6 +15,7 @@ namespace ShadowWithNoPast.Entities.Abilities
     public abstract class Ability : ScriptableObject, IAbility
     {
         public abstract AbilityTargetType Type { get; }
+        public virtual SpriteType ExecutionSprite => SpriteType.Attack;
         public AudioClip AbilitySound => abilitySound;
         public Sprite Icon => icon;
         public AbilityAction Action => action;
@@ -45,13 +46,33 @@ namespace ShadowWithNoPast.Entities.Abilities
             {
                 target.World = caller.World;
             }
-
+            caller.FaceTo(target.Vector);
+            caller.SpriteController.SetSprite(ExecutionSprite);
             var targets = TargetToAoe(caller, target);
-            foreach (var targetPos in targets)
+            var coroutinesExecFlags = new List<bool>(9);
+            for (int i = 0; i < targets.Count(); i++)
             {
-                Action.Execute(targetPos, effectValue);
+                coroutinesExecFlags.Add(false);
+                caller.StartCoroutine(
+                    FlagAtTheEnd(
+                        Action.Execute(targets[i], effectValue), 
+                        coroutinesExecFlags,
+                        i));
             }
+
+            while(!coroutinesExecFlags.All(val => val))
+            {
+                yield return null;
+            }
+
+            caller.SpriteController.ResetToDefault();
             yield break;
+        }
+
+        static IEnumerator FlagAtTheEnd(IEnumerator func, List<bool> flags, int pos)
+        {
+            yield return func;
+            flags[pos] = true;
         }
 
         public abstract AbilityTargets AvailableTargets(WorldPos executionPos);

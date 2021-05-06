@@ -18,12 +18,16 @@ namespace ShadowWithNoPast.Entities
     {
         public static readonly int MAX_HEALTH = 8;
 
+        public event Action<GridEntity> Died;
+
         [field: SerializeField, HideInInspector] public int MaxHealth { get; private set; }
         public int Health { get => health; private set {
                 health = value;
-                if(health < 0)
+                if(health <= 0)
                 {
+
                     health = 0;
+                    return;
                 }
                 if(health > MaxHealth)
                 {
@@ -37,20 +41,30 @@ namespace ShadowWithNoPast.Entities
         // This value was moved from TurnController because it was used too much across other components
         public int MoveDistance = 1;
 
-        protected IMovementController movementController;
-        protected ITurnController turnController;
-        protected ITelegraphController telegraphController;
+        public IMovementController MovementController;
+        public ITurnController TurnController;
+        public ITelegraphController TelegraphController;
+        public IEntitySpriteController SpriteController;
+
         [SerializeField]
         protected Healthbar healthbar;
 
-        #region Ability to face, flipping SpriteRenderer
-
         protected Direction facing;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            MovementController = GetComponent<IMovementController>();
+            TurnController = GetComponent<ITurnController>();
+            TelegraphController = GetComponent<ITelegraphController>();
+            SpriteController = GetComponent<IEntitySpriteController>();
+        }
 
 
         protected override void Start()
         {
             base.Start();
+
             if(healthbar != null)
             {
                 healthbar.SetMaxHealth(MaxHealth);
@@ -80,15 +94,26 @@ namespace ShadowWithNoPast.Entities
             UpdateHealthbar();
         }
 
-        public void ReceiveDamage(int damage)
+        public IEnumerator ReceiveDamage(int damage)
         {
             if (damage <= 0)
             {
                 Debug.LogError("Damage can't be negative!");
             }
+
             Health -= damage;
 
             UpdateHealthbar();
+
+            yield return SpriteController.AnimateDamage();
+
+            if(Health == 0)
+            {
+                Died?.Invoke(this);
+                World.RemoveAt(this, pos);
+                Destroy(gameObject);
+            }
+
         }
 
         public void Heal(int healing)
@@ -145,7 +170,6 @@ namespace ShadowWithNoPast.Entities
                 _ => throw new NotImplementedException(),
             };
         }
-        #endregion
     }
     /// <summary>
     /// Direction, the entity can face or attack.

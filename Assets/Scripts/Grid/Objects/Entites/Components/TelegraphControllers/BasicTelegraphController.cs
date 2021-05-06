@@ -31,6 +31,15 @@ namespace ShadowWithNoPast.Entities
             entity = GetComponent<GridEntity>();
             renderer = GetComponent<SpriteRenderer>();
             movement = GetComponent<IMovementController>();
+
+            entity.Died += entity => ClearAll();
+        }
+
+        public void ClearAll()
+        {
+            ClearAbility();
+            ClearAvailableAttacks();
+            ClearAvalableMoves();
         }
 
         public void TelegraphAvailableAttacks(AbilityTargets targets, float opacity, PointerActions actions = null)

@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine;
 using ShadowWithNoPast.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// This class ties GridObjects to Grid and them only!
@@ -96,14 +98,28 @@ public partial class ObjectsGrid : MonoBehaviour
 
     //This method does not move the entity - it places the entity that isn't present in grid.
     //To mind tiles, use MainGrid!!!
-    public void SetNewObjectTo(GridObject entity, Vector2Int pos)
+    public void SetNewObjectTo(GridObject obj, Vector2Int pos)
     {
         if(WhatIn(pos) != ObjectType.Empty)
         {
             throw new PositionOccupiedException();
         }
-        objects.Add(pos, entity);
-        entity.Pos = pos;
+        objects.Add(pos, obj);
+        obj.Pos = pos;
+    }
+
+    public List<GridEntity> GetEntities()
+    {
+        var entities = new List<GridEntity>();
+        foreach (GridObject obj in objects.Values)
+        {
+            if (obj is GridEntity entity)
+            {
+                entities.Add(entity);
+            }
+        }
+
+        return entities;
     }
 }
 public enum ObjectType

@@ -15,5 +15,6 @@ namespace ShadowWithNoPast.Entities
         public void ClearAbility();
         public void TelegraphAvailableAttacks(AbilityTargets targets, float opacity, PointerActions actions = null);
         public void ClearAvailableAttacks();
+        void ClearAll();
     }
 }

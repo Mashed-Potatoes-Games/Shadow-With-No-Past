@@ -12,16 +12,15 @@ namespace ShadowWithNoPast.Entities.Abilities
     [CreateAssetMenu(fileName = "AttackAction", menuName = "Abilities/Actions/AttackAction", order = 1)]
     class AttackAction : AbilityAction
     {
-        public override void Execute(WorldPos targetPos, int effectValue)
+        public override IEnumerator Execute(WorldPos targetPos, int effectValue)
         {
-            base.Execute(targetPos, effectValue);
             GridEntity target = targetPos.GetEntity();
             if(target is null)
             {
                 // Nobody to attack, play miss animation or skip
-                return;
+                yield break;
             }
-            target.ReceiveDamage(effectValue);
+            yield return target.ReceiveDamage(effectValue);
         }
     }
 }
