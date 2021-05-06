@@ -39,7 +39,7 @@ namespace ShadowWithNoPast.Entities.Abilities
         [field: SerializeField] public bool EndsTurn { get; private set; } = true;
 
         public AbilityTargets AvailableTargets() =>
-            Ability.AvailableTargets(Caller.GetGlobalPos());
+            Ability.AvailableTargets(Caller.Pos);
         public AbilityTargets AvailableAttackPoints(WorldPos target) =>
             Ability.AvailableAttackPoints(target);
 
@@ -47,7 +47,7 @@ namespace ShadowWithNoPast.Entities.Abilities
         {
             if (Ability.Type == AbilityTargetType.OnSelf)
             {
-                yield return UseAbility(Caller.GetGlobalPos());
+                yield return UseAbility(Caller.Pos);
                 yield break;
             }
             UsedWithNoTarget?.Invoke();

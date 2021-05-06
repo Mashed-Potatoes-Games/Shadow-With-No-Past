@@ -52,17 +52,17 @@ namespace ShadowWithNoPast.Entities
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            Clicked?.Invoke(this, GridObj.GetGlobalPos());
+            Clicked?.Invoke(this, GridObj.Pos);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            PointerEntered?.Invoke(this, GridObj.GetGlobalPos());
+            PointerEntered?.Invoke(this, GridObj.Pos);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            PointerLeft?.Invoke(this, GridObj.GetGlobalPos());
+            PointerLeft?.Invoke(this, GridObj.Pos);
         }
 
         public void Highlight()

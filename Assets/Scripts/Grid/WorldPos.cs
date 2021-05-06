@@ -1,6 +1,8 @@
 ﻿using ShadowWithNoPast.Entities;
+using System;
 using UnityEngine;
 
+[Serializable]
 public struct WorldPos
 {
     public WorldManagement World;

@@ -91,12 +91,12 @@ namespace ShadowWithNoPast.Entities.Abilities
                 executePositions = new List<WorldPos>() { target };
                 return executePositions;
             }
-            var directionVector = caller.Pos - target.Vector;
+            var directionVector = caller.Vector - target.Vector;
             var direction = CoordinateUtils.GetDirectionFromVector(directionVector);
 
             var aoeDirectionVectors = AoePattern.SingleToAoe(direction ?? Direction.Up);
             executePositions = aoeDirectionVectors.Select(
-                direction => new WorldPos(target.World, caller.Pos + direction)
+                direction => new WorldPos(target.World, caller.Vector + direction)
                 ).ToList();
             return executePositions;
         }

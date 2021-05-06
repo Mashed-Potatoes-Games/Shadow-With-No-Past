@@ -152,8 +152,7 @@ namespace ShadowWithNoPast.Entities
             }
             var gridObj = obj.GetComponent<GridObject>();
             gridObj.YOffset = 0.5f;
-            gridObj.Pos = pos.Vector;
-            gridObj.World = pos.World;
+            gridObj.SetNewPosition(pos);
 
             gridObj.transform.SetParent(parent.transform);
             obj.Renderer.sortingLayerID = renderer.sortingLayerID;

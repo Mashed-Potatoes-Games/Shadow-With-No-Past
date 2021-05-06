@@ -110,7 +110,7 @@ namespace ShadowWithNoPast.Entities
             if(Health == 0)
             {
                 Died?.Invoke(this);
-                World.RemoveAt(this, pos);
+                World.RemoveAt(this, Vector);
                 Destroy(gameObject);
             }
 
@@ -147,7 +147,7 @@ namespace ShadowWithNoPast.Entities
 
         public void FaceTo(Vector2Int targetPos)
         {
-            Vector2Int direction = targetPos - Pos;
+            Vector2Int direction = targetPos - Vector;
 
             if (direction.x > 0)
             {

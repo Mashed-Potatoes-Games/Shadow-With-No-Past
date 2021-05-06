@@ -49,7 +49,7 @@ namespace ShadowWithNoPast.Entities
             var inavailableAttacks = new Dictionary<AbilityInstance, List<WorldPos>>();
             foreach (var ability in abilities)
             {
-                var attackTargets = ability.AvailableAttackPoints(player.GetGlobalPos());
+                var attackTargets = ability.AvailableAttackPoints(player.Pos);
                 var attackPos = attackTargets.positions;
                 var placesToAttack = availableMoves.Intersect(attackPos).ToList();
                 if (placesToAttack.Count() > 0 && ability.ReadyToUse)
@@ -70,10 +70,10 @@ namespace ShadowWithNoPast.Entities
                 if (path != null)
                 {
                     savedAbility = abilityInstance;
-                    savedTarget = player.GetGlobalPos();
+                    savedTarget = player.Pos;
 
                     yield return movement.MoveWithDelay(path);
-                    telegraphController.TelegraphAbility(player.GetGlobalPos(), abilityInstance, false);
+                    telegraphController.TelegraphAbility(player.Pos, abilityInstance, false);
                     yield break;
                 }
             }

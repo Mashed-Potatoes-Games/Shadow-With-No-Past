@@ -29,7 +29,7 @@ namespace ShadowWithNoPast.Entities
                 return null;
             }
 
-            Queue<WorldPos> pathQueue = FindClearPath(entity.GetGlobalPos(), targetPos);
+            Queue<WorldPos> pathQueue = FindClearPath(entity.Pos, targetPos);
 
             if (pathQueue is null)
             {
@@ -38,10 +38,10 @@ namespace ShadowWithNoPast.Entities
                     return null;
                 }
 
-                pathQueue = FindPathThroughEntities(entity.GetGlobalPos(), targetPos);
+                pathQueue = FindPathThroughEntities(entity.Pos, targetPos);
             }
 
-            if (pathQueue != null && pathQueue.Peek().Equals(entity.GetGlobalPos()))
+            if (pathQueue != null && pathQueue.Peek().Equals(entity.Pos))
             {
                 pathQueue.Dequeue();
             }
@@ -64,7 +64,7 @@ namespace ShadowWithNoPast.Entities
         {
             Vector2Int MovementVector = CoordinateUtils.GetVectorFromDirection(direction);
 
-            WorldPos TargetPosition = new WorldPos(entity.World, entity.Pos + MovementVector);
+            WorldPos TargetPosition = new WorldPos(entity.World, entity.Vector + MovementVector);
             return TryInstantMoveTo(TargetPosition);
         }
 
@@ -142,7 +142,7 @@ namespace ShadowWithNoPast.Entities
 
         public List<WorldPos> GetAvailableMoves()
         {
-            return BreadthFirstSearch.GetAvailableMoves(entity.GetGlobalPos(), entity.MoveDistance, CanMoveTo);
+            return BreadthFirstSearch.GetAvailableMoves(entity.Pos, entity.MoveDistance, CanMoveTo);
         }
     }
 }

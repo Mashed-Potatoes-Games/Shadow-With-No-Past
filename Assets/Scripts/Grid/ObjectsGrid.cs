@@ -26,7 +26,7 @@ public partial class ObjectsGrid : MonoBehaviour
         //Every time Editor reloads, dictionary clears, so we need to write objects position again.
         foreach (GridObject obj in transform.GetComponentsInChildren<GridObject>())
         {
-            SetNewObjectTo(obj, obj.Pos);
+            SetNewObjectTo(obj, obj.Vector);
         }
     }
     
@@ -34,7 +34,7 @@ public partial class ObjectsGrid : MonoBehaviour
     //To mind tiles, use MainGrid!!!
     public void MoveInstantTo(GridObject obj, Vector2Int endPos)
     {
-        Vector2Int startPos = obj.Pos;
+        Vector2Int startPos = obj.Vector;
         if (WhatIn(endPos) == ObjectType.Entity)
         {
             throw new PositionOccupiedException();
@@ -42,7 +42,6 @@ public partial class ObjectsGrid : MonoBehaviour
 
         RemoveAt(obj, startPos);
         SetNewObjectTo(obj, endPos);
-        obj.Pos = endPos;
     }
 
     public GridEntity GetEntityAt(Vector2Int pos)
@@ -105,7 +104,7 @@ public partial class ObjectsGrid : MonoBehaviour
             throw new PositionOccupiedException();
         }
         objects.Add(pos, obj);
-        obj.Pos = pos;
+        obj.SetNewPosition(pos);
     }
 
     public List<GridEntity> GetEntities()

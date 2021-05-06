@@ -23,9 +23,8 @@ class ObjectsPlacement : Editor
             //DragAndDrop contains all the info about drag operation
             Object obj = DragAndDrop.objectReferences[0];
 
-            if(obj is GameObject)
+            if(obj is GameObject gameObject)
             {
-                GameObject gameObject = (GameObject)obj;
                 //We need to know, if the dragged game object has GridObject component, and is needed to be placed in the grid.
                 GridObject gridObject = gameObject.GetComponent<GridObject>();
 
@@ -35,10 +34,10 @@ class ObjectsPlacement : Editor
                     return;
                 }
 
-                WorldManagement grid = GetSelectedGrid();
+                WorldManagement world = GetSelectedWorld();
 
                 //The game will contain at least 2 grids for objects, so we need to be sure, that needed grid is selected in the scene hierarchy.
-                if (grid == null)
+                if (world == null)
                 {
                     Debug.LogWarning("Select grid, you want your object be associated to!");
                 }
@@ -52,13 +51,13 @@ class ObjectsPlacement : Editor
                     //Remember, that Grid cells have left-bottom pivot.
                     Vector2Int cellPos = WorldManagement.CellFromWorld(worldPos);
                     //If cell is occupied, we do nothing and notify the editor about this mistake on his part.
-                    if (grid.GetCellStatus(cellPos) != CellStatus.Free)
+                    if (world.GetCellStatus(cellPos) != CellStatus.Free)
                     {
                         Debug.LogWarning("You can set your object only to a free cell!");
                     }
                     else
                     {
-                        InstantiateAndConnect(gameObject, grid, cellPos);
+                        InstantiateAndConnect(gameObject, new WorldPos(world, cellPos));
                     }
                 }
                 //This method "eats" the event, so no actious will be performed on DragRelease in in scene view.
@@ -68,7 +67,7 @@ class ObjectsPlacement : Editor
         }
 	}
 
-    private static void InstantiateAndConnect(GameObject gameObject, WorldManagement grid, Vector2Int cellPos)
+    private static void InstantiateAndConnect(GameObject gameObject, WorldPos Pos)
     {
         //Drag and drop contains prefab reference, 
         //so we need to actually instantiate new one instead of modifying the referenced one.
@@ -76,12 +75,11 @@ class ObjectsPlacement : Editor
         GridObject InstantiatedGridObj = InstantiatedObj.GetComponent<GridObject>();
 
         //We tweak instantiated obj values, so it will stick to a grid and occur on mouse position.
-        Transform objGrid = grid.GetComponentInChildren<ObjectsGrid>().transform;
+        Transform objGrid = Pos.World.GetComponentInChildren<ObjectsGrid>().transform;
         InstantiatedObj.transform.SetParent(objGrid);
-        InstantiatedGridObj.World = grid;
-        InstantiatedGridObj.Pos = cellPos;
+        InstantiatedGridObj.SetNewPosition(Pos);
 
-        grid.SetNewObjectTo(InstantiatedGridObj, cellPos);
+        Pos.World.SetNewObjectTo(InstantiatedGridObj, Pos.Vector);
 
         EditorUtility.SetDirty(InstantiatedGridObj);
 
@@ -93,7 +91,7 @@ class ObjectsPlacement : Editor
         }
     }
 
-    private static WorldManagement GetSelectedGrid()
+    private static WorldManagement GetSelectedWorld()
     {
         WorldManagement MainGrid = null;
         //Selection containt information about the GameObject selected in the hierarchy and is always available.

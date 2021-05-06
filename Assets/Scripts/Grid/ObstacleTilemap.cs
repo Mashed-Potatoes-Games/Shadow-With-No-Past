@@ -31,7 +31,7 @@ public class ObstacleTilemap : MonoBehaviour
     // world.EventManager.EntityMoved.AddListener(ShowEntititesBehindObjects);
     private void ShowEntititesBehindObjects(GridEntity entity)
     {
-        Vector2 cellCenter = entity.Pos + new Vector2(WorldManagement.TileOffset, WorldManagement.TileOffset);
+        Vector2 cellCenter = entity.Vector + new Vector2(WorldManagement.TileOffset, WorldManagement.TileOffset);
         if(tilemapCollider.OverlapPoint(cellCenter))
         {
             var tilePos = Obstacles.WorldToCell(cellCenter + new Vector2Int(0, -1));

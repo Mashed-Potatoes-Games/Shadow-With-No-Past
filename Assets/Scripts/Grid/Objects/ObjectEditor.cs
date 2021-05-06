@@ -50,9 +50,9 @@ public class ObjectEditor : MonoBehaviour
     {
         if (!Application.isPlaying && 
             IsConnectedToGrid && 
-            GridObj.World.GetEntityAt(GridObj.Pos) == GridObj)
+            GridObj.World.GetEntityAt(GridObj.Vector) == GridObj)
         {
-            GridObj.World.RemoveAt(GridObj, GridObj.Pos);
+            GridObj.World.RemoveAt(GridObj, GridObj.Vector);
         }
     }
 
