@@ -38,10 +38,13 @@ namespace ShadowWithNoPast.Entities.Abilities
         [field: SerializeField] public bool ReadyToUse { get; private set; } = true;
         [field: SerializeField] public bool EndsTurn { get; private set; } = true;
 
+        public WorldPos TargetToExecPos(WorldPos target) => Ability.TargetToExecPos(Caller, target);
         public AbilityTargets AvailableTargets() =>
             Ability.AvailableTargets(Caller.Pos);
         public AbilityTargets AvailableAttackPoints(WorldPos target) =>
             Ability.AvailableAttackPoints(target);
+        public List<WorldPos> ChangesTargetOnMovement(WorldPos initialTarget) =>
+            Ability.ChangesTargetOnMovement(Caller.Pos, initialTarget);
 
         public IEnumerator UseAbility()
         {
@@ -59,18 +62,24 @@ namespace ShadowWithNoPast.Entities.Abilities
             {
                 Debug.LogError("Effect values are null or don't contain values!");
             }
-            yield return Ability.Execute(Caller, target, EffectValues[0]);
-            var nextEffect = Ability.SecondaryEffect;
-            var i = 1;
-            while(nextEffect != null)
+            
+            var currAbility = Ability;
+            var i = 0;
+            while(currAbility != null)
             {
                 if(EffectValues.Length <= i)
                 {
-                    Debug.LogError("Secondary ability don't have it's effect value!");
+                    Debug.LogError("Ability don't have it's effect value!");
                     yield break;
                 }
-                yield return nextEffect.Execute(Caller, target, EffectValues[i]);
+                yield return Ability.Execute(new AbilityArgs { 
+                    Target = target,
+                    Caller = Caller,
+                    DistanceConstraint = DistanceConstraint,
+                    EffectValue = EffectValues[i] 
+                });
                 i++;
+                currAbility = currAbility.SecondaryEffect;
             }
 
             FinishExecution();

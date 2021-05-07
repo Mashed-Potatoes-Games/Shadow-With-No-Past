@@ -50,6 +50,7 @@ namespace ShadowWithNoPast.GameProcess
                 yield break;
             }
 
+            world.AttacksAccounter.Clear();
 
             var priorities = Enum.GetValues(typeof(TurnPriority));
             foreach (TurnPriority priority in priorities)

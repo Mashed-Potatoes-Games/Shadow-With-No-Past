@@ -16,8 +16,10 @@ public class WorldEventManager : MonoBehaviour
         world.Activated += world => WorldActivates?.Invoke(world);
         world.Inactivated += world => WorldDeactivates?.Invoke(world);
 
-        world.ObjectAdded += OnWorldObjectAdded;
-        world.ObjectRemoved += OnWorldObjectRemoved;
+        world.GetObjects().ForEach(obj => AddListenersToObject(obj));
+
+        world.ObjectAdded += AddListenersToObject;
+        world.ObjectRemoved += RemoveListenersToObject;
     }
     public event Action<WorldManagement> WorldActivates;
     public event Action<WorldManagement> WorldDeactivates;
@@ -25,11 +27,11 @@ public class WorldEventManager : MonoBehaviour
     public event Action<GridObject> ObjectAdded;
     public event Action<GridObject> ObjectRemoved;
 
-    public event Action<GridObject> ObjectMoved;
+    public event Action<GridObject, WorldPos, WorldPos> ObjectMoved;
 
     public event Action<GridEntity> EntityDied;
 
-    private void OnWorldObjectAdded(GridObject obj)
+    private void AddListenersToObject(GridObject obj)
     {
         ObjectAdded?.Invoke(obj);
         obj.Moved += OnObjectMovement;
@@ -40,7 +42,7 @@ public class WorldEventManager : MonoBehaviour
         }
     }
 
-    private void OnWorldObjectRemoved(GridObject obj)
+    private void RemoveListenersToObject(GridObject obj)
     {
         ObjectRemoved?.Invoke(obj);
 
@@ -57,8 +59,8 @@ public class WorldEventManager : MonoBehaviour
         EntityDied?.Invoke(obj);
     }
 
-    private void OnObjectMovement(GridObject obj)
+    private void OnObjectMovement(GridObject obj, WorldPos from, WorldPos to)
     {
-        ObjectMoved?.Invoke(obj);
+        ObjectMoved?.Invoke(obj, from, to);
     }
 }

@@ -39,7 +39,7 @@ namespace ShadowWithNoPast.Utils
                 {
                     return Direction.Right;
                 }
-                if(vector.x > 0)
+                if(vector.x < 0)
                 {
                     return Direction.Left;
                 }

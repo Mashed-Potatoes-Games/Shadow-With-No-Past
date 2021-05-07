@@ -16,7 +16,7 @@ namespace ShadowWithNoPast.Entities.Abilities
 
         AbilityTargets AvailableTargets(WorldPos executionPos);
         AbilityTargets AvailableAttackPoints(WorldPos target);
-        IEnumerator Execute(GridEntity caller, WorldPos target, int effectValue);
+        IEnumerator Execute(AbilityArgs args);
         List<WorldPos> TargetToAoe(GridEntity caller, WorldPos target);
     }
 
@@ -37,5 +37,13 @@ namespace ShadowWithNoPast.Entities.Abilities
         OnSelf,
         Directional,
         Pickable
+    }
+
+    public struct AbilityArgs
+    {
+        public GridEntity Caller;
+        public WorldPos Target;
+        public int EffectValue;
+        public int DistanceConstraint;
     }
 }

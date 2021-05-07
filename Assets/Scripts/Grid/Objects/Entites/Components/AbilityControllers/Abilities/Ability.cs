@@ -38,8 +38,11 @@ namespace ShadowWithNoPast.Entities.Abilities
 
         [field: SerializeField] public Ability SecondaryEffect { get; }
 
-        public IEnumerator Execute(GridEntity caller, WorldPos target, int effectValue)
+        public virtual IEnumerator Execute(AbilityArgs args)
         {
+            var target = args.Target;
+            var caller = args.Caller;
+            var effectValue = args.EffectValue;
             //Excessive transformation because other functions are made to work with Vector2Pos
             //Remove this after making all of the pos-related funcitons to work with TargetPos!
             if (target.World == null)
@@ -67,6 +70,13 @@ namespace ShadowWithNoPast.Entities.Abilities
 
             caller.SpriteController.ResetToDefault();
             yield break;
+        }
+
+        public virtual WorldPos TargetToExecPos(GridEntity caller, WorldPos target) => target;
+
+        public virtual List<WorldPos> ChangesTargetOnMovement(WorldPos executionPos, WorldPos initialTarget)
+        {
+            return null;
         }
 
         static IEnumerator FlagAtTheEnd(IEnumerator func, List<bool> flags, int pos)

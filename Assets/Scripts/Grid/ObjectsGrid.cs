@@ -120,7 +120,19 @@ public partial class ObjectsGrid : MonoBehaviour
 
         return entities;
     }
+
+    public List<GridObject> GetObjects()
+    {
+        var objects = new List<GridObject>();
+        foreach (GridObject obj in this.objects.Values)
+        {
+                objects.Add(obj);
+        }
+        return objects;
+    }
 }
+
+
 public enum ObjectType
 {
     Entity,

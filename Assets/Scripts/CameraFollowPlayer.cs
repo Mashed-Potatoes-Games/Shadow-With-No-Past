@@ -11,14 +11,14 @@ namespace Assets.Scripts
         private void Start()
         {
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<GridObject>();
-            player.Moved += Follow;
+            player.Moved += (obj, start, end) => Follow(obj);
         }
 
         private void Follow(GridObject obj)
         {
-            Vector3 newPos = obj.transform.position;
-            newPos.z = transform.position.z;
-            transform.position = newPos;
+            Vector3 Vector3Pos = obj.transform.position;
+            Vector3Pos.z = transform.position.z;
+            transform.position = Vector3Pos;
         }
     }
 }

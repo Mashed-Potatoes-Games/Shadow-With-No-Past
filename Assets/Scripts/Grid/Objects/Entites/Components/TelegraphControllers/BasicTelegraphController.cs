@@ -17,13 +17,18 @@ namespace ShadowWithNoPast.Entities
         public TelegraphElement AttackIndicator;
 
 
-        private GridEntity entity;
+        protected GridEntity entity;
         private new SpriteRenderer renderer;
         private IMovementController movement;
 
+
+        private WorldPos abilityTarget;
+        private PointerActions abilityActions;
         private GameObject abilityTelegraphs;
         private List<TelegraphElement> abilityTelegraphElements = new List<TelegraphElement>();
+
         private GameObject availableMovesTelegraphs;
+
         private GameObject availableAttackTelegraphs;
 
         private void Start()
@@ -174,9 +179,12 @@ namespace ShadowWithNoPast.Entities
             }
         }
 
-        public void TelegraphAbility(WorldPos target, AbilityInstance abilityInstance, bool showAttackValue = false, PointerActions actions = null)
+        public virtual void TelegraphAbility(WorldPos target, AbilityInstance abilityInstance, bool showAttackValue = false, PointerActions actions = null)
         {
             ClearAbility();
+            target = abilityInstance.TargetToExecPos(target);
+            abilityTarget = target;
+            abilityActions = actions;
             var telegraphDict = abilityInstance.GetTelegraphData(target);
             foreach(var pair in telegraphDict)
             {
@@ -228,6 +236,11 @@ namespace ShadowWithNoPast.Entities
                 abilityTelegraphs = null;
                 abilityTelegraphElements.Clear();
             }
+        }
+
+        public void RepaintAbility(AbilityInstance instance)
+        {
+            TelegraphAbility(abilityTarget, instance, false, abilityActions);
         }
     }
 }

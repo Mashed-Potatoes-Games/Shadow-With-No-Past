@@ -33,13 +33,12 @@ class ObjectsPlacement : Editor
                 {
                     return;
                 }
+                WorldsChanger changer = FindObjectOfType<WorldsChanger>();
+                WorldManagement world = changer != null ? changer.CurrentlyActive : null;
 
-                WorldManagement world = GetSelectedWorld();
-
-                //The game will contain at least 2 grids for objects, so we need to be sure, that needed grid is selected in the scene hierarchy.
                 if (world == null)
                 {
-                    Debug.LogWarning("Select grid, you want your object be associated to!");
+                    Debug.LogWarning("Worlds changer should be on scene and contain an active world.");
                 }
                 else
                 {
@@ -89,27 +88,5 @@ class ObjectsPlacement : Editor
         {
             EditorScript.IsConnectedToGrid = true;
         }
-    }
-
-    private static WorldManagement GetSelectedWorld()
-    {
-        WorldManagement MainGrid = null;
-        //Selection containt information about the GameObject selected in the hierarchy and is always available.
-        if (Selection.activeGameObject != null)
-        {
-            MainGrid = Selection.activeGameObject.GetComponent<WorldManagement>();
-            //First we try to see, is the selected object a MainGrid.
-            if (MainGrid == null)
-            {
-                //User still can choose the GridThat contains only objects,
-                //so the script will work exact way if either Main or Objects grid is selected.
-                ObjectsGrid ObjGrid = Selection.activeGameObject.GetComponent<ObjectsGrid>();
-                if (ObjGrid != null)
-                {
-                    MainGrid = ObjGrid.GetComponentInParent<WorldManagement>();
-                }
-            }
-        }
-        return MainGrid;
     }
 }

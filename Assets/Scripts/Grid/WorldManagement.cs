@@ -32,6 +32,8 @@ public class WorldManagement : MonoBehaviour
 
     public WorldEventManager EventManager;
 
+    public AbilitiesTargetsAccounter AttacksAccounter;
+
 
     public const float TileOffset = 0.5f;
 
@@ -45,10 +47,15 @@ public class WorldManagement : MonoBehaviour
 
     public void Awake()
     {
+        EventManager ??= GetComponent<WorldEventManager>();
+
         obstacles ??= GetComponentInChildren<ObstacleTilemap>();
         ground ??= GetComponentInChildren<GroundTilemap>();
         objects ??= GetComponentInChildren<ObjectsGrid>();
-        EventManager ??= GetComponentInChildren<WorldEventManager>();
+    }
+    private void Start()
+    {
+        AttacksAccounter = new AbilitiesTargetsAccounter(this);
     }
 
     public void SetActive()
@@ -71,10 +78,8 @@ public class WorldManagement : MonoBehaviour
         Inactivated?.Invoke(this);
     }
 
-    public List<GridEntity> GetEntities()
-    {
-        return objects.GetEntities();
-    }
+    public List<GridEntity> GetEntities() => objects.GetEntities();
+    public List<GridObject> GetObjects() => objects.GetObjects();
 
     private void SwitchAllRenderersToMainLayer(string worldLayerName)
     {

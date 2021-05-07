@@ -11,7 +11,7 @@ namespace ShadowWithNoPast.Entities
     public class GridObject : MonoBehaviour
     {
 
-        public event Action<GridObject> Moved;
+        public event Action<GridObject, WorldPos, WorldPos> Moved;
 
         [field: SerializeField]
         public WorldPos Pos { get; private set; }
@@ -35,16 +35,18 @@ namespace ShadowWithNoPast.Entities
         /// To move objects properly use IMovementController, which works with world grid or with world itself.
         /// Using it in other components will inevitably lead to bugs.
         /// </summary>
-        public void SetNewPosition(WorldPos pos) 
+        public void SetNewPosition(WorldPos newPos) 
         {
-            Pos = pos;
+            var oldPos = Pos;
+            Pos = newPos;
             SnapToGrid();
-            Moved?.Invoke(this);
+            Moved?.Invoke(this, oldPos, newPos);
         }
 
         //Entites can be the different size and offsets are used to position the object in the center of the grid.
         //Changing the sprite center to custom fucks up hard with it's flip.
         //This values are for 512x512px sprites, which corresponds to 2x2 units in Unity.
+        //Can (and may) be changed after changing tiles to be tied to a center, rather than a corner
         [field: SerializeField]
         public virtual float XOffset { get; set; } = 0.5f;
         [field: SerializeField]
@@ -55,11 +57,7 @@ namespace ShadowWithNoPast.Entities
         #region Empty Awake, Start and Update ready to be overriden.
         // Made in case global objects logic is needed.
         protected virtual void Awake() { }
-
-        // Start is called before the first frame update
         protected virtual void Start() { }
-
-        // Update is called once per frame
         protected virtual void Update() { }
         #endregion
 
