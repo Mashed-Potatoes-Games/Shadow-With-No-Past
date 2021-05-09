@@ -12,8 +12,6 @@ namespace ShadowWithNoPast.Entities
         {
             base.EnterState();
 
-            stateMachine.IsActiveTurn = true;
-
             stateMachine.Abilities.AbilityUsedWithNoTarget += OnAbilityPicked;
         }
 

@@ -24,15 +24,13 @@ namespace ShadowWithNoPast.GameProcess
             StartCoroutine(TurnsCoroutine());
         }
 
-        public IEnumerator TurnsCoroutine()
+        private IEnumerator TurnsCoroutine()
         {
             while (IsWorking)
             {
                 yield return InitiateQueueAndTelegraph();
-                Debug.Log("Enemies telegraph is over");
 
                 yield return MakeTurns();
-                Debug.Log("Enemies turn is over");
             }
 
         }

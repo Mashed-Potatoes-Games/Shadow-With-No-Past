@@ -31,6 +31,7 @@ namespace ShadowWithNoPast.Entities
 
         private void Awake()
         {
+            //TODO Rewrite
             Entity = GetComponent<GridEntity>();
             Abilities = GetComponent<IAbilitiesController>();
             Movement = GetComponent<IMovementController>();

@@ -3,36 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using ShadowWithNoPast.Entities.Abilities;
 
-public class AbilityButtonsController : MonoBehaviour
+namespace ShadowWithNoPast.UI
 {
-    private IAbilitiesController playerAbilities;
-    [SerializeField]
-    private List<AbilityUIButton> abilityButtons;
-    private void Awake()
+    public class AbilityButtonsController : MonoBehaviour
     {
-        var player = GameObject.FindGameObjectWithTag("Player");
-        if(player is null)
+        private IAbilitiesController playerAbilities;
+        [SerializeField]
+        private List<AbilityUIButton> abilityButtons;
+        private void Awake()
         {
-            Debug.LogWarning("No player on scene, abilities buttons won't be initialized");
-            return;
-        }
-        playerAbilities = player.GetComponent<IAbilitiesController>();
-    }
-
-    private void Start()
-    {
-        if(playerAbilities is null)
-        {
-            return;
-        }
-
-        for(int i = 0; i < abilityButtons.Count; i++)
-        {
-            if(playerAbilities.Count <= i)
+            var player = GameObject.FindGameObjectWithTag("Player");
+            if (player is null)
             {
-                break;
+                Debug.LogWarning("No player on scene, abilities buttons won't be initialized");
+                return;
             }
-            abilityButtons[i].TieToAbility(playerAbilities[i]);
+            playerAbilities = player.GetComponent<IAbilitiesController>();
+        }
+
+        private void Start()
+        {
+            if (playerAbilities is null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < abilityButtons.Count; i++)
+            {
+                if (playerAbilities.Count <= i)
+                {
+                    break;
+                }
+                abilityButtons[i].TieToAbility(playerAbilities[i]);
+            }
         }
     }
 }

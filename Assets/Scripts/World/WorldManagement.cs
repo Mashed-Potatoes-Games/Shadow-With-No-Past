@@ -7,6 +7,7 @@ using UnityEngine.Rendering;
 using System.Collections;
 using ShadowWithNoPast.Utils;
 using ShadowWithNoPast.Entities.Abilities;
+using ShadowWithNoPast.Grid;
 
 [ExecuteAlways]
 [RequireComponent(typeof(Grid))]

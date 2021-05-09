@@ -1,16 +1,16 @@
 ﻿using ShadowWithNoPast.Entities;
 using UnityEngine;
 
-namespace Assets.Scripts
+namespace ShadowWithNoPast.Utils
 {
     [RequireComponent(typeof(Camera))]
     public class CameraFollowPlayer : MonoBehaviour
     {
-        private GridObject player;
+        private GridEntity player;
 
         private void Start()
         {
-            player = GameObject.FindGameObjectWithTag("Player").GetComponent<GridObject>();
+            player = Player.Entity;
             player.Moved += (obj, start, end) => Follow(obj);
         }
 

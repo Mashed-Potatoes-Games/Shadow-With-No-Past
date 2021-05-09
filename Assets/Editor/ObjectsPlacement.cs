@@ -2,6 +2,7 @@
 using UnityEditor;
 using System.Collections;
 using ShadowWithNoPast.Entities;
+using ShadowWithNoPast.GameProcess;
 
 //This script will always be loaded
 [InitializeOnLoad()]

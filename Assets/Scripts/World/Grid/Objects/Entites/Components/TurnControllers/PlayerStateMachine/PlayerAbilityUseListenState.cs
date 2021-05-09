@@ -38,6 +38,11 @@ namespace ShadowWithNoPast.Entities
         private void CancelAbility(InputAction.CallbackContext context)
         {
             abilityInstance.Cancel();
+            if(stateMachine.MadeMove)
+            {
+                stateMachine.SetState(new PlayerAbilityPickListenState(player, stateMachine));
+                return;
+            }
             stateMachine.SetState(new PlayerMoveListenState(player, stateMachine));
         }
 

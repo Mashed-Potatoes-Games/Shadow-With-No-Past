@@ -43,12 +43,13 @@ namespace ShadowWithNoPast.Entities
         private void OnAvailableMoveClick(TelegraphElement caller, WorldPos target)
         {
             var path = stateMachine.Movement.GetPath(target);
-            stateMachine.StartCoroutine(MoveAndEndTurn(path));
+            stateMachine.StartCoroutine(MoveAndSwitchToAbilityListen(path));
         }
-        private IEnumerator MoveAndEndTurn(Queue<WorldPos> path)
+        private IEnumerator MoveAndSwitchToAbilityListen(Queue<WorldPos> path)
         {
             yield return stateMachine.Movement.MoveWithDelay(path);
-            stateMachine.EndTurn();
+            stateMachine.MadeMove = true;
+            stateMachine.SetState(new PlayerAbilityPickListenState(player, stateMachine));
         }
     }
 }

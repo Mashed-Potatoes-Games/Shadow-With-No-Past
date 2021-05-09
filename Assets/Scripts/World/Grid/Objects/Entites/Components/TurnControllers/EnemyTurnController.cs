@@ -38,21 +38,26 @@ namespace ShadowWithNoPast.Entities
         public IEnumerator MoveAndTelegraphAction()
         {
             entity.TelegraphController.ClearAll();
-            GridEntity player = FindPlayer();
-            if (player is null || abilities is null)
+            GridEntity player = Player.Entity;
+            if (player == null || abilities == null)
             {
                 yield break;
             }
 
             var availableMoves = movement.GetAvailableMoves();
+            //TODO: Add GetHash() to Ability instance.
             var availableAttacks = new Dictionary<AbilityInstance, List<WorldPos>>();
             var inavailableAttacks = new Dictionary<AbilityInstance, List<WorldPos>>();
             foreach (var ability in abilities)
             {
+                if(!ability.ReadyToUse)
+                {
+                    continue;
+                }
                 var attackTargets = ability.AvailableAttackPoints(player.Pos);
                 var attackPos = attackTargets.positions;
                 var placesToAttack = availableMoves.Intersect(attackPos).ToList();
-                if (placesToAttack.Count() > 0 && ability.ReadyToUse)
+                if (placesToAttack.Count() > 0)
                 {
                     availableAttacks.Add(ability, placesToAttack);
                     continue;
@@ -118,22 +123,5 @@ namespace ShadowWithNoPast.Entities
             savedTarget = null;
             telegraphController.ClearAbility();
         }
-
-
-
-        public GridEntity FindPlayer()
-        {
-            var entities = transform.parent.GetComponentsInChildren<GridEntity>();
-            foreach (var entity in entities)
-            {
-                if (entity.CompareTag("Player"))
-                {
-                    return entity;
-                }
-            }
-
-            return null;
-        }
     }
-
 }

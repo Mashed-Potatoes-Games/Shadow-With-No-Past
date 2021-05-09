@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 1772563338140461605}
   - component: {fileID: 8018881424426618216}
   - component: {fileID: 1036385629388432871}
+  - component: {fileID: 7312443319968780521}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -103,6 +104,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e796dc3f883ba24381667174b8fcc5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Pos>k__BackingField:
+    World: {fileID: 0}
+    Vector: {x: 0, y: 0}
   <XOffset>k__BackingField: 0.5
   <YOffset>k__BackingField: 1.1
   <ZValue>k__BackingField: 0
@@ -223,6 +227,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsConnectedToGrid: 0
+--- !u!114 &7312443319968780521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382708216090105647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d53e48c298636c947ad36321022c05a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7544016478213492791
 PrefabInstance:
   m_ObjectHideFlags: 0
