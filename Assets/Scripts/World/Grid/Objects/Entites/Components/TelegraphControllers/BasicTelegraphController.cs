@@ -24,8 +24,7 @@ namespace ShadowWithNoPast.Entities
 
         private WorldPos abilityTarget;
         private PointerActions abilityActions;
-        private GameObject abilityTelegraphs;
-        private List<TelegraphElement> abilityTelegraphElements = new List<TelegraphElement>();
+        private TelegraphElementGroup abilityTelegraphGroup;
 
         private GameObject availableMovesTelegraphs;
 
@@ -179,62 +178,45 @@ namespace ShadowWithNoPast.Entities
             }
         }
 
-        public virtual void TelegraphAbility(WorldPos target, AbilityInstance abilityInstance, bool showAttackValue = false, PointerActions actions = null)
+        public virtual void TelegraphAbility(WorldPos target, AbilityInstance abilityInstance, bool isActive = false, PointerActions actions = null)
         {
             ClearAbility();
             target = abilityInstance.TargetToExecPos(target);
             abilityTarget = target;
             abilityActions = actions;
-            var telegraphDict = abilityInstance.GetTelegraphData(target);
-            foreach(var pair in telegraphDict)
+            TelegraphData telegraphData = abilityInstance.GetTelegraphData(target);
+            abilityTelegraphGroup = telegraphData.Instantiate(renderer.sortingLayerID, actions);
+            if(isActive)
             {
-                TelegraphElement elementPrefab = pair.Key.Element;
-                int value = pair.Key.Value;
-
-                abilityTelegraphs = new GameObject("AttackTelegraphs");
-                abilityTelegraphs.transform.SetParent(transform.parent);
-
-                foreach (var targetPos in pair.Value)
-                {
-                    TelegraphElement elementInstance = InstantiateTelegraphElement(
-                        targetPos,
-                        elementPrefab,
-                        abilityTelegraphs,
-                        null,
-                        abilityTelegraphElements);
-
-                    elementInstance.SetTextValue(value);
-                    if(!showAttackValue)
-                    {
-                        elementInstance.ToggleTextVisibilty(false);
-                    }
-                }
+                abilityTelegraphGroup.Highlight();
+            }
+            else
+            {
+                abilityTelegraphGroup.RemoveHighlight();
             }
         }
 
         public void HighlighAbility()
         {
-            foreach(var telegraphElem in abilityTelegraphElements)
+            if(abilityTelegraphGroup != null)
             {
-                telegraphElem.ToggleTextVisibilty(true);
+                abilityTelegraphGroup.Highlight();
             }
         }
 
         public void RemoveHighlighAbility()
         {
-            foreach (var telegraphElem in abilityTelegraphElements)
+            if(abilityTelegraphGroup != null)
             {
-                telegraphElem.ToggleTextVisibilty(false);
+                abilityTelegraphGroup.RemoveHighlight();
             }
         }
 
         public void ClearAbility()
         {
-            if (abilityTelegraphs != null)
+            if (abilityTelegraphGroup != null)
             {
-                Destroy(abilityTelegraphs);
-                abilityTelegraphs = null;
-                abilityTelegraphElements.Clear();
+                Destroy(abilityTelegraphGroup.gameObject);
             }
         }
 

@@ -17,3 +17,4 @@ MonoBehaviour:
   action: {fileID: 11400000, guid: f16791c085d9baf40a8f7af76d972d32, type: 2}
   defaultCooldown: 0
   defaultDistanceConstraint: 2
+  ProjectileTracer: {fileID: 4682669683384433524, guid: 28ecba5e6410886498d9a0bb4a08a750, type: 3}

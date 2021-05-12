@@ -26,7 +26,7 @@ namespace ShadowWithNoPast.Entities
                 },
                 OnPointerLeave = (caller, target) =>
                 {
-                    caller.RemoveHighligh();
+                    caller.RemoveHighlight();
                 }
             };
 

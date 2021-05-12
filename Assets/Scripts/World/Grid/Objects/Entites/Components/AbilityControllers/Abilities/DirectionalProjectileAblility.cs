@@ -12,6 +12,8 @@ namespace ShadowWithNoPast.Entities.Abilities
     {
         public override AbilityTargetType Type => AbilityTargetType.Directional;
 
+        public TelegraphElement ProjectileTracer;
+
 
         public override AbilityTargets AvailableTargets(WorldPos executionPos)
         {
@@ -27,6 +29,24 @@ namespace ShadowWithNoPast.Entities.Abilities
         {
             args.Target = TargetToExecPos(args.Caller, args.Target);
             yield return base.Execute(args);
+        }
+
+        public override List<SingleTelegraphData> GetHelpingTelegraphs(GridEntity caller, WorldPos target)
+        {
+            Direction? dir = CoordinateUtils.GetDirectionFromVector(target.Vector - caller.Vector); if (dir == null)
+            {
+                Debug.LogError("Directional ability was called with non-directional target. There must be a mistake in which target was provided or picked!");
+                return null;
+            }
+            List<SingleTelegraphData> helpTelegraphs = new List<SingleTelegraphData>();
+            Vector2Int step = CoordinateUtils.GetVectorFromDirection(dir.Value);
+            WorldPos pos = caller.Pos + step;
+            while(pos != target)
+            {
+                helpTelegraphs.Add(new SingleTelegraphData(ProjectileTracer, pos, 0, dir));
+                pos += step;
+            }
+            return helpTelegraphs;
         }
 
         public override WorldPos TargetToExecPos(GridEntity caller, WorldPos target)

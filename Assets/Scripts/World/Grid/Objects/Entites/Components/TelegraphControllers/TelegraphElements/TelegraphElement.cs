@@ -19,13 +19,11 @@ namespace ShadowWithNoPast.Entities
         public event Action<TelegraphElement, WorldPos> PointerEntered;
         public event Action<TelegraphElement, WorldPos> PointerLeft;
 
-        [NonSerialized]
         public GridObject GridObj;
-        [NonSerialized]
         public SpriteRenderer Renderer;
         public TextMeshProUGUI Text;
         public new Collider2D collider;
-        private Color savedColorState;
+        private Color? savedColorState;
 
         void Awake()
         {
@@ -39,14 +37,6 @@ namespace ShadowWithNoPast.Entities
             if (Text != null)
             {
                 Text.text = value.ToString();
-            }
-        }
-
-        public void HideText()
-        {
-            if (Text != null)
-            {
-                Text.enabled = false;
             }
         }
 
@@ -65,17 +55,22 @@ namespace ShadowWithNoPast.Entities
             PointerLeft?.Invoke(this, GridObj.Pos);
         }
 
-        public void Highlight()
+        public virtual void Highlight()
         {
+            ToggleTextVisibilty(true);
             savedColorState = Renderer.color;
             Color denseColor = Renderer.color;
             denseColor.a = 1;
             Renderer.color = denseColor;
         }
 
-        public void RemoveHighligh()
+        public virtual void RemoveHighlight()
         {
-            Renderer.color = savedColorState;
+            ToggleTextVisibilty(false);
+            if(savedColorState != null)
+            {
+                Renderer.color = savedColorState.Value;
+            }
         }
 
         internal void ToggleCollider(bool enabled)
@@ -86,7 +81,7 @@ namespace ShadowWithNoPast.Entities
             }
         }
 
-        internal void ToggleTextVisibilty(bool enabled)
+        internal virtual void ToggleTextVisibilty(bool enabled)
         {
             if (Text != null)
             {

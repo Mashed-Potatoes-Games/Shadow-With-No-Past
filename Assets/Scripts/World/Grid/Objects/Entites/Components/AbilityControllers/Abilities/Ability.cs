@@ -71,6 +71,10 @@ namespace ShadowWithNoPast.Entities.Abilities
             caller.SpriteController.ResetToDefault();
             yield break;
         }
+        public virtual List<SingleTelegraphData> GetHelpingTelegraphs(GridEntity caller, WorldPos target)
+        {
+            return null;
+        }
 
         public virtual WorldPos TargetToExecPos(GridEntity caller, WorldPos target) => target;
 

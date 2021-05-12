@@ -90,21 +90,24 @@ namespace ShadowWithNoPast.Entities.Abilities
             Cancelled?.Invoke();
         }
 
-        public Dictionary<TelegraphElementWithValue, List<WorldPos>> GetTelegraphData(WorldPos target)
+        public TelegraphData GetTelegraphData(WorldPos target)
         {
             var i = 0;
-            var telegraphData = new Dictionary<TelegraphElementWithValue, List<WorldPos>>();
+            var telegraphData = new TelegraphData();
             var currentAbility = Ability;
+            List<SingleTelegraphData> helpingTelegraphs = currentAbility.GetHelpingTelegraphs(Caller, target);
+            if (helpingTelegraphs != null)
+            {
+                telegraphData.Elements.AddRange(helpingTelegraphs);
+            }
+
             do
             {
-                var elementWithValue = new TelegraphElementWithValue(
-                    currentAbility.Action,
-                    EffectValues[i]
-                    );
-
-                telegraphData.Add(
-                    elementWithValue, 
-                    currentAbility.TargetToAoe(Caller, target));
+                foreach(var pos in currentAbility.TargetToAoe(Caller, target))
+                {
+                    SingleTelegraphData singleTelegraph = new SingleTelegraphData(currentAbility.Action.TelegraphElement, pos, EffectValues[i]);
+                    telegraphData.Elements.Add(singleTelegraph);
+                }
 
                 i++;
                 currentAbility = Ability.SecondaryEffect;
@@ -112,27 +115,6 @@ namespace ShadowWithNoPast.Entities.Abilities
             while (currentAbility != null && i < EffectValues.Length);
 
             return telegraphData;
-        }
-
-        public struct TelegraphElementWithValue
-        {
-            public TelegraphElement Element;
-            public bool IsValueDependent;
-            public int Value;
-
-            public TelegraphElementWithValue(TelegraphElement element, bool isValueDependent = false, int value = 0)
-            {
-                Element = element;
-                IsValueDependent = isValueDependent;
-                Value = value;
-            }
-
-            public TelegraphElementWithValue(AbilityAction action, int value = 0)
-            {
-                Element = action.TelegraphElement;
-                IsValueDependent = action.IsValueDependent;
-                Value = value;
-            }
         }
 
         private void FinishExecution()
