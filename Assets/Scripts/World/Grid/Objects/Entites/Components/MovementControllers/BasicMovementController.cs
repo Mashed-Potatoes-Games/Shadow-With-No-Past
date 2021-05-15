@@ -93,7 +93,7 @@ namespace ShadowWithNoPast.Entities
         {
             if(start.World != end.World)
             {
-                throw new NotImplementedException();
+                return null;
             }
             var posQueue = BreadthFirstSearch.FindPath(start, end, IsCellFree);
             return posQueue;

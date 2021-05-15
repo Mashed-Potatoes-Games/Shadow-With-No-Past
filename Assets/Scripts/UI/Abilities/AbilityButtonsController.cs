@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ShadowWithNoPast.Entities.Abilities;
+using ShadowWithNoPast.Entities;
 
 namespace ShadowWithNoPast.UI
 {
@@ -12,7 +13,8 @@ namespace ShadowWithNoPast.UI
         private List<AbilityUIButton> abilityButtons;
         private void Awake()
         {
-            var player = GameObject.FindGameObjectWithTag("Player");
+            var player = Player.Entity;
+
             if (player is null)
             {
                 Debug.LogWarning("No player on scene, abilities buttons won't be initialized");

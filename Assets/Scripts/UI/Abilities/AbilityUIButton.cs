@@ -43,7 +43,7 @@ namespace ShadowWithNoPast.UI
             abilityInstance.Updated += Redraw;
             abilityInstance.UsedWithNoTarget += SetInUse;
 
-            //button.onClick.RemoveAllListeners();
+            button.onClick.RemoveAllListeners();
             button.onClick.AddListener(UseAbility);
 
             Redraw();
