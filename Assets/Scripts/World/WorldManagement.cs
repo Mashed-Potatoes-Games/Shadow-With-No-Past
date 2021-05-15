@@ -1,5 +1,6 @@
 ﻿using ShadowWithNoPast.Entities;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using ShadowWithNoPast.Algorithms;
@@ -37,9 +38,12 @@ public class WorldManagement : MonoBehaviour
 
 
     public const float TileOffset = 0.5f;
+    public const string INACTIVE_WORLD_RENDERER_PREFIX = "BackWorld/";
+    public const string ACTIVE_WORLD_RENDERER_PREFIX = "FrontWorld/";
 
+    public bool Active { get => active; private set => active = value; }
+    public string RendererPrefix { get => Active ? ACTIVE_WORLD_RENDERER_PREFIX : INACTIVE_WORLD_RENDERER_PREFIX; }
 
-     public bool Active { get => active; private set => active = value; }
     [SerializeField]
     private bool active;
 
@@ -63,7 +67,7 @@ public class WorldManagement : MonoBehaviour
     {
         Active = true;
 
-        const string activeWorldLayerName = "FrontWorld/";
+        const string activeWorldLayerName = ACTIVE_WORLD_RENDERER_PREFIX;
         SwitchAllRenderersToMainLayer(activeWorldLayerName);
 
         Activated?.Invoke(this);
@@ -73,7 +77,7 @@ public class WorldManagement : MonoBehaviour
     {
         Active = false;
 
-        const string inactiveWorldLayerName = "BackWorld/";
+        const string inactiveWorldLayerName = INACTIVE_WORLD_RENDERER_PREFIX;
         SwitchAllRenderersToMainLayer(inactiveWorldLayerName);
 
         Inactivated?.Invoke(this);
@@ -89,6 +93,13 @@ public class WorldManagement : MonoBehaviour
         foreach (var renderer in renderers)
         {
             RendererUtil.ChangeRenderToLayer(renderer, worldLayerName);
+        }
+
+        var canvases = GetComponentsInChildren<Canvas>(); 
+        
+        foreach (var canvas in canvases)
+        {
+            RendererUtil.ChangeCanvasToLayer(canvas, worldLayerName);
         }
     }
 

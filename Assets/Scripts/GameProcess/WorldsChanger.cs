@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using ShadowWithNoPast.Utils;
 
 namespace ShadowWithNoPast.GameProcess
 {
@@ -84,6 +85,12 @@ namespace ShadowWithNoPast.GameProcess
                 currentWorld.Remove(obj);
                 other.SetNewObjectTo(obj, vector);
                 obj.SetNewPosition(new WorldPos(other, vector));
+                RendererUtil.ChangeRenderToLayer(obj.GetComponent<Renderer>(), obj.World.RendererPrefix );
+                var canvas = obj.GetComponentInChildren<Canvas>();
+                if(canvas != null)
+                {
+                    RendererUtil.ChangeCanvasToLayer(canvas, obj.World.RendererPrefix );
+                }
             }
         }
     }
