@@ -1,5 +1,8 @@
+using ShadowWithNoPast.Entities;
 using System;
 using UnityEngine;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace ShadowWithNoPast.GameProcess
 {
@@ -68,6 +71,20 @@ namespace ShadowWithNoPast.GameProcess
             CurrentlyInactive.SetActive();
 
             (CurrentlyActive, CurrentlyInactive) = (CurrentlyInactive, CurrentlyActive);
+        }
+
+        public void MoveToOtherWorld(GridObject obj)
+        {
+            WorldManagement currentWorld = obj.World;
+            WorldManagement other = new List<WorldManagement> { CurrentlyActive, CurrentlyInactive }
+            .Find((world) => currentWorld != world);
+            var vector = obj.Vector;
+            if (other.GetCellStatus(vector) == CellStatus.Free)
+            {
+                currentWorld.Remove(obj);
+                other.SetNewObjectTo(obj, vector);
+                obj.SetNewPosition(new WorldPos(other, vector));
+            }
         }
     }
 }

@@ -160,6 +160,11 @@ public class WorldManagement : MonoBehaviour
         return objects.GetEntityAt(pos);
     }
 
+    public void Remove(GridObject obj)
+    {
+        RemoveAt(obj, obj.Vector);
+    }
+
     public void RemoveAt(GridObject obj, Vector2Int pos)
     {
         objects.RemoveAt(obj, pos);

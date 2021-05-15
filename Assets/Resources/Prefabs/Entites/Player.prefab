@@ -201,6 +201,13 @@ MonoBehaviour:
     RemainingCooldown: 0
     <ReadyToUse>k__BackingField: 1
     <EndsTurn>k__BackingField: 1
+  - Caller: {fileID: 382708216090105643}
+    Ability: {fileID: 11400000, guid: b7f4abb227823dd4cabb1125247d64f4, type: 2}
+    EffectValues: 01000000
+    CooldownOnUse: 0
+    RemainingCooldown: 0
+    <ReadyToUse>k__BackingField: 1
+    <EndsTurn>k__BackingField: 1
 --- !u!114 &8018881424426618216
 MonoBehaviour:
   m_ObjectHideFlags: 0

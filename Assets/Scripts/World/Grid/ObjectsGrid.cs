@@ -105,6 +105,7 @@ public partial class ObjectsGrid : MonoBehaviour
         }
         objects.Add(pos, obj);
         obj.SetNewPosition(pos);
+        obj.transform.SetParent(transform);
     }
 
     public List<GridEntity> GetEntities()

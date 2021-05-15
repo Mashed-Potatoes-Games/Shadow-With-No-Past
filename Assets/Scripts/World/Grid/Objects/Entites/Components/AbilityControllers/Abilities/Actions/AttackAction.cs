@@ -9,7 +9,7 @@ using ShadowWithNoPast.Utils;
 
 namespace ShadowWithNoPast.Entities.Abilities
 {
-    [CreateAssetMenu(fileName = "AttackAction", menuName = "Abilities/Actions/AttackAction", order = 1)]
+    [CreateAssetMenu(fileName = "AttackAction", menuName = "Abilities/Actions/AttackAction")]
     class AttackAction : AbilityAction
     {
         public override IEnumerator Execute(WorldPos targetPos, int effectValue)

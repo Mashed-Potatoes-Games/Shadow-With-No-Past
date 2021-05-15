@@ -12,14 +12,12 @@ namespace ShadowWithNoPast.Entities
     public class BasicMovementController : MonoBehaviour, IMovementController
     {
         private GridEntity entity;
-        private WorldManagement world;
 
         private float delayInSecBetweenCellsMove = 0.1f;
 
         void Start()
         {
             entity = GetComponent<GridEntity>();
-            world = entity.World;
         }
 
         public Queue<WorldPos> GetPath(WorldPos targetPos, bool isSearchStrict = true)
@@ -86,7 +84,7 @@ namespace ShadowWithNoPast.Entities
         private void InstantMoveTo(WorldPos targetPos)
         {
             entity.FaceTo(targetPos.Vector);
-            world.MoveInstantTo(entity, targetPos);
+            entity.World.MoveInstantTo(entity, targetPos);
         }
 
         public Queue<WorldPos> FindClearPath(WorldPos start, WorldPos end)
@@ -106,7 +104,7 @@ namespace ShadowWithNoPast.Entities
 
         public bool IsCellFree(Vector2Int pos)
         {
-            return world.GetCellStatus(pos) == CellStatus.Free;
+            return entity.World.GetCellStatus(pos) == CellStatus.Free;
         }
 
         public Queue<WorldPos> FindPathThroughEntities(WorldPos start, WorldPos end)
