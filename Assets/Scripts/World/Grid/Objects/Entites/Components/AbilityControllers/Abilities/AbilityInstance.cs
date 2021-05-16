@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -10,15 +11,6 @@ namespace ShadowWithNoPast.Entities.Abilities
     [Serializable]
     public class AbilityInstance
     {
-
-        public AbilityInstance(GridEntity caller, Ability ability, params int[] effectValues)
-        {
-            Caller = caller;
-            Ability = ability;
-            EffectValues = effectValues;
-            CooldownOnUse = Ability.DefaultCooldown;
-        }
-
         public event Action UsedWithNoTarget;
         public event Action Cancelled;
         public event Action Updated;
@@ -27,16 +19,27 @@ namespace ShadowWithNoPast.Entities.Abilities
         [HideInInspector]
         public GridEntity Caller;
         public Ability Ability;
+        [SerializeField]
+        public int[] EffectValues;
+        //public ReadyAction[] ReadyActions;
         public AudioClip AbilitySound => Ability.AbilitySound;
         public Sprite Icon => Ability.Icon;
-        public int[] EffectValues = { 1 };
         public int DistanceConstraint => Ability.DistanceConstraint;
         public int CooldownOnUse;
         [HideInInspector]
         public int RemainingCooldown = 0;
 
-        [field: SerializeField] public bool ReadyToUse { get; private set; } = true;
+        [field: SerializeField, HideInInspector] public bool ReadyToUse { get; private set; } = true;
         [field: SerializeField] public bool EndsTurn { get; private set; } = true;
+
+        public AbilityInstance(GridEntity caller, Ability ability, params int[] effectValues)
+        {
+            Caller = caller;
+            Ability = ability;
+            CooldownOnUse = Ability.DefaultCooldown;
+            EffectValues = new int[Ability.Actions.Length];
+            effectValues.CopyTo(EffectValues, 0);
+        }
 
         public WorldPos TargetToExecPos(WorldPos target) => Ability.TargetToExecPos(Caller, target);
         public AbilityTargets AvailableTargets() =>
@@ -48,6 +51,10 @@ namespace ShadowWithNoPast.Entities.Abilities
 
         public IEnumerator UseAbility()
         {
+            if (!Caller.TurnController.IsActiveTurn)
+            {
+                yield break;
+            }
             if (Ability.Type == AbilityTargetType.OnSelf)
             {
                 yield return UseAbility(Caller.Pos);
@@ -58,30 +65,16 @@ namespace ShadowWithNoPast.Entities.Abilities
 
         public IEnumerator UseAbility(WorldPos target)
         {
-            if(EffectValues is null || EffectValues.Length == 0)
+            target = Ability.TargetToExecPos(Caller, target);
+            for (int i = 0; i < Ability.Actions.Length; i++)
             {
-                Debug.LogError("Effect values are null or don't contain values!");
-            }
-            
-            var currAbility = Ability;
-            var i = 0;
-            while(currAbility != null)
-            {
-                if(EffectValues.Length <= i)
-                {
-                    Debug.LogError("Ability don't have it's effect value!");
-                    yield break;
-                }
-                yield return Ability.Execute(new AbilityArgs { 
-                    Target = target,
-                    Caller = Caller,
-                    DistanceConstraint = DistanceConstraint,
-                    EffectValue = EffectValues[i] 
-                });
-                i++;
-                currAbility = currAbility.SecondaryEffect;
-            }
+                ActionWithAoe actionWithAoe = Ability.Actions[i];
+                Caller.FaceTo(target.Vector);
+                Caller.SpriteController.SetSprite(Ability.ExecutionSprite);
+                yield return actionWithAoe.Execute(Caller, target, EffectValues[i]);
 
+                Caller.SpriteController.ResetToDefault();
+            }
             FinishExecution();
         }
 
@@ -92,29 +85,41 @@ namespace ShadowWithNoPast.Entities.Abilities
 
         public TelegraphData GetTelegraphData(WorldPos target)
         {
-            var i = 0;
+
             var telegraphData = new TelegraphData();
-            var currentAbility = Ability;
-            List<SingleTelegraphData> helpingTelegraphs = currentAbility.GetHelpingTelegraphs(Caller, target);
+            List<SingleTelegraphData> helpingTelegraphs = Ability.GetAbilityTelegraphs(Caller, target);
             if (helpingTelegraphs != null)
             {
                 telegraphData.Elements.AddRange(helpingTelegraphs);
             }
 
-            do
+            if(Ability.Actions == null || Ability.Actions.Length == 0)
             {
-                foreach(var pos in currentAbility.TargetToAoe(Caller, target))
-                {
-                    SingleTelegraphData singleTelegraph = new SingleTelegraphData(currentAbility.Action.TelegraphElement, pos, EffectValues[i]);
-                    telegraphData.Elements.Add(singleTelegraph);
-                }
-
-                i++;
-                currentAbility = Ability.SecondaryEffect;
+                Debug.LogWarning("Ability has no actions");
+                return telegraphData;
             }
-            while (currentAbility != null && i < EffectValues.Length);
 
+            for (int i = 0; i < Ability.Actions.Length; i++)
+            {
+                ActionWithAoe ActionWithAoe = Ability.Actions[i];
+                if (ActionWithAoe.Pattern == null)
+                {
+                    AddTelegraph(ref telegraphData, ActionWithAoe.Action.TelegraphElement, target, EffectValues[i]);
+                    continue;
+                }
+                foreach (var pos in ActionWithAoe.Pattern.TargetToAoe(Caller, target))
+                {
+                    AddTelegraph(ref telegraphData, ActionWithAoe.Action.TelegraphElement, pos, EffectValues[i]);
+                }
+            }
             return telegraphData;
+        }
+
+        private static void AddTelegraph(ref TelegraphData telegraphData, TelegraphElement element, WorldPos pos, int effectValue)
+        {
+            SingleTelegraphData singleTelegraph =
+                                    new SingleTelegraphData(element, pos, effectValue);
+            telegraphData.Elements.Add(singleTelegraph);
         }
 
         private void FinishExecution()
@@ -130,10 +135,10 @@ namespace ShadowWithNoPast.Entities.Abilities
 
         public void OnTurnPassed()
         {
-            if(RemainingCooldown > 0)
+            if (RemainingCooldown > 0)
             {
                 RemainingCooldown--;
-                if(RemainingCooldown == 0)
+                if (RemainingCooldown == 0)
                 {
                     ReadyToUse = true;
                 }

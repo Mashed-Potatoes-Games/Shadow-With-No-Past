@@ -139,7 +139,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MadeMove: 0
-  IsActiveTurn: 0
   Entity: {fileID: 0}
 --- !u!114 &6099638290796498177
 MonoBehaviour:
@@ -196,6 +195,13 @@ MonoBehaviour:
   Abilities:
   - Caller: {fileID: 382708216090105643}
     Ability: {fileID: 11400000, guid: 1d7c7b5081ed4fc46991accef076af5e, type: 2}
+    EffectValues: 02000000
+    CooldownOnUse: 0
+    RemainingCooldown: 0
+    <ReadyToUse>k__BackingField: 1
+    <EndsTurn>k__BackingField: 1
+  - Caller: {fileID: 382708216090105643}
+    Ability: {fileID: 11400000, guid: 6bba91325f385334a839dadd911a0d26, type: 2}
     EffectValues: 01000000
     CooldownOnUse: 0
     RemainingCooldown: 0

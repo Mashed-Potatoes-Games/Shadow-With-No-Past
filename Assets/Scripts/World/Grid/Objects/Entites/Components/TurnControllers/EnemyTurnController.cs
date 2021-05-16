@@ -12,6 +12,7 @@ namespace ShadowWithNoPast.Entities
     public class EnemyTurnController : MonoBehaviour, ITurnController
     {
         public event Action TurnPassed;
+        public bool IsActiveTurn { get; set; }
 
         public TurnPriority Priority { get; set; } = TurnPriority.Normal;
 
@@ -109,6 +110,7 @@ namespace ShadowWithNoPast.Entities
 
         public IEnumerator ExecuteMove()
         {
+            IsActiveTurn = true;
             if (savedAbility != null && savedTarget.HasValue)
             {
                 yield return savedAbility.UseAbility(savedTarget.GetValueOrDefault());
@@ -122,6 +124,7 @@ namespace ShadowWithNoPast.Entities
             savedAbility = null;
             savedTarget = null;
             telegraphController.ClearAbility();
+            IsActiveTurn = false;
         }
     }
 }
