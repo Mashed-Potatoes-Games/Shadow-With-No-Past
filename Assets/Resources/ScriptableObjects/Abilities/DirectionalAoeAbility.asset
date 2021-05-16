@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d982736dc4919f4c9861f87ccda6e5a, type: 3}
-  m_Name: DirectionalMeleeAbility
+  m_Name: DirectionalAoeAbility
   m_EditorClassIdentifier: 
   abilitySound: {fileID: 0}
-  icon: {fileID: 21300000, guid: 422bbb20fe9e12f49be2e90e7d02692d, type: 3}
+  icon: {fileID: 21300000, guid: 860b2b2881de4b148ac0eaf86a955f2a, type: 3}
   actions:
   - Action: {fileID: 11400000, guid: f16791c085d9baf40a8f7af76d972d32, type: 2}
-    Pattern: {fileID: 0}
+    Pattern: {fileID: 11400000, guid: 54620d28ee563c343bffaf457bac8665, type: 2}
   defaultCooldown: 0
-  defaultDistanceConstraint: 1
+  defaultDistanceConstraint: 5
   ProjectileTracer: {fileID: 4682669683384433524, guid: 28ecba5e6410886498d9a0bb4a08a750, type: 3}

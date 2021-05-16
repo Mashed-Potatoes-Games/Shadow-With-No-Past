@@ -55,6 +55,11 @@ public class SingleTelegraphData
             obj.ToggleCollider(false);
         }
 
+        if(Value != 0)
+        {
+            obj.SetTextValue(Value);
+        }
+
         var gridObj = obj.GridObj;
         gridObj.SetNewPosition(Pos);
 

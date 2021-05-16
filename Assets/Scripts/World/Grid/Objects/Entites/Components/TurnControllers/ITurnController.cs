@@ -10,6 +10,7 @@ namespace ShadowWithNoPast.Entities
         public event Action TurnPassed;
 
         TurnPriority Priority { get; set; }
+        bool IsActiveTurn { get; set; }
 
         IEnumerator MoveAndTelegraphAction();
         IEnumerator ExecuteMove();

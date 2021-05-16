@@ -17,7 +17,7 @@ namespace ShadowWithNoPast.Entities
         public event Action TurnPassed;
         
         [HideInInspector] public bool MadeMove;
-        [HideInInspector] public bool IsActiveTurn;
+        [HideInInspector] public bool IsActiveTurn { get; set; }
 
         public GridEntity Entity;
 

@@ -305,6 +305,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 171081885}
     m_Modifications:
+    - target: {fileID: 603649877608717009, guid: d24adbff220efbd4e822d0905f361625, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 759171287
+      objectReference: {fileID: 0}
     - target: {fileID: 4948657265639925560, guid: d24adbff220efbd4e822d0905f361625, type: 3}
       propertyPath: IsConnectedToGrid
       value: 1
@@ -372,6 +376,10 @@ PrefabInstance:
     - target: {fileID: 6526480820260920973, guid: d24adbff220efbd4e822d0905f361625, type: 3}
       propertyPath: m_Name
       value: Melee enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 8971233747194117457, guid: d24adbff220efbd4e822d0905f361625, type: 3}
+      propertyPath: Abilities.Array.data[0].ReadyActions.Array.size
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d24adbff220efbd4e822d0905f361625, type: 3}
@@ -783,6 +791,54 @@ PrefabInstance:
       propertyPath: IsConnectedToGrid
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
+      propertyPath: Abilities.Array.data[1].ReadyActions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
+      propertyPath: Abilities.Array.data[2].ReadyActions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
+      propertyPath: Abilities.Array.data[2].<ReadyToUse>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
+      propertyPath: Abilities.Array.data[1].ReadyActions.Array.data[0].data
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
+      propertyPath: Abilities.Array.data[2].ReadyActions.Array.data[0].data
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
+      propertyPath: Abilities.Array.data[1].ReadyActions.Array.data[0].EffectValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
+      propertyPath: Abilities.Array.data[2].ReadyActions.Array.data[0].EffectValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
+      propertyPath: Abilities.Array.data[2].ReadyActions.Array.data[0].ActionWithAoe
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
+      propertyPath: Abilities.Array.data[1].ReadyActions.Array.data[0].ActionWithAoe.Action
+      value: 
+      objectReference: {fileID: 11400000, guid: 30004c8071dec354084b1be62b0ae02e, type: 2}
+    - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
+      propertyPath: Abilities.Array.data[2].ReadyActions.Array.data[0].ActionWithAoe.Action
+      value: 
+      objectReference: {fileID: 11400000, guid: f16791c085d9baf40a8f7af76d972d32, type: 2}
+    - target: {fileID: 1772563338140461605, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
+      propertyPath: Abilities.Array.data[2].ReadyActions.Array.data[0].ActionWithAoe.Pattern
+      value: 
+      objectReference: {fileID: 11400000, guid: 6514cf9e7aa522c44a1caa614117b9ac, type: 2}
+    - target: {fileID: 2577976697635780024, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1616374763
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59f5ab1696ef5ad4abfccc51d51b6434, type: 3}
 --- !u!4 &688984793 stripped
@@ -808,6 +864,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1823345650}
     m_Modifications:
+    - target: {fileID: 603649877608717009, guid: d24adbff220efbd4e822d0905f361625, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1616374763
+      objectReference: {fileID: 0}
     - target: {fileID: 4948657265639925560, guid: d24adbff220efbd4e822d0905f361625, type: 3}
       propertyPath: IsConnectedToGrid
       value: 1
@@ -1192,6 +1252,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1823345650}
     m_Modifications:
+    - target: {fileID: 603649877608717009, guid: d24adbff220efbd4e822d0905f361625, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1616374763
+      objectReference: {fileID: 0}
     - target: {fileID: 4948657265639925560, guid: d24adbff220efbd4e822d0905f361625, type: 3}
       propertyPath: IsConnectedToGrid
       value: 1
@@ -1289,6 +1353,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1823345650}
     m_Modifications:
+    - target: {fileID: 603649877608717009, guid: d24adbff220efbd4e822d0905f361625, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1616374763
+      objectReference: {fileID: 0}
     - target: {fileID: 4948657265639925560, guid: d24adbff220efbd4e822d0905f361625, type: 3}
       propertyPath: IsConnectedToGrid
       value: 1

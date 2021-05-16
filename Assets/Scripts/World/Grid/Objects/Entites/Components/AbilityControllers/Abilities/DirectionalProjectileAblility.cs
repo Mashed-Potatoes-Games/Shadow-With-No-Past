@@ -25,13 +25,7 @@ namespace ShadowWithNoPast.Entities.Abilities
             return ReturnTargets(target, true);
         }
 
-        public override IEnumerator Execute(AbilityArgs args)
-        {
-            args.Target = TargetToExecPos(args.Caller, args.Target);
-            yield return base.Execute(args);
-        }
-
-        public override List<SingleTelegraphData> GetHelpingTelegraphs(GridEntity caller, WorldPos target)
+        public override List<SingleTelegraphData> GetAbilityTelegraphs(GridEntity caller, WorldPos target)
         {
             Direction? dir = CoordinateUtils.GetDirectionFromVector(target.Vector - caller.Vector); if (dir == null)
             {

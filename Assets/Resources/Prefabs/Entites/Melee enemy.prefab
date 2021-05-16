@@ -103,8 +103,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e796dc3f883ba24381667174b8fcc5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  World: {fileID: 0}
-  pos: {x: 0, y: 0}
+  <Pos>k__BackingField:
+    World: {fileID: 0}
+    Vector: {x: 0, y: 0}
   <XOffset>k__BackingField: 0.5
   <YOffset>k__BackingField: 1.1
   <ZValue>k__BackingField: 0
@@ -166,7 +167,6 @@ MonoBehaviour:
   - Caller: {fileID: 6526480820260920969}
     Ability: {fileID: 11400000, guid: 1d7c7b5081ed4fc46991accef076af5e, type: 2}
     EffectValues: 01000000
-    DistanceConstraint: 0
     CooldownOnUse: 0
     RemainingCooldown: 0
     <ReadyToUse>k__BackingField: 1
