@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,15 @@ namespace ShadowWithNoPast.GameProcess
     {
 
         private static WorldsChanger worldsChanger;
+        [SerializeField]
+        private GameObject PauseMenu;
 
+        void Awake()
+        {
+            InputControls.Enable();
+            InputControls.CancelButton.Add(Pause);
+            InitiateWorldChanger();
+        }
         public static WorldsChanger WorldsChanger
         {
             get
@@ -22,7 +31,7 @@ namespace ShadowWithNoPast.GameProcess
             }
         }
 
-        void Awake()
+        private void InitiateWorldChanger()
         {
             if (worldsChanger != null)
             {
@@ -30,6 +39,35 @@ namespace ShadowWithNoPast.GameProcess
                 return;
             }
             worldsChanger = GetComponent<WorldsChanger>();
+        }
+
+        private void Pause()
+        {
+            Time.timeScale = 0;
+            Debug.Log("GamePaused");
+            InputControls.CancelButton.Remove(Pause);
+            InputControls.CancelButton.AddInterrupting(Resume);
+            if(PauseMenu == null)
+            {
+                Debug.LogWarning("PauseMenu wasn't assigned!");
+                return;
+            }
+            PauseMenu.SetActive(true);
+        }
+
+        private bool Resume()
+        {
+            Time.timeScale = 1;
+            Debug.Log("GameUnpaused");
+            InputControls.CancelButton.Remove(Resume);
+            InputControls.CancelButton.Add(Pause);
+            if (PauseMenu == null)
+            {
+                Debug.LogWarning("PauseMenu wasn't assigned!");
+                return true;
+            }
+            PauseMenu.SetActive(false);
+            return true;
         }
     }
 }

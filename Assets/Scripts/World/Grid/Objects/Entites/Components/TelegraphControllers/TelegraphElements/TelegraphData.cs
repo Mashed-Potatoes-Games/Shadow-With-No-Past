@@ -23,7 +23,6 @@ public class TelegraphData
         group.TieToTelegraphs(telegraphs, actions);
         return group;
     }
-
 }
 
 public class SingleTelegraphData
