@@ -5,69 +5,40 @@ using UnityEngine;
 
 namespace ShadowWithNoPast.GameProcess
 {
+    [RequireComponent(typeof(WorldsChanger), typeof(SceneLoader))]
     public class Game : MonoBehaviour
     {
+        public static WorldsChanger WorldsChanger => ReturnComponent(worldsChanger);
+        public static SceneLoader SceneLoader => ReturnComponent(sceneLoader);
 
         private static WorldsChanger worldsChanger;
-        [SerializeField]
-        private GameObject PauseMenu;
+        private static SceneLoader sceneLoader;
 
         void Awake()
         {
             InputControls.Enable();
-            InputControls.CancelButton.Add(Pause);
-            InitiateWorldChanger();
-        }
-        public static WorldsChanger WorldsChanger
-        {
-            get
-            {
-                if (worldsChanger == null)
-                {
-                    Debug.Log("WorldsChanger was not initialized, or destroyed, returning null");
-                    return null;
-                }
-                return worldsChanger;
-            }
+            SetComponentValue(ref worldsChanger);
+            SetComponentValue(ref sceneLoader);
         }
 
-        private void InitiateWorldChanger()
+        private static T ReturnComponent<T>(T component) where T : MonoBehaviour
+        {
+            if (component == null)
+            {
+                Debug.LogWarning($"{component.GetType()} was not initialized, or destroyed, returning null");
+                return null;
+            }
+            return component;
+        }
+
+        private void SetComponentValue<T>(ref T component) where T : MonoBehaviour
         {
             if (worldsChanger != null)
             {
-                Debug.LogWarning("There are 2 or more worldChanger instances on the scene! ");
+                Debug.LogWarning("There are 2 or more worldChanger instances on the scene!");
                 return;
             }
-            worldsChanger = GetComponent<WorldsChanger>();
-        }
-
-        private void Pause()
-        {
-            Time.timeScale = 0;
-            Debug.Log("GamePaused");
-            InputControls.CancelButton.Remove(Pause);
-            InputControls.CancelButton.AddInterrupting(Resume);
-            if(PauseMenu == null)
-            {
-                Debug.LogWarning("PauseMenu wasn't assigned!");
-                return;
-            }
-            PauseMenu.SetActive(true);
-        }
-
-        private bool Resume()
-        {
-            Time.timeScale = 1;
-            Debug.Log("GameUnpaused");
-            InputControls.CancelButton.Remove(Resume);
-            InputControls.CancelButton.Add(Pause);
-            if (PauseMenu == null)
-            {
-                Debug.LogWarning("PauseMenu wasn't assigned!");
-                return true;
-            }
-            PauseMenu.SetActive(false);
-            return true;
+            component = GetComponent<T>();
         }
     }
 }

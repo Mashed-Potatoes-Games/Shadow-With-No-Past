@@ -20,6 +20,8 @@ public class ObjectEditor : MonoBehaviour
 
     public bool IsConnectedToGrid = false;
 
+    private Vector3 pos;
+
     void Awake()
     {
         GridObj = GetComponent<GridObject>();
@@ -37,11 +39,12 @@ public class ObjectEditor : MonoBehaviour
     void Update()
     {
         // This prevents the script from running in Game vindow, while still in editor, or while object is not tied to a grid yet.
-        if(!Application.isPlaying && IsConnectedToGrid)
+        if(!Application.isPlaying && IsConnectedToGrid && pos != GridObj.transform.position)
         {
             SnapToGrid();
             // This tells editor that GridObj fields was overriden dirty, and it needs to save the changes.
             EditorUtility.SetDirty(GridObj);
+            pos = GridObj.transform.position;
         }
     }
 
