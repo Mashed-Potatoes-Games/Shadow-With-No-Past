@@ -10,6 +10,7 @@ namespace ShadowWithNoPast.Entities.Abilities
         public override IEnumerator Execute(WorldPos targetPos, int effectValue)
         {
             Game.WorldsChanger.MoveToOtherWorld(targetPos.GetEntity());
+            Game.WorldsChanger.SetActive(targetPos.World, false);
             yield break;
         }
 

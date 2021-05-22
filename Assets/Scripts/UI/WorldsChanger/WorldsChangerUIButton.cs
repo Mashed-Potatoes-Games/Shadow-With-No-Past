@@ -14,11 +14,9 @@ public class WorldsChangerUIButton : MonoBehaviour
 
     private WorldsChanger changer;
 
-    private void Awake()
+    private void Start()
     {
-        changer = FindObjectOfType<WorldsChanger>();
+        changer = Game.WorldsChanger;
         button.onClick.AddListener(() => changer.ToggleActive());
     }
-
-    
 }

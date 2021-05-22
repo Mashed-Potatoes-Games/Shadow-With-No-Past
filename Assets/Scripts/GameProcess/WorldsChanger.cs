@@ -68,10 +68,18 @@ namespace ShadowWithNoPast.GameProcess
 
         public void ToggleActive()
         {
-            CurrentlyActive.SetInactive();
-            CurrentlyInactive.SetActive();
+            CurrentlyActive.SetActive(false);
+            CurrentlyInactive.SetActive(true);
 
             (CurrentlyActive, CurrentlyInactive) = (CurrentlyInactive, CurrentlyActive);
+        }
+
+        public void SetActive(WorldManagement world, bool active = false)
+        {
+            if(world == CurrentlyActive ^ active)
+            {
+                ToggleActive();
+            }
         }
 
         public void MoveToOtherWorld(GridObject obj)
@@ -85,12 +93,6 @@ namespace ShadowWithNoPast.GameProcess
                 currentWorld.Remove(obj);
                 other.SetNewObjectTo(obj, vector);
                 obj.SetNewPosition(new WorldPos(other, vector));
-                RendererUtil.ChangeRenderToLayer(obj.GetComponent<Renderer>(), obj.World.RendererPrefix );
-                var canvas = obj.GetComponentInChildren<Canvas>();
-                if(canvas != null)
-                {
-                    RendererUtil.ChangeCanvasToLayer(canvas, obj.World.RendererPrefix );
-                }
             }
         }
     }

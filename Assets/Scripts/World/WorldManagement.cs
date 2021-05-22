@@ -63,45 +63,25 @@ public class WorldManagement : MonoBehaviour
         AttacksAccounter = new AbilitiesTargetsAccounter(this);
     }
 
-    public void SetActive()
+    public void SetActive(bool state)
     {
-        Active = true;
+        Active = state;
 
-        const string activeWorldLayerName = ACTIVE_WORLD_RENDERER_PREFIX;
-        SwitchAllRenderersToMainLayer(activeWorldLayerName);
-
-        Activated?.Invoke(this);
-    }
-
-    public void SetInactive()
-    {
-        Active = false;
-
-        const string inactiveWorldLayerName = INACTIVE_WORLD_RENDERER_PREFIX;
-        SwitchAllRenderersToMainLayer(inactiveWorldLayerName);
-
-        Inactivated?.Invoke(this);
+        if(state)
+        {
+            Activated?.Invoke(this);
+        }
+        else
+        {
+            Inactivated?.Invoke(this);
+        }
+        var newPos = transform.position;
+        newPos.z = state ? 0 : -11;
+        transform.position = newPos;
     }
 
     public List<GridEntity> GetEntities() => objects.GetEntities();
     public List<GridObject> GetObjects() => objects.GetObjects();
-
-    private void SwitchAllRenderersToMainLayer(string worldLayerName)
-    {
-        var renderers = GetComponentsInChildren<Renderer>();
-
-        foreach (var renderer in renderers)
-        {
-            RendererUtil.ChangeRenderToLayer(renderer, worldLayerName);
-        }
-
-        var canvases = GetComponentsInChildren<Canvas>(); 
-        
-        foreach (var canvas in canvases)
-        {
-            RendererUtil.ChangeCanvasToLayer(canvas, worldLayerName);
-        }
-    }
 
     public CellStatus GetCellStatus(Vector2Int pos)
     {
