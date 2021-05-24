@@ -8,8 +8,6 @@ namespace ShadowWithNoPast.GameProcess
     {
         public TransitionObject transition;
 
-        private SceneName loading = SceneName.Loading;
-
         public void SwitchScene(SceneName scene)
         {
             transition.FadeOut(() => StartCoroutine(LoadSceneAsync(scene)));

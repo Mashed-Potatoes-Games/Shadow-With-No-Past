@@ -8,10 +8,12 @@ namespace ShadowWithNoPast.GameProcess
     [RequireComponent(typeof(WorldsChanger), typeof(SceneLoader))]
     public class Game : MonoBehaviour
     {
-        public static WorldsChanger WorldsChanger => ReturnComponent(worldsChanger);
-        public static SceneLoader SceneLoader => ReturnComponent(sceneLoader);
+        public static WorldsChanger WorldsChanger => TryReturnComponent(worldsChanger);
+        public static SceneLoader SceneLoader => TryReturnComponent(sceneLoader);
 
+        [NonSerialized]
         private static WorldsChanger worldsChanger;
+        [NonSerialized]
         private static SceneLoader sceneLoader;
 
         void Awake()
@@ -21,11 +23,11 @@ namespace ShadowWithNoPast.GameProcess
             SetComponentValue(ref sceneLoader);
         }
 
-        private static T ReturnComponent<T>(T component) where T : MonoBehaviour
+        private static T TryReturnComponent<T>(T component) where T : MonoBehaviour
         {
             if (component == null)
             {
-                Debug.LogWarning($"{component.GetType()} was not initialized, or destroyed, returning null");
+                Debug.LogWarning($"{component.GetType()} was not initialized, or destroyed.");
                 return null;
             }
             return component;
@@ -33,10 +35,9 @@ namespace ShadowWithNoPast.GameProcess
 
         private void SetComponentValue<T>(ref T component) where T : MonoBehaviour
         {
-            if (worldsChanger != null)
+            if (component != null)
             {
-                Debug.LogWarning("There are 2 or more worldChanger instances on the scene!");
-                return;
+                Debug.LogWarning($"There are 2 or more {typeof(T)} instances on the scene!");
             }
             component = GetComponent<T>();
         }

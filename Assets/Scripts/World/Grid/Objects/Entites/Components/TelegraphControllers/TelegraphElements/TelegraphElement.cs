@@ -22,14 +22,14 @@ namespace ShadowWithNoPast.Entities
         public GridObject GridObj;
         public SpriteRenderer Renderer;
         public TextMeshProUGUI Text;
-        public new Collider2D collider;
+        public Collider2D Collider;
         private Color? savedColorState;
 
         void Awake()
         {
             GridObj = GetComponent<GridObject>();
             Renderer = GetComponent<SpriteRenderer>();
-            TryGetComponent(out collider);
+            TryGetComponent(out Collider);
         }
 
         public void SetTextValue(int value)
@@ -75,9 +75,9 @@ namespace ShadowWithNoPast.Entities
 
         internal void ToggleCollider(bool enabled)
         {
-            if (collider != null)
+            if (Collider != null)
             {
-                collider.enabled = enabled;
+                Collider.enabled = enabled;
             }
         }
 

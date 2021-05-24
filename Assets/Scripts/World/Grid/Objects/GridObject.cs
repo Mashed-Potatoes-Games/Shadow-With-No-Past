@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace ShadowWithNoPast.Entities
 {
-    [RequireComponent(typeof(ObjectEditor))]
     [ExecuteAlways]
     public class GridObject : MonoBehaviour
     {

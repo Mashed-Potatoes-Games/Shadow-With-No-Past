@@ -13,6 +13,10 @@ namespace ShadowWithNoPast.UI
         private List<AbilityUIButton> abilityButtons;
         private void Awake()
         {
+        }
+
+        private void Start()
+        {
             var player = Player.Entity;
 
             if (player is null)
@@ -21,10 +25,7 @@ namespace ShadowWithNoPast.UI
                 return;
             }
             playerAbilities = player.GetComponent<IAbilitiesController>();
-        }
 
-        private void Start()
-        {
             if (playerAbilities is null)
             {
                 return;

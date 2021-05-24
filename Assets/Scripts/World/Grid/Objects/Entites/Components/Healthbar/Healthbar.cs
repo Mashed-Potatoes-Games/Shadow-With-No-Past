@@ -45,8 +45,10 @@ public class Healthbar : MonoBehaviour
     private void RedrawHealthpoint(int pos)
     {
         healthpoints[pos].Redraw(ElementSize, HealthColor);
-        EditorUtil.UpdateInEditor(healthpoints[pos]);
         healthpoints[pos].UpdateInEdtior();
+#if UNITY_EDITOR
+        EditorUtil.UpdateInEditor(healthpoints[pos]);
+#endif
     }
 
     public void SetMaxHealth(int inMaxHhealth)
@@ -60,8 +62,9 @@ public class Healthbar : MonoBehaviour
         }
 
         ArrangeHealthbar();
-
+#if UNITY_EDITOR
         EditorUtil.UpdateInEditor(this);
+#endif
     }
 
     private void ChangeHealthpointsVisibility(int health)
@@ -84,7 +87,9 @@ public class Healthbar : MonoBehaviour
     private void SetHealthpointActive(int pos, bool value)
     {
         healthpoints[pos].gameObject.SetActive(value);
+#if UNITY_EDITOR
         EditorUtil.UpdateInEditor(healthpoints[pos].gameObject);
+#endif
     }
 
     public void SetHealth(int health, bool animate = true)

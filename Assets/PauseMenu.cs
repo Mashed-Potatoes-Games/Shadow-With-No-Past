@@ -1,36 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-[RequireComponent(typeof(Animator))]
-public class PauseMenu : MonoBehaviour
+[RequireComponent(typeof(Image))]
+public class PauseMenu : Switchable
 {
-    private Animator animator;
+    [SerializeField]
+    private Sprite regularMenu;
+    [SerializeField]
+    private Sprite theEdgeMenu;
+
+    private Image image;
+
     private void Awake()
     {
-        animator = GetComponent<Animator>();
-    }
-    void Start()
-    {
-        InputControls.CancelButton.Add(Pause);
-    }
-    private void Pause()
-    {
-        Time.timeScale = 0;
-        Debug.Log("GamePaused");
-        InputControls.CancelButton.Remove(Pause);
-        InputControls.CancelButton.AddInterrupting(Resume);
-        animator.SetBool("MenuOpened", true);
+        image = GetComponent<Image>();
     }
 
-    private bool Resume()
+    protected override void SwitchTo(WorldType type)
     {
-        Time.timeScale = 1;
-        Debug.Log("GameUnpaused");
-        InputControls.CancelButton.Remove(Resume);
-        InputControls.CancelButton.Add(Pause);
-        animator.Play("FadeOut");
-        animator.SetBool("MenuOpened", false);
-        return true;
+        image.sprite = type switch
+        {
+            WorldType.Regular => regularMenu,
+            WorldType.TheEdge => theEdgeMenu,
+            _ => throw new System.NotImplementedException()
+        };
     }
 }

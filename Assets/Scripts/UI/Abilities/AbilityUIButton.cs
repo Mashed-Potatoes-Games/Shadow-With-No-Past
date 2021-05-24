@@ -9,8 +9,12 @@ using UnityEngine.UI;
 namespace ShadowWithNoPast.UI
 {
     [RequireComponent(typeof(Button))]
-    public class AbilityUIButton : MonoBehaviour
+    public class AbilityUIButton : Switchable
     {
+        [SerializeField]
+        private Sprite RegularSprite;
+        [SerializeField]
+        private Sprite TheEdgeSprite;
         [SerializeField]
         private Button button;
         [SerializeField]
@@ -25,6 +29,21 @@ namespace ShadowWithNoPast.UI
         private AbilityInstance abilityInstance;
 
         private Color32 defaultColor;
+
+        public override void Start()
+        {
+            base.Start();
+            Redraw();
+        }
+        protected override void SwitchTo(WorldType type)
+        {
+            buttonImage.sprite = type switch
+            {
+                WorldType.Regular => RegularSprite,
+                WorldType.TheEdge => TheEdgeSprite,
+                _ => throw new NotImplementedException(),
+            };
+        }
 
         private void Awake()
         {
@@ -96,11 +115,6 @@ namespace ShadowWithNoPast.UI
 
             gameObject.SetActive(true);
             return true;
-        }
-
-        private void Start()
-        {
-            Redraw();
         }
     }
 }

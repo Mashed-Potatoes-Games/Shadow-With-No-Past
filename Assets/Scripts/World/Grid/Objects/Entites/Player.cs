@@ -26,8 +26,7 @@ namespace ShadowWithNoPast.Entities
             if (entity != null)
             {
                 Debug.LogWarning("There are 2 or more player instances on the scene! " +
-                    "Enemies will ignore them, except the first one, and something unexpected may happen aswell!");
-                return;
+                    "Enemies will ignore them, except the last one, and something unexpected may happen aswell!");
             }
             entity = GetComponent<GridEntity>();
         }

@@ -212,7 +212,9 @@ public class Healthpoint : MonoBehaviour
     }
     public void UpdateInEdtior()
     {
+#if UNITY_EDITOR
         EditorUtil.UpdateInEditor(fill);
         EditorUtil.UpdateInEditor(background);
+#endif
     }
 }

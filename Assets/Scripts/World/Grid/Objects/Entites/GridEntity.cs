@@ -140,8 +140,9 @@ namespace ShadowWithNoPast.Entities
                 {
                     healthbar.SetHealth(Health);
                 }
-
+#if UNITY_EDITOR
                 EditorUtil.UpdateInEditor(healthbar);
+#endif
             }
         }
 

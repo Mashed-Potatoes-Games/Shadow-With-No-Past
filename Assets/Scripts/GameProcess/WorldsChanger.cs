@@ -10,6 +10,8 @@ namespace ShadowWithNoPast.GameProcess
     [ExecuteAlways]
     public class WorldsChanger : MonoBehaviour
     {
+        public event Action<WorldManagement> WorldsSwitched;
+        public WorldType Active => CurrentlyActive.Type;
         public WorldManagement CurrentlyActive;
         public WorldManagement CurrentlyInactive;
 
@@ -72,6 +74,8 @@ namespace ShadowWithNoPast.GameProcess
             CurrentlyInactive.SetActive(true);
 
             (CurrentlyActive, CurrentlyInactive) = (CurrentlyInactive, CurrentlyActive);
+
+            WorldsSwitched?.Invoke(CurrentlyActive);
         }
 
         public void SetActive(WorldManagement world, bool active = false)
