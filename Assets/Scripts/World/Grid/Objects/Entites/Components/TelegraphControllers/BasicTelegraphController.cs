@@ -36,7 +36,7 @@ namespace ShadowWithNoPast.Entities
             renderer = GetComponent<SpriteRenderer>();
             movement = GetComponent<IMovementController>();
 
-            entity.Died += entity => ClearAll();
+            entity.Died += (entity, WordPos) => ClearAll();
         }
 
         public void ClearAll()

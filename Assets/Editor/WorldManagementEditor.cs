@@ -3,15 +3,15 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
-[CustomEditor(typeof(WorldManagement))]
+[CustomEditor(typeof(World))]
 class WorldManagementEditor : Editor
 {
-    private WorldManagement world;
+    private World world;
     private const string labelsName = "CoordinateLabels";
 
     private void OnEnable()
     {
-        world = (WorldManagement)target;
+        world = (World)target;
         if(world.ShowTileCoordinates)
         {
             AddCoordinateLabels();
@@ -107,7 +107,7 @@ class WorldManagementEditor : Editor
 
     private static void SetupLabel(GameObject Label, int x, int y)
     {
-        Label.transform.position = new Vector3(x + WorldManagement.TileOffset, y + WorldManagement.TileOffset, 0);
+        Label.transform.position = new Vector3(x + World.TileOffset, y + World.TileOffset, 0);
         Label.transform.localScale = new Vector3(0.01f, 0.01f, 1);
         Text textComp = Label.AddComponent<Text>();
         textComp.text = x + "," + y;

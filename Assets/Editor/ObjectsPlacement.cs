@@ -27,7 +27,7 @@ class ObjectsPlacement : Editor
             if(obj is GameObject gameObject)
             {
                 //We need to know, if the dragged game object has GridObject component, and is needed to be placed in the grid.
-                GridObject gridObject = gameObject.GetComponent<GridObject>();
+                GridObject gridObject = gameObject.GetComponent<GridEntity>();
 
                 //If our game object can't be placed on our grid, we just don't touch it at all, and the GUI behaves as usual.
                 if (gridObject == null)
@@ -35,7 +35,7 @@ class ObjectsPlacement : Editor
                     return;
                 }
                 WorldsChanger changer = FindObjectOfType<WorldsChanger>();
-                WorldManagement world = changer != null ? changer.CurrentlyActive : null;
+                World world = changer != null ? changer.CurrentlyActive : null;
 
                 if (world == null)
                 {
@@ -49,7 +49,7 @@ class ObjectsPlacement : Editor
                     Vector3 worldPos = HandleUtility.GUIPointToWorldRay(mousePos).origin;
 
                     //Remember, that Grid cells have left-bottom pivot.
-                    Vector2Int cellPos = WorldManagement.CellFromWorld(worldPos);
+                    Vector2Int cellPos = World.CellFromWorld(worldPos);
                     //If cell is occupied, we do nothing and notify the editor about this mistake on his part.
                     if (world.GetCellStatus(cellPos) != CellStatus.Free)
                     {
@@ -72,7 +72,7 @@ class ObjectsPlacement : Editor
         //Drag and drop contains prefab reference, 
         //so we need to actually instantiate new one instead of modifying the referenced one.
         GameObject InstantiatedObj = (GameObject)PrefabUtility.InstantiatePrefab(gameObject);
-        GridObject InstantiatedGridObj = InstantiatedObj.GetComponent<GridObject>();
+        GridObject InstantiatedGridObj = InstantiatedObj.GetComponent<GridEntity>();
 
         //We tweak instantiated obj values, so it will stick to a grid and occur on mouse position.
         Transform objGrid = Pos.World.GetComponentInChildren<ObjectsGrid>().transform;

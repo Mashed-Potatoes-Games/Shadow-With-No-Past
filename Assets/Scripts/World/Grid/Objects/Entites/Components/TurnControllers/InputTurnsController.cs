@@ -11,6 +11,7 @@ using UnityEngine.InputSystem;
 
 namespace ShadowWithNoPast.Entities
 {
+    [RequireComponent(typeof(GridEntity))]
     public class InputTurnsController : MonoBehaviour, ITurnController
     {
 
@@ -88,6 +89,11 @@ namespace ShadowWithNoPast.Entities
             TurnPassed?.Invoke();
 
             SetState(new PlayerIdleState(Entity, this));
+        }
+
+        public bool EngageCombat()
+        {
+            return false;
         }
     }
 }

@@ -5,29 +5,37 @@ using UnityEngine;
 
 namespace ShadowWithNoPast.GameProcess
 {
-    [RequireComponent(typeof(WorldsChanger), typeof(SceneLoader))]
+    [RequireComponent(typeof(WorldsChanger), typeof(SceneLoader), typeof(GlobalEventManager))]
     public class Game : MonoBehaviour
     {
         public static WorldsChanger WorldsChanger => TryReturnComponent(worldsChanger);
         public static SceneLoader SceneLoader => TryReturnComponent(sceneLoader);
+        public static GlobalEventManager GlobalEventManager => TryReturnComponent(globalEventManager);
+        public static TurnsHandler TurnsHandler => TryReturnComponent(turnsHandler);
 
         [NonSerialized]
         private static WorldsChanger worldsChanger;
         [NonSerialized]
         private static SceneLoader sceneLoader;
+        [NonSerialized]
+        private static GlobalEventManager globalEventManager;
+        [NonSerialized]
+        private static TurnsHandler turnsHandler;
 
         void Awake()
         {
             InputControls.Enable();
             SetComponentValue(ref worldsChanger);
             SetComponentValue(ref sceneLoader);
+            SetComponentValue(ref globalEventManager);
+            SetComponentValue(ref turnsHandler);
         }
 
         private static T TryReturnComponent<T>(T component) where T : MonoBehaviour
         {
             if (component == null)
             {
-                Debug.LogWarning($"{component.GetType()} was not initialized, or destroyed.");
+                Debug.LogWarning($"{typeof(T)} was not initialized, or destroyed.");
                 return null;
             }
             return component;

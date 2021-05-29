@@ -18,7 +18,7 @@ namespace ShadowWithNoPast.Entities
     {
         public static readonly int MAX_HEALTH = 8;
 
-        public event Action<GridEntity> Died;
+        public event Action<GridEntity, WorldPos> Died;
 
         [field: SerializeField, HideInInspector] public int MaxHealth { get; private set; }
         public int Health { get => health; private set {
@@ -109,7 +109,7 @@ namespace ShadowWithNoPast.Entities
 
             if(Health == 0)
             {
-                Died?.Invoke(this);
+                Died?.Invoke(this, Pos);
                 World.RemoveAt(this, Vector);
                 Destroy(gameObject);
             }

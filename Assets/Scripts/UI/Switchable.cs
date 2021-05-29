@@ -7,7 +7,7 @@ public abstract class Switchable : MonoBehaviour
 {
     protected abstract void SwitchTo(WorldType type);
 
-    public void SwitchTo(WorldManagement world) => SwitchTo(world.Type);
+    public void SwitchTo(World world) => SwitchTo(world.Type);
     public virtual void Start()
     {
         if(Game.WorldsChanger != null)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ namespace ShadowWithNoPast.Entities
     [ExecuteAlways]
     public class Player : MonoBehaviour
     {
+        [NonSerialized]
         private static GridEntity entity;
 
         static public GridEntity Entity

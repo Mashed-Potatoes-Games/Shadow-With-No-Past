@@ -17,7 +17,7 @@ namespace ShadowWithNoPast.Entities
         public TurnPriority Priority { get; set; } = TurnPriority.Normal;
 
         private GridEntity entity;
-        private WorldManagement world;
+        private World world;
         private IMovementController movement;
         private IAbilitiesController abilities;
         private ITelegraphController telegraphController;
@@ -125,6 +125,11 @@ namespace ShadowWithNoPast.Entities
             savedTarget = null;
             telegraphController.ClearAbility();
             IsActiveTurn = false;
+        }
+
+        public bool EngageCombat()
+        {
+            return Player.Entity.World == entity.World;
         }
     }
 }

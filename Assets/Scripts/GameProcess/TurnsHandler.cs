@@ -10,6 +10,7 @@ namespace ShadowWithNoPast.GameProcess
     public class TurnsHandler : MonoBehaviour
     {
         public bool IsWorking;
+        public TurnSystemState State = TurnSystemState.Exploration;
 
         private const float SecondsBetweenEnemiesMove = 0.1f;
         private Queue<GridEntity> EntitiesQueue = new Queue<GridEntity>();
@@ -28,6 +29,7 @@ namespace ShadowWithNoPast.GameProcess
         {
             while (IsWorking)
             {
+                State = TurnSystemState.Exploration;
                 yield return InitiateQueueAndTelegraph();
 
                 yield return MakeTurns();
@@ -41,7 +43,7 @@ namespace ShadowWithNoPast.GameProcess
             yield return AddToQueueAndTelegraphFromWorld(changer.CurrentlyInactive);
         }
 
-        private IEnumerator AddToQueueAndTelegraphFromWorld(WorldManagement world)
+        private IEnumerator AddToQueueAndTelegraphFromWorld(World world)
         {
             if(world is null)
             {
@@ -60,6 +62,10 @@ namespace ShadowWithNoPast.GameProcess
 
                     if (entity.TurnController.Priority == priority)
                     {
+                        if(entity.TurnController.EngageCombat())
+                        {
+                            State = TurnSystemState.Battle;
+                        }
                         yield return entity.TurnController.MoveAndTelegraphAction();
                         EntitiesQueue.Enqueue(entity);
                         yield return new WaitForSeconds(SecondsBetweenEnemiesMove);
@@ -78,5 +84,11 @@ namespace ShadowWithNoPast.GameProcess
                 yield return new WaitForSeconds(SecondsBetweenEnemiesMove);
             }
         }
+    }
+
+    public enum TurnSystemState
+    {
+        Battle,
+        Exploration
     }
 }

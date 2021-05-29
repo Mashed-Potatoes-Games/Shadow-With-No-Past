@@ -12,6 +12,7 @@ namespace ShadowWithNoPast.Entities
         TurnPriority Priority { get; set; }
         bool IsActiveTurn { get; set; }
 
+        bool EngageCombat();
         IEnumerator MoveAndTelegraphAction();
         IEnumerator ExecuteMove();
     }

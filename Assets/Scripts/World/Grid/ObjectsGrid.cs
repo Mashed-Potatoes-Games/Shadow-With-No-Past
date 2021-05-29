@@ -15,14 +15,10 @@ public partial class ObjectsGrid : MonoBehaviour
     public class UnexpectedEntityAtPosException : Exception { }
     public class PositionOccupiedException : Exception { }
 
-    //The complexity of getting values from dictionary as well as all of the keys is close to O(1).
-    //So it should be efficient to use Dictionary.
-    [SerializeField]
-    private ObjDictionary objects;
+    private ObjDictionary objects = new ObjDictionary();
 
-    void Start()
+    void Awake()
     {
-        objects = new ObjDictionary();
         //Every time Editor reloads, dictionary clears, so we need to write objects position again.
         foreach (GridObject obj in transform.GetComponentsInChildren<GridObject>())
         {
@@ -71,11 +67,11 @@ public partial class ObjectsGrid : MonoBehaviour
 
     //Check entity in position and return is it the same entity.
     //This function is needed to catch the mistakes, where entity is not in the position, it should be.
-    bool IsObjectInPos(GridObject entity, Vector2Int pos)
+    bool IsObjectInPos(GridObject obj, Vector2Int pos)
     {
         GridObject ObjInPos;
         bool IsOccupied = objects.TryGetValue(pos, out ObjInPos);
-        return IsOccupied && ObjInPos == entity;
+        return IsOccupied && ObjInPos == obj;
     }
 
     //Deletes any entity at the position

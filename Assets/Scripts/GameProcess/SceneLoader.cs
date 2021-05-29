@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using ShadowWithNoPast.Entities;
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,9 +15,19 @@ namespace ShadowWithNoPast.GameProcess
             transition.FadeOut(() => StartCoroutine(LoadSceneAsync(scene)));
         }
 
+        internal void RestartLevel()
+        {
+            transition.FadeOut(() => StartCoroutine(LoadSceneAsync(SceneManager.GetActiveScene().name)));
+        }
+
         public IEnumerator LoadSceneAsync(SceneName scene)
         {
-            SceneManager.LoadSceneAsync(scene.ToString());
+            yield return LoadSceneAsync(scene.ToString());
+        }
+
+        public IEnumerator LoadSceneAsync(string name)
+        {
+            SceneManager.LoadSceneAsync(name);
             yield return null;
         }
     }

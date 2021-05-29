@@ -10,14 +10,14 @@ public class ObstacleTilemap : MonoBehaviour
     public Tilemap Obstacles;
 
     private TilemapCollider2D tilemapCollider;
-    private WorldManagement world;
+    private World world;
 
     void Start()
     {
         Obstacles = GetComponent<Tilemap>();
         tilemapCollider = GetComponent<TilemapCollider2D>();
 
-        world = GetComponentInParent<WorldManagement>();
+        world = GetComponentInParent<World>();
     }
     public bool IsObstacle(Vector2Int pos)
     {
@@ -31,7 +31,7 @@ public class ObstacleTilemap : MonoBehaviour
     // world.EventManager.EntityMoved.AddListener(ShowEntititesBehindObjects);
     private void ShowEntititesBehindObjects(GridEntity entity)
     {
-        Vector2 cellCenter = entity.Vector + new Vector2(WorldManagement.TileOffset, WorldManagement.TileOffset);
+        Vector2 cellCenter = entity.Vector + new Vector2(World.TileOffset, World.TileOffset);
         if(tilemapCollider.OverlapPoint(cellCenter))
         {
             var tilePos = Obstacles.WorldToCell(cellCenter + new Vector2Int(0, -1));

@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 4682669683384433524}
   - component: {fileID: 5201073931055528245}
   - component: {fileID: 4841829072599543873}
-  - component: {fileID: 7852372044953356676}
   m_Layer: 8
   m_Name: ProjectileTracer
   m_TagString: Untagged
@@ -44,7 +43,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1167014526319657652}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcdd93afec6b42649b689b6b91da361c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ada90dfe4b7de949a2a71fd8588048f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <Pos>k__BackingField:
@@ -68,7 +67,7 @@ MonoBehaviour:
   GridObj: {fileID: 0}
   Renderer: {fileID: 0}
   Text: {fileID: 0}
-  collider: {fileID: 0}
+  Collider: {fileID: 0}
 --- !u!212 &5201073931055528245
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -146,16 +145,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &7852372044953356676
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1167014526319657652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9512527a1b103384e9c7ac6045530456, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsConnectedToGrid: 0

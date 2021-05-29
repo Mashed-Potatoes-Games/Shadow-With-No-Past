@@ -5,35 +5,35 @@ using UnityEngine.Events;
 using ShadowWithNoPast.Entities;
 using System;
 
-[RequireComponent(typeof(WorldManagement))]
+[RequireComponent(typeof(World))]
 public class WorldEventManager : MonoBehaviour
 {
-    private WorldManagement world;
-    private void Awake()
+    private World world;
+    private void Start()
     {
-        world = GetComponent<WorldManagement>();
+        world = GetComponent<World>();
 
         world.Activated += world => WorldActivates?.Invoke(world);
         world.Inactivated += world => WorldDeactivates?.Invoke(world);
 
-        world.GetObjects().ForEach(obj => AddListenersToObject(obj));
+        world.GetObjects().ForEach(obj => AddListenersToObject(obj, obj.Pos));
 
         world.ObjectAdded += AddListenersToObject;
         world.ObjectRemoved += RemoveListenersToObject;
     }
-    public event Action<WorldManagement> WorldActivates;
-    public event Action<WorldManagement> WorldDeactivates;
+    public event Action<World> WorldActivates;
+    public event Action<World> WorldDeactivates;
 
-    public event Action<GridObject> ObjectAdded;
-    public event Action<GridObject> ObjectRemoved;
+    public event Action<GridObject, WorldPos> ObjectAdded;
+    public event Action<GridObject, WorldPos> ObjectRemoved;
 
     public event Action<GridObject, WorldPos, WorldPos> ObjectMoved;
 
-    public event Action<GridEntity> EntityDied;
+    public event Action<GridEntity, WorldPos> EntityDied;
 
-    private void AddListenersToObject(GridObject obj)
+    private void AddListenersToObject(GridObject obj, WorldPos pos)
     {
-        ObjectAdded?.Invoke(obj);
+        ObjectAdded?.Invoke(obj, pos);
         obj.Moved += OnObjectMovement;
 
         if (obj is GridEntity entity)
@@ -42,9 +42,9 @@ public class WorldEventManager : MonoBehaviour
         }
     }
 
-    private void RemoveListenersToObject(GridObject obj)
+    private void RemoveListenersToObject(GridObject obj, WorldPos pos)
     {
-        ObjectRemoved?.Invoke(obj);
+        ObjectRemoved?.Invoke(obj, pos);
 
         obj.Moved -= OnObjectMovement;
 
@@ -54,9 +54,9 @@ public class WorldEventManager : MonoBehaviour
         }
     }
 
-    private void OnEntityDied(GridEntity obj)
+    private void OnEntityDied(GridEntity obj, WorldPos pos)
     {
-        EntityDied?.Invoke(obj);
+        EntityDied?.Invoke(obj, pos);
     }
 
     private void OnObjectMovement(GridObject obj, WorldPos from, WorldPos to)

@@ -15,7 +15,7 @@ namespace ShadowWithNoPast.Grid
         [SerializeField]
         private List<AbilityWIthTargets> abilitiesTargets = new List<AbilityWIthTargets>();
 
-        public AbilitiesTargetsAccounter(WorldManagement world)
+        public AbilitiesTargetsAccounter(World world)
         {
             world.EventManager.ObjectMoved += (_, start, end) =>
             {
@@ -117,7 +117,7 @@ namespace ShadowWithNoPast.Grid
 
         public void Clear()
         {
-            possibleTargetsDict.Clear();
+            possibleTargetsDict?.Clear();
             abilitiesTargets.Clear();
         }
     }

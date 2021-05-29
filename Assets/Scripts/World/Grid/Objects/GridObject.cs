@@ -14,7 +14,7 @@ namespace ShadowWithNoPast.Entities
 
         [field: SerializeField]
         public WorldPos Pos { get; private set; }
-        public WorldManagement World => Pos.World;
+        public World World => Pos.World;
         public Vector2Int Vector => Pos.Vector;
         
         

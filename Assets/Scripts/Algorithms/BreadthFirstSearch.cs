@@ -122,7 +122,7 @@ namespace ShadowWithNoPast.Algorithms
     /// </summary>
     public class PathNode
     {
-        public WorldManagement World;
+        public World World;
         public Vector2Int Pos;
         public PathNode Previous;
 
@@ -133,7 +133,7 @@ namespace ShadowWithNoPast.Algorithms
                 return Previous is null ? 0 : Previous.PathLength + 1;
             } }
 
-        public PathNode(WorldManagement world, Vector2Int pos)
+        public PathNode(World world, Vector2Int pos)
         {
             World = world;
             Pos = pos;
@@ -141,7 +141,7 @@ namespace ShadowWithNoPast.Algorithms
 
         public PathNode(WorldPos target) : this(target.World, target.Vector) { }
 
-        public PathNode(WorldManagement world, Vector2Int pos, PathNode previous) : this(world, pos)
+        public PathNode(World world, Vector2Int pos, PathNode previous) : this(world, pos)
         {
             Previous = previous;
         }

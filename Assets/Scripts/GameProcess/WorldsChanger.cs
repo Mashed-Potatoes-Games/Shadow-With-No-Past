@@ -10,10 +10,10 @@ namespace ShadowWithNoPast.GameProcess
     [ExecuteAlways]
     public class WorldsChanger : MonoBehaviour
     {
-        public event Action<WorldManagement> WorldsSwitched;
+        public event Action<World> WorldsSwitched;
         public WorldType Active => CurrentlyActive.Type;
-        public WorldManagement CurrentlyActive;
-        public WorldManagement CurrentlyInactive;
+        public World CurrentlyActive;
+        public World CurrentlyInactive;
 
         void Start()
         {
@@ -35,7 +35,7 @@ namespace ShadowWithNoPast.GameProcess
 
         private void FindAndSetWorlds()
         {
-            var worlds = GetComponentsInChildren<WorldManagement>();
+            var worlds = GetComponentsInChildren<World>();
 
             foreach (var world in worlds)
             {
@@ -51,7 +51,7 @@ namespace ShadowWithNoPast.GameProcess
             }
         }
 
-        private void SetActiveValueTo(WorldManagement world)
+        private void SetActiveValueTo(World world)
         {
             if (!(CurrentlyActive is null))
             {
@@ -59,7 +59,7 @@ namespace ShadowWithNoPast.GameProcess
             }
             CurrentlyActive = world;
         }
-        private void SetInactiveValueTo(WorldManagement world)
+        private void SetInactiveValueTo(World world)
         {
             if (!(CurrentlyInactive is null))
             {
@@ -78,7 +78,7 @@ namespace ShadowWithNoPast.GameProcess
             WorldsSwitched?.Invoke(CurrentlyActive);
         }
 
-        public void SetActive(WorldManagement world, bool active = false)
+        public void SetActive(World world, bool active = false)
         {
             if(world == CurrentlyActive ^ active)
             {
@@ -86,10 +86,10 @@ namespace ShadowWithNoPast.GameProcess
             }
         }
 
-        public void MoveToOtherWorld(GridObject obj)
+        public void MoveToOtherWorld(GridEntity obj)
         {
-            WorldManagement currentWorld = obj.World;
-            WorldManagement other = new List<WorldManagement> { CurrentlyActive, CurrentlyInactive }
+            World currentWorld = obj.World;
+            World other = new List<World> { CurrentlyActive, CurrentlyInactive }
             .Find((world) => currentWorld != world);
             var vector = obj.Vector;
             if (other.GetCellStatus(vector) == CellStatus.Free)

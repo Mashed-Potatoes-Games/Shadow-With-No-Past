@@ -12,16 +12,15 @@ using ShadowWithNoPast.Grid;
 
 [ExecuteAlways]
 [RequireComponent(typeof(Grid))]
-[RequireComponent(typeof(WorldEventManager))]
-public class WorldManagement : MonoBehaviour
+public class World : MonoBehaviour
 {
     public class CannotMoveHereException : Exception { }
 
-    public event Action<WorldManagement> Activated;
-    public event Action<WorldManagement> Inactivated;
+    public event Action<World> Activated;
+    public event Action<World> Inactivated;
 
-    public event Action<GridObject> ObjectAdded;
-    public event Action<GridObject> ObjectRemoved;
+    public event Action<GridObject, WorldPos> ObjectAdded;
+    public event Action<GridObject, WorldPos> ObjectRemoved;
 
     public WorldType Type;
 
@@ -139,7 +138,7 @@ public class WorldManagement : MonoBehaviour
         if (GetCellStatus(pos) == CellStatus.Free)
         {
             objects.SetNewObjectTo(obj, pos);
-            ObjectAdded?.Invoke(obj);
+            ObjectAdded?.Invoke(obj, new WorldPos(this, pos));
             return;
         }
 
@@ -159,7 +158,7 @@ public class WorldManagement : MonoBehaviour
     public void RemoveAt(GridObject obj, Vector2Int pos)
     {
         objects.RemoveAt(obj, pos);
-        ObjectRemoved?.Invoke(obj);
+        ObjectRemoved?.Invoke(obj, new WorldPos(this, pos));
     }
 
 

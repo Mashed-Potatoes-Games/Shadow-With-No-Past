@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d982736dc4919f4c9861f87ccda6e5a, type: 3}
+  m_Name: DirectionalAcidProjectile
+  m_EditorClassIdentifier: 
+  abilitySound: {fileID: 0}
+  icon: {fileID: 21300000, guid: 23aab1506f44b1947b70ef2b43a2fe13, type: 3}
+  actions:
+  - Action: {fileID: 11400000, guid: f16791c085d9baf40a8f7af76d972d32, type: 2}
+    Pattern: {fileID: 0}
+  defaultCooldown: 0
+  defaultDistanceConstraint: 10
+  ProjectileTracer: {fileID: 4682669683384433524, guid: 28ecba5e6410886498d9a0bb4a08a750, type: 3}

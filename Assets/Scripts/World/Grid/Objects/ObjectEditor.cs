@@ -62,7 +62,7 @@ public class ObjectEditor : MonoBehaviour
 
     private void SnapToGrid()
     {
-        WorldManagement ParentGrid = GridObj.World;
+        World ParentGrid = GridObj.World;
         // Gets the position in the grid from the position that editor tries to set.
         Vector2Int snapPosition = new Vector2Int(
             Mathf.RoundToInt(transform.position.x - GridObj.XOffset),

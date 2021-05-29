@@ -5,10 +5,10 @@ using UnityEngine;
 [Serializable]
 public struct WorldPos
 {
-    public WorldManagement World;
+    public World World;
     public Vector2Int Vector;
 
-    public WorldPos(WorldManagement world, Vector2Int pos)
+    public WorldPos(World world, Vector2Int pos)
     {
         World = world;
         Vector = pos;
