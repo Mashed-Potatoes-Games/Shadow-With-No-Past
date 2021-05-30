@@ -20,6 +20,8 @@ public class WorldsChangerEditor : Editor
 
         if(GUILayout.Button("Switch active world")) {
             changer.ToggleActive();
+            changer.CurrentlyActive.gameObject.SetActive(true);
+            changer.CurrentlyInactive.gameObject.SetActive(false);
             EditorUtility.SetDirty(changer);
         }
     }

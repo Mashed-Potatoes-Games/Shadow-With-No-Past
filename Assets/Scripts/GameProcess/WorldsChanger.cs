@@ -39,6 +39,7 @@ namespace ShadowWithNoPast.GameProcess
 
             foreach (var world in worlds)
             {
+                world.gameObject.SetActive(true);
                 if (world.Active)
                 {
                     SetActiveValueTo(world);
