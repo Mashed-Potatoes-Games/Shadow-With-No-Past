@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[ExecuteAlways]
 public abstract class Switchable : MonoBehaviour
 {
     protected abstract void SwitchTo(WorldType type);

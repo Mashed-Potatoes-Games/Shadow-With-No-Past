@@ -15,7 +15,7 @@ namespace ShadowWithNoPast.GameProcess
         public World CurrentlyActive;
         public World CurrentlyInactive;
 
-        void Start()
+        void Awake()
         {
             InitializeWorldsValue();
         }
@@ -35,7 +35,7 @@ namespace ShadowWithNoPast.GameProcess
 
         private void FindAndSetWorlds()
         {
-            var worlds = GetComponentsInChildren<World>();
+            var worlds = GetComponentsInChildren<World>(true);
 
             foreach (var world in worlds)
             {

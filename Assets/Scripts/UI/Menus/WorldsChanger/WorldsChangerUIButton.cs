@@ -12,11 +12,8 @@ public class WorldsChangerUIButton : MonoBehaviour
     [SerializeField]
     private Image buttonImage;
 
-    private WorldsChanger changer;
-
     private void Start()
     {
-        changer = Game.WorldsChanger;
-        button.onClick.AddListener(() => changer.ToggleActive());
+        button.onClick.AddListener(() => Game.WorldsChanger.ToggleActive());
     }
 }

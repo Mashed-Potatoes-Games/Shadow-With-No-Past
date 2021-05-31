@@ -115,7 +115,7 @@ namespace ShadowWithNoPast.Entities
             var availableMovesPos = movement.GetAvailableMoves();
 
             availableMovesTelegraphs = new GameObject("AvailableMovesCollection");
-            availableMovesTelegraphs.transform.SetParent(transform.parent);
+            availableMovesTelegraphs.transform.SetParent(transform.parent, false);
 
 
             foreach (var pos in availableMovesPos)
@@ -158,7 +158,7 @@ namespace ShadowWithNoPast.Entities
             gridObj.YOffset = 0.5f;
             gridObj.SetNewPosition(pos);
 
-            gridObj.transform.SetParent(parent.transform);
+            gridObj.transform.SetParent(parent.transform, false);
             obj.Renderer.sortingLayerID = renderer.sortingLayerID;
 
             if(collection != null)
@@ -186,6 +186,7 @@ namespace ShadowWithNoPast.Entities
             abilityActions = actions;
             TelegraphData telegraphData = abilityInstance.GetTelegraphData(target);
             abilityTelegraphGroup = telegraphData.Instantiate(renderer.sortingLayerID, actions);
+            abilityTelegraphGroup.transform.SetParent(target.World.transform, true);
             if(isActive)
             {
                 abilityTelegraphGroup.Highlight();

@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace ShadowWithNoPast.GameProcess
 {
+    [ExecuteAlways]
     [RequireComponent(typeof(WorldsChanger), typeof(SceneLoader), typeof(GlobalEventManager))]
     public class Game : MonoBehaviour
     {
