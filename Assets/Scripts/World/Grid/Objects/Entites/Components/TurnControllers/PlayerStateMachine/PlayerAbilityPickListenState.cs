@@ -13,6 +13,7 @@ namespace ShadowWithNoPast.Entities
             base.EnterState();
 
             stateMachine.Abilities.AbilityUsedWithNoTarget += OnAbilityPicked;
+            InputControls.SkipMoveButton.AddInterrupting(OnAbilitySkip);
         }
 
         public override void LeaveState()
@@ -20,11 +21,18 @@ namespace ShadowWithNoPast.Entities
             base.LeaveState();
 
             stateMachine.Abilities.AbilityUsedWithNoTarget -= OnAbilityPicked;
+            InputControls.SkipMoveButton.Remove(OnAbilitySkip);
         }
 
         private void OnAbilityPicked(AbilityInstance abilityInstance)
         {
             stateMachine.SetState(new PlayerAbilityUseListenState(player, stateMachine, abilityInstance));
+        }
+
+        private bool OnAbilitySkip()
+        {
+            stateMachine.EndTurn();
+            return true;
         }
     }
 }

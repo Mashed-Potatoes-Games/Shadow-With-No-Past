@@ -36,6 +36,8 @@ namespace ShadowWithNoPast.Entities.Abilities
 
         public virtual IEnumerator PreExecute(GridEntity caller, WorldPos target)
         {
+            caller.FaceTo(target.Vector);
+            caller.SpriteController.SetSprite(SpriteType.Attack);
             yield break;
         }
 

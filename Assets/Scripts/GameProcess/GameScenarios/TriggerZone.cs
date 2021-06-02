@@ -12,20 +12,26 @@ public class TriggerZone
     private ITriggerAction triggerAction;
 
     [SerializeField]
-    private GridObject triggerIcon;
+    private GridObject triggerObject;
 
-    private GridObject triggerZonesGroup;
+    private GameObject triggerZonesGroup;
 
     public bool Enabled { get; private set; } = false;
 
     private TriggerZone() { }
-    public TriggerZone(List<WorldPos> zones, ITriggerAction action, params GridEntity[] entities)
+    public TriggerZone(List<WorldPos> zones, ITriggerAction action, TargetType targetType, params GridEntity[] entities)
     {
         TriggerZones = zones;
         triggerAction = action;
-        foreach(var entity in entities)
+        switch(targetType)
         {
-            entity.Moved += triggerAction.Action;
+            case TargetType.Player:
+                Player.Entity.Moved += CheckTargetMove;
+                break;
+            case TargetType.AnyEntity:
+                throw new NotImplementedException();
+            default:
+                throw new NotImplementedException();
         }
     }
 
@@ -39,12 +45,25 @@ public class TriggerZone
 
     private void Activate()
     {
+    triggerZonesGroup = new GameObject("TriggerZones");
+    triggerZonesGroup.transform.SetParent(TriggerZones.First().World.transform);
         foreach(var pos in TriggerZones)
         {
-            if(triggerIcon != null)
+            if(triggerObject != null)
             {
 
             }
         }
     }
+
+    private void CheckTargetMove(GridObject trigerer, WorldPos startPos, WorldPos endPos)
+    {
+
+    }
+}
+
+public enum TargetType
+{
+    Player,
+    AnyEntity
 }

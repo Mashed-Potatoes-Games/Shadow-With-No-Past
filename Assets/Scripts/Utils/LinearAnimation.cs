@@ -39,7 +39,7 @@ public class LinearAnimation {
 
         if(lengthInSec <= 0)
         {
-            throw new Exception("Animation length can't be less or equal to zero!");
+            throw new ArgumentException($"Animation length can't be less or equal to zero! ({lengthInSec})");
         }
 
         this.animationLengthInSeconds = lengthInSec;

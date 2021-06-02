@@ -16,6 +16,9 @@ namespace ShadowWithNoPast.Entities.Abilities
         public event Action Updated;
         public event Action Used;
 
+
+        public const float MinimalAbilityExecutionTime = 1;
+
         [HideInInspector]
         public GridEntity Caller;
         public Ability Ability;
@@ -64,17 +67,24 @@ namespace ShadowWithNoPast.Entities.Abilities
 
         public IEnumerator UseAbility(WorldPos target)
         {
-            yield return Ability.PreExecute(Caller, target);
+            var startTime = Time.time;
             target = Ability.TargetToExecPos(Caller, target);
+            yield return Ability.PreExecute(Caller, target);
+
             for (int i = 0; i < Ability.Actions.Length; i++)
             {
                 ActionWithAoe actionWithAoe = Ability.Actions[i];
                 Caller.FaceTo(target.Vector);
-                Caller.SpriteController.SetSprite(Ability.ExecutionSprite);
                 yield return actionWithAoe.Execute(Caller, target, EffectValues[i]);
 
-                Caller.SpriteController.ResetToDefault();
             }
+
+            while(Time.time < startTime + MinimalAbilityExecutionTime)
+            {
+                yield return null;
+            }
+
+            Caller.SpriteController.ResetToDefault();
             FinishExecution();
         }
 

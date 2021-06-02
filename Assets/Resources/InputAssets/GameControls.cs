@@ -25,6 +25,14 @@ public class @GameControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""SkipMove"",
+                    ""type"": ""Button"",
+                    ""id"": ""a3281fb2-238a-461b-9481-47eb58002776"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -36,6 +44,17 @@ public class @GameControls : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Ability 1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b3ec1cd8-8225-49e7-9069-e3f62feff9a5"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SkipMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -74,6 +93,7 @@ public class @GameControls : IInputActionCollection, IDisposable
         // AbilityUsage
         m_AbilityUsage = asset.FindActionMap("AbilityUsage", throwIfNotFound: true);
         m_AbilityUsage_Ability1 = m_AbilityUsage.FindAction("Ability 1", throwIfNotFound: true);
+        m_AbilityUsage_SkipMove = m_AbilityUsage.FindAction("SkipMove", throwIfNotFound: true);
         // InGameMenu
         m_InGameMenu = asset.FindActionMap("InGameMenu", throwIfNotFound: true);
         m_InGameMenu_Cancel = m_InGameMenu.FindAction("Cancel", throwIfNotFound: true);
@@ -127,11 +147,13 @@ public class @GameControls : IInputActionCollection, IDisposable
     private readonly InputActionMap m_AbilityUsage;
     private IAbilityUsageActions m_AbilityUsageActionsCallbackInterface;
     private readonly InputAction m_AbilityUsage_Ability1;
+    private readonly InputAction m_AbilityUsage_SkipMove;
     public struct AbilityUsageActions
     {
         private @GameControls m_Wrapper;
         public AbilityUsageActions(@GameControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Ability1 => m_Wrapper.m_AbilityUsage_Ability1;
+        public InputAction @SkipMove => m_Wrapper.m_AbilityUsage_SkipMove;
         public InputActionMap Get() { return m_Wrapper.m_AbilityUsage; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -144,6 +166,9 @@ public class @GameControls : IInputActionCollection, IDisposable
                 @Ability1.started -= m_Wrapper.m_AbilityUsageActionsCallbackInterface.OnAbility1;
                 @Ability1.performed -= m_Wrapper.m_AbilityUsageActionsCallbackInterface.OnAbility1;
                 @Ability1.canceled -= m_Wrapper.m_AbilityUsageActionsCallbackInterface.OnAbility1;
+                @SkipMove.started -= m_Wrapper.m_AbilityUsageActionsCallbackInterface.OnSkipMove;
+                @SkipMove.performed -= m_Wrapper.m_AbilityUsageActionsCallbackInterface.OnSkipMove;
+                @SkipMove.canceled -= m_Wrapper.m_AbilityUsageActionsCallbackInterface.OnSkipMove;
             }
             m_Wrapper.m_AbilityUsageActionsCallbackInterface = instance;
             if (instance != null)
@@ -151,6 +176,9 @@ public class @GameControls : IInputActionCollection, IDisposable
                 @Ability1.started += instance.OnAbility1;
                 @Ability1.performed += instance.OnAbility1;
                 @Ability1.canceled += instance.OnAbility1;
+                @SkipMove.started += instance.OnSkipMove;
+                @SkipMove.performed += instance.OnSkipMove;
+                @SkipMove.canceled += instance.OnSkipMove;
             }
         }
     }
@@ -191,6 +219,7 @@ public class @GameControls : IInputActionCollection, IDisposable
     public interface IAbilityUsageActions
     {
         void OnAbility1(InputAction.CallbackContext context);
+        void OnSkipMove(InputAction.CallbackContext context);
     }
     public interface IInGameMenuActions
     {

@@ -19,10 +19,13 @@ namespace ShadowWithNoPast.Entities.Abilities
         private Sprite projectileSprite;
 
         [SerializeField]
-        private int projectileSpeed;
+        private float projectileSpeed;
 
         public override IEnumerator PreExecute(GridEntity caller, WorldPos target)
         { 
+            caller.FaceTo(target.Vector);
+            caller.SpriteController.SetSprite(SpriteType.Attack);
+
             if(projectileSprite == null)
             {
                 Debug.LogWarning("Sprite is not set!");
@@ -35,15 +38,23 @@ namespace ShadowWithNoPast.Entities.Abilities
             projectile.transform.SetParent(caller.transform, false);
             projectile.GetComponent<SpriteRenderer>().sprite = projectileSprite;
 
-            int distance = (int)(target.Vector - caller.Vector).magnitude;
+            Vector2Int distanceVector = (target.Vector - caller.Vector);
+            int distance = (int)distanceVector.magnitude;
 
-            var projectileAnimation = new LinearAnimation(projectile, distance / projectileSpeed, target.WorldCoordinates);
+            var destination = caller.transform.position;
+
+            destination.x += distanceVector.x;
+            destination.y += distanceVector.y;
+
+            var projectileAnimation = new LinearAnimation(projectile, (float)distance / projectileSpeed, destination);
 
             while(!projectileAnimation.ContinueAnimation())
             {
                 yield return null;
             }
-            
+            Destroy(projectile);
+
+            caller.SpriteController.ResetToDefault();
             yield break;
         }
 

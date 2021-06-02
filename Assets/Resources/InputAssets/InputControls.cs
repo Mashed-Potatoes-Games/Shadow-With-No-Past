@@ -14,6 +14,7 @@ public static class InputControls
     }
 
     public static SingleInputHandler CancelButton = new SingleInputHandler(Instance.InGameMenu.Cancel);
+    public static SingleInputHandler SkipMoveButton = new SingleInputHandler(Instance.AbilityUsage.SkipMove);
 }
 
 public class SingleInputHandler
