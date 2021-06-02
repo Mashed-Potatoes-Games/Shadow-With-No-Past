@@ -12,8 +12,40 @@ namespace ShadowWithNoPast.Entities.Abilities
     {
         public override AbilityTargetType Type => AbilityTargetType.Directional;
 
-        public TelegraphElement ProjectileTracer;
+        [SerializeField]
+        private TelegraphElement ProjectileTracer;
 
+        [SerializeField]
+        private Sprite projectileSprite;
+
+        [SerializeField]
+        private int projectileSpeed;
+
+        public override IEnumerator PreExecute(GridEntity caller, WorldPos target)
+        { 
+            if(projectileSprite == null)
+            {
+                Debug.LogWarning("Sprite is not set!");
+
+                yield break;
+            }
+
+            GameObject projectile = new GameObject("Projectile", typeof(SpriteRenderer));
+
+            projectile.transform.SetParent(caller.transform, false);
+            projectile.GetComponent<SpriteRenderer>().sprite = projectileSprite;
+
+            int distance = (int)(target.Vector - caller.Vector).magnitude;
+
+            var projectileAnimation = new LinearAnimation(projectile, distance / projectileSpeed, target.WorldCoordinates);
+
+            while(!projectileAnimation.ContinueAnimation())
+            {
+                yield return null;
+            }
+            
+            yield break;
+        }
 
         public override AbilityTargets AvailableTargets(WorldPos executionPos)
         {
@@ -24,6 +56,8 @@ namespace ShadowWithNoPast.Entities.Abilities
         {
             return ReturnTargets(target, true);
         }
+
+
 
         public override List<SingleTelegraphData> GetAbilityTelegraphs(GridEntity caller, WorldPos target)
         {

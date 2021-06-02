@@ -64,6 +64,7 @@ namespace ShadowWithNoPast.Entities.Abilities
 
         public IEnumerator UseAbility(WorldPos target)
         {
+            yield return Ability.PreExecute(Caller, target);
             target = Ability.TargetToExecPos(Caller, target);
             for (int i = 0; i < Ability.Actions.Length; i++)
             {

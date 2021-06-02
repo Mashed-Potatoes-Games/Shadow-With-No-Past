@@ -14,6 +14,8 @@ public struct WorldPos
         Vector = pos;
     }
 
+    public Vector3 WorldCoordinates => World.WorldFromCell(Vector);
+
     public CellStatus GetStatus() => World.GetCellStatus(Vector);
     public GridEntity GetEntity()
     {

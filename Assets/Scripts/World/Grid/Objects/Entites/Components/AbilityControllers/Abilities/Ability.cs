@@ -33,6 +33,12 @@ namespace ShadowWithNoPast.Entities.Abilities
         [SerializeField]
         private int defaultDistanceConstraint;
 
+
+        public virtual IEnumerator PreExecute(GridEntity caller, WorldPos target)
+        {
+            yield break;
+        }
+
         public virtual List<SingleTelegraphData> GetAbilityTelegraphs(GridEntity caller, WorldPos target)
         {
             return null;
@@ -62,7 +68,7 @@ namespace ShadowWithNoPast.Entities.Abilities
             Action = action;
             Pattern = pattern;
         }
-        public IEnumerator Execute(GridEntity caller, WorldPos target, int effectValue)
+        public virtual IEnumerator Execute(GridEntity caller, WorldPos target, int effectValue)
         {
             if (Pattern == null)
             {

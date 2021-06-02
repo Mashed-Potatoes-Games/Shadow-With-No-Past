@@ -174,6 +174,11 @@ public class World : MonoBehaviour
     {
         return new Vector2Int(Mathf.RoundToInt(worldPos.x - TileOffset), Mathf.RoundToInt(worldPos.y - TileOffset));
     }
+
+    public Vector3 WorldFromCell(Vector2Int cellPos)
+    {
+        return transform.position + new Vector3(cellPos.x + TileOffset, cellPos.y + TileOffset);
+    }
 }
 
 public enum CellStatus

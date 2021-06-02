@@ -20,3 +20,5 @@ MonoBehaviour:
   defaultCooldown: 0
   defaultDistanceConstraint: 10
   ProjectileTracer: {fileID: 4682669683384433524, guid: 28ecba5e6410886498d9a0bb4a08a750, type: 3}
+  projectileSprite: {fileID: 21300000, guid: 23aab1506f44b1947b70ef2b43a2fe13, type: 3}
+  projectileSpeed: 2
