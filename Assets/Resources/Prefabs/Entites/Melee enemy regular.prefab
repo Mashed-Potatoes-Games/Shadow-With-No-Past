@@ -109,8 +109,9 @@ MonoBehaviour:
   <XOffset>k__BackingField: 0.5
   <YOffset>k__BackingField: 1.1
   <ZValue>k__BackingField: 0
-  <MaxHealth>k__BackingField: 2
-  health: 2
+  <type>k__BackingField: 0
+  <MaxHealth>k__BackingField: 3
+  health: 3
   MoveDistance: 2
   healthbar: {fileID: 6283193851400127290}
 --- !u!114 &6526480820260920974
@@ -164,7 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Abilities:
-  - Caller: {fileID: 0}
+  - Caller: {fileID: 6945689882026500815}
     Ability: {fileID: 11400000, guid: 1d7c7b5081ed4fc46991accef076af5e, type: 2}
     EffectValues: 01000000
     CooldownOnUse: 0
@@ -201,7 +202,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.12, y: 5.12}
+    oldSize: {x: 2, y: 2}
     newSize: {x: 2, y: 2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -248,11 +249,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1451725852311534692, guid: b57b46be2e4ada14b84e381910b9eb20, type: 3}
       propertyPath: StoredHealth
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1451725852311534692, guid: b57b46be2e4ada14b84e381910b9eb20, type: 3}
       propertyPath: StoredMaxHealth
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1451725852311534692, guid: b57b46be2e4ada14b84e381910b9eb20, type: 3}
       propertyPath: HealthColor.rgba
@@ -288,7 +289,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2946927346370513814, guid: b57b46be2e4ada14b84e381910b9eb20, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3364021872757947658, guid: b57b46be2e4ada14b84e381910b9eb20, type: 3}
       propertyPath: m_Pivot.x
@@ -396,7 +397,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5077264852147776793, guid: b57b46be2e4ada14b84e381910b9eb20, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.075
+      value: -0.15
       objectReference: {fileID: 0}
     - target: {fileID: 5916593510082088965, guid: b57b46be2e4ada14b84e381910b9eb20, type: 3}
       propertyPath: m_Color.b
@@ -452,7 +453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7283691133794535648, guid: b57b46be2e4ada14b84e381910b9eb20, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7580237799991983656, guid: b57b46be2e4ada14b84e381910b9eb20, type: 3}
       propertyPath: m_LocalPosition.x
@@ -464,7 +465,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8451243992140721206, guid: b57b46be2e4ada14b84e381910b9eb20, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.075
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8950579257670632427, guid: b57b46be2e4ada14b84e381910b9eb20, type: 3}
       propertyPath: m_IsActive

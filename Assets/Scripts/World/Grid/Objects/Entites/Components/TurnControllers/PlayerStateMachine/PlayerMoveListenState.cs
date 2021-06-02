@@ -1,4 +1,5 @@
 ﻿using ShadowWithNoPast.Entities.Abilities;
+using ShadowWithNoPast.GameProcess;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,6 +49,12 @@ namespace ShadowWithNoPast.Entities
         private IEnumerator MoveAndSwitchToAbilityListen(Queue<WorldPos> path)
         {
             yield return stateMachine.Movement.MoveWithDelay(path);
+            if(Game.TurnsHandler.State == TurnSystemState.Exploration)
+            {
+                stateMachine.SetState(new PlayerMoveListenState(player, stateMachine));
+                yield break;
+            }
+            
             stateMachine.MadeMove = true;
             stateMachine.SetState(new PlayerAbilityPickListenState(player, stateMachine));
         }
