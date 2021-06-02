@@ -6,8 +6,9 @@ using UnityEngine;
 
 public class BasicBattleScenario : TriggerZonesScenario
 {
-    protected virtual void Start()
+    protected override void Start()
     {
+        base.Start();
         Player.Entity.Died += RestartLevelOnPlayerDeath;
     }
 

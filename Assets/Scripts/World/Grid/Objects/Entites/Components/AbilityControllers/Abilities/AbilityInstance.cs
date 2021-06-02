@@ -21,7 +21,6 @@ namespace ShadowWithNoPast.Entities.Abilities
         public Ability Ability;
         [SerializeField]
         public int[] EffectValues;
-        //public ReadyAction[] ReadyActions;
         public AudioClip AbilitySound => Ability.AbilitySound;
         public Sprite Icon => Ability.Icon;
         public int DistanceConstraint => Ability.DistanceConstraint;

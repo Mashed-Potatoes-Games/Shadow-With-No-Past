@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 using ShadowWithNoPast.Utils;
+using ShadowWithNoPast.Entities.Abilities;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,7 +21,17 @@ namespace ShadowWithNoPast.Entities
 
         public event Action<GridEntity, WorldPos> Died;
 
-        [field: SerializeField, HideInInspector] public int MaxHealth { get; private set; }
+        public IMovementController MovementController;
+        public ITurnController TurnController;
+        public ITelegraphController TelegraphController;
+        public IEntitySpriteController SpriteController;
+        public IAbilitiesController AbilitiesController;
+
+        [field: SerializeField]
+        public EntityType type { get; private set; } = EntityType.Enemy;
+
+        [field: SerializeField, HideInInspector] 
+        public int MaxHealth { get; private set; }
         public int Health { get => health; private set {
                 health = value;
                 if(health <= 0)
@@ -40,11 +51,6 @@ namespace ShadowWithNoPast.Entities
         private int health;
         // This value was moved from TurnController because it was used too much across other components
         public int MoveDistance = 1;
-
-        public IMovementController MovementController;
-        public ITurnController TurnController;
-        public ITelegraphController TelegraphController;
-        public IEntitySpriteController SpriteController;
 
         [SerializeField]
         protected Healthbar healthbar;
@@ -181,6 +187,12 @@ namespace ShadowWithNoPast.Entities
         Right,
         Down,
         Left
+    }
+
+    public enum EntityType
+    {
+        Enemy,
+        Player
     }
 
 

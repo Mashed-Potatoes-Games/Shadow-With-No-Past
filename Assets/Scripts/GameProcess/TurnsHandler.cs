@@ -9,6 +9,8 @@ namespace ShadowWithNoPast.GameProcess
 {
     public class TurnsHandler : MonoBehaviour
     {
+        public event Action TurnPassed;
+
         public bool IsWorking;
         public TurnSystemState State = TurnSystemState.Exploration;
 
@@ -33,6 +35,7 @@ namespace ShadowWithNoPast.GameProcess
                 yield return InitiateQueueAndTelegraph();
 
                 yield return MakeTurns();
+                TurnPassed?.Invoke();
             }
 
         }
