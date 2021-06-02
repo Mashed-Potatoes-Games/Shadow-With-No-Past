@@ -17,7 +17,8 @@ public class TriggerZonesScenario : MonoBehaviour, IGameScenario
 
     private void UpdateZones()
     {
-        if(Game.TurnsHandler.State == TurnSystemState.Exploration)
+
+        if(Zones != null && Game.TurnsHandler.State == TurnSystemState.Exploration)
         {
             foreach(var zone in Zones)
             {

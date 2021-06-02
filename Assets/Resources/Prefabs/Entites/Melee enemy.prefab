@@ -109,6 +109,7 @@ MonoBehaviour:
   <XOffset>k__BackingField: 0.5
   <YOffset>k__BackingField: 1.1
   <ZValue>k__BackingField: 0
+  <type>k__BackingField: 0
   <MaxHealth>k__BackingField: 2
   health: 2
   MoveDistance: 2
@@ -164,7 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Abilities:
-  - Caller: {fileID: 0}
+  - Caller: {fileID: 6945689882026500815}
     Ability: {fileID: 11400000, guid: 1d7c7b5081ed4fc46991accef076af5e, type: 2}
     EffectValues: 01000000
     CooldownOnUse: 0
