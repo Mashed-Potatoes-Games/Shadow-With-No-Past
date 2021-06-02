@@ -36,6 +36,7 @@ namespace ShadowWithNoPast.GameProcess
         {
             if (component == null)
             {
+                // This may occur on the scene unloading, while some objects may try to unsubscribe on destroy.
                 Debug.LogWarning($"{typeof(T)} was not initialized, or destroyed.");
                 return null;
             }

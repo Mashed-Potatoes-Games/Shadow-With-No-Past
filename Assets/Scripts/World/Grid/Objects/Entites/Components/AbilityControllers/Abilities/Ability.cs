@@ -33,8 +33,6 @@ namespace ShadowWithNoPast.Entities.Abilities
         [SerializeField]
         private int defaultDistanceConstraint;
 
-        [field: SerializeField] public Ability SecondaryEffect { get; }
-
         public virtual List<SingleTelegraphData> GetAbilityTelegraphs(GridEntity caller, WorldPos target)
         {
             return null;

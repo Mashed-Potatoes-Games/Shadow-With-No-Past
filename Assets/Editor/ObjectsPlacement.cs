@@ -27,7 +27,7 @@ class ObjectsPlacement : Editor
             if(obj is GameObject gameObject)
             {
                 //We need to know, if the dragged game object has GridObject component, and is needed to be placed in the grid.
-                GridObject gridObject = gameObject.GetComponent<GridEntity>();
+                GridObject gridObject = gameObject.GetComponent<GridObject>();
 
                 //If our game object can't be placed on our grid, we just don't touch it at all, and the GUI behaves as usual.
                 if (gridObject == null)

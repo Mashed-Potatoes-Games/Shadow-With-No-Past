@@ -110,6 +110,7 @@ MonoBehaviour:
   <XOffset>k__BackingField: 0.5
   <YOffset>k__BackingField: 1.1
   <ZValue>k__BackingField: 0
+  <type>k__BackingField: 1
   <MaxHealth>k__BackingField: 4
   health: 4
   MoveDistance: 2
