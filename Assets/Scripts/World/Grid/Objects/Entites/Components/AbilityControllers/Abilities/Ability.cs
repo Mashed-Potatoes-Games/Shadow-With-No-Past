@@ -15,7 +15,7 @@ namespace ShadowWithNoPast.Entities.Abilities
     public abstract class Ability : ScriptableObject
     {
         public abstract AbilityTargetType Type { get; }
-        public virtual SpriteType ExecutionSprite => SpriteType.Attack;
+        public SpriteType ExecutionSprite = SpriteType.Attack;
         public AudioClip AbilitySound => abilitySound;
         public Sprite Icon => icon;
         public ActionWithAoe[] Actions => actions;
@@ -37,7 +37,7 @@ namespace ShadowWithNoPast.Entities.Abilities
         public virtual IEnumerator PreExecute(GridEntity caller, WorldPos target)
         {
             caller.FaceTo(target.Vector);
-            caller.SpriteController.SetSprite(SpriteType.Attack);
+            caller.SpriteController.SetSprite(ExecutionSprite);
             yield break;
         }
 

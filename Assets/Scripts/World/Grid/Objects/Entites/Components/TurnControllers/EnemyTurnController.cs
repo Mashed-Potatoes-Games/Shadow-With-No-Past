@@ -63,7 +63,13 @@ namespace ShadowWithNoPast.Entities
                     availableAttacks.Add(ability, placesToAttack);
                     continue;
                 }
-                inavailableAttacks.Add(ability, attackPos);
+                // Optimise later at any cost!!
+                var availableLate = attackPos.Where(x => movement.GetPath(x) != null);
+                if (availableLate.Count() != 0)
+                {
+                    inavailableAttacks.Add(ability, availableLate.ToList());
+
+                }
             }
 
             AbilityInstance abilityInstance;
@@ -111,13 +117,19 @@ namespace ShadowWithNoPast.Entities
         public IEnumerator ExecuteMove()
         {
             IsActiveTurn = true;
-            if (savedAbility != null && savedTarget.HasValue)
+            if (ReadyToExecute())
             {
                 yield return savedAbility.UseAbility(savedTarget.GetValueOrDefault());
             }
             EndTurn();
             yield break;
         }
+
+        public bool ReadyToExecute()
+        {
+            return savedAbility != null && savedTarget.HasValue;
+        }
+
         private void EndTurn()
         {
             TurnPassed?.Invoke();
@@ -129,7 +141,29 @@ namespace ShadowWithNoPast.Entities
 
         public bool EngageCombat()
         {
-            return Player.Entity.World == entity.World;
+            var availableMoves = movement.GetAvailableMoves();
+
+            foreach (var ability in abilities)
+            {
+                if (!ability.ReadyToUse)
+                {
+                    continue;
+                }
+                var attackTargets = ability.AvailableAttackPoints(Player.Entity.Pos);
+                var attackPos = attackTargets.positions;
+                var placesToAttack = availableMoves.Intersect(attackPos).ToList();
+                if (placesToAttack.Count() > 0)
+                {
+                    return true;
+                }
+                // Optimise later at any cost!!
+                var availableLate = attackPos.Where(x => movement.GetPath(x) != null);
+                if (availableLate.Count() != 0)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

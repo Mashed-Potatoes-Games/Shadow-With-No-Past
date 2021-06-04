@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfdbe34f1a8f2b443a7c972a330205f5, type: 3}
   m_Name: SwapWorldsAbility
   m_EditorClassIdentifier: 
+  ExecutionSprite: 1
   abilitySound: {fileID: 0}
   icon: {fileID: 21300000, guid: 3c4a217c44a0a89449eef41a8b130540, type: 3}
   actions:

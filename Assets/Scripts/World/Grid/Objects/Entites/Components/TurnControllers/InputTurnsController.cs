@@ -93,7 +93,12 @@ namespace ShadowWithNoPast.Entities
 
         public bool EngageCombat()
         {
-            return false;
+            return true;
+        }
+
+        public bool ReadyToExecute()
+        {
+            return true;
         }
     }
 }

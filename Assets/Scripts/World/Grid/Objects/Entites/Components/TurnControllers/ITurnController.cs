@@ -15,6 +15,8 @@ namespace ShadowWithNoPast.Entities
         bool EngageCombat();
         IEnumerator MoveAndTelegraphAction();
         IEnumerator ExecuteMove();
+
+        bool ReadyToExecute();
     }
     public enum TurnPriority
     {

@@ -24,7 +24,7 @@ namespace ShadowWithNoPast.Entities.Abilities
         public override IEnumerator PreExecute(GridEntity caller, WorldPos target)
         { 
             caller.FaceTo(target.Vector);
-            caller.SpriteController.SetSprite(SpriteType.Attack);
+            caller.SpriteController.SetSprite(ExecutionSprite);
 
             if(projectileSprite == null)
             {

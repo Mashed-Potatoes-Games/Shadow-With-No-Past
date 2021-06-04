@@ -13,6 +13,7 @@ namespace ShadowWithNoPast.GameProcess
         public static SceneLoader SceneLoader => TryReturnComponent(sceneLoader);
         public static GlobalEventManager GlobalEventManager => TryReturnComponent(globalEventManager);
         public static TurnsHandler TurnsHandler => TryReturnComponent(turnsHandler);
+        public static MainCameraController MainCameraController => TryReturnComponent(mainCameraController);
 
         [NonSerialized]
         private static WorldsChanger worldsChanger;
@@ -22,6 +23,8 @@ namespace ShadowWithNoPast.GameProcess
         private static GlobalEventManager globalEventManager;
         [NonSerialized]
         private static TurnsHandler turnsHandler;
+        [NonSerialized]
+        private static MainCameraController mainCameraController;
 
         void Awake()
         {
@@ -30,6 +33,7 @@ namespace ShadowWithNoPast.GameProcess
             SetComponentValue(ref sceneLoader);
             SetComponentValue(ref globalEventManager);
             SetComponentValue(ref turnsHandler);
+            mainCameraController = FindObjectOfType<MainCameraController>();
         }
 
         private static T TryReturnComponent<T>(T component) where T : MonoBehaviour

@@ -79,7 +79,7 @@ namespace ShadowWithNoPast.GameProcess
             WorldsSwitched?.Invoke(CurrentlyActive);
         }
 
-        public void SetActive(World world, bool active = false)
+        public void SetActive(World world, bool active = true)
         {
             if(world == CurrentlyActive ^ active)
             {
