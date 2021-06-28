@@ -14,6 +14,9 @@ public abstract class Switchable : MonoBehaviour
     {
         if(Game.WorldsChanger != null)
         {
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
             Game.WorldsChanger.WorldsSwitched += SwitchTo;
             SwitchTo(Game.WorldsChanger.Active);
         }

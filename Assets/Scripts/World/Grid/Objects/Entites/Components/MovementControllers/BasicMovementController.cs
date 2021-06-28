@@ -15,7 +15,7 @@ namespace ShadowWithNoPast.Entities
 
         private float delayInSecBetweenCellsMove = 0.1f;
 
-        void Start()
+        void Awake()
         {
             entity = GetComponent<GridEntity>();
         }

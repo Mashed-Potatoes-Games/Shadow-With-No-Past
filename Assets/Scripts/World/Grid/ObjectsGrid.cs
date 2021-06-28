@@ -17,7 +17,7 @@ public partial class ObjectsGrid : MonoBehaviour
 
     private ObjDictionary objects = new ObjDictionary();
 
-    void Awake()
+    void Start()
     {
         //Every time Editor reloads, dictionary clears, so we need to write objects position again.
         foreach (GridObject obj in transform.GetComponentsInChildren<GridObject>())

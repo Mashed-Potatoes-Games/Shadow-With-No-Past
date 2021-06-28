@@ -51,7 +51,7 @@ namespace ShadowWithNoPast.Entities
             yield return stateMachine.Movement.MoveWithDelay(path);
             if(Game.TurnsHandler.State == TurnSystemState.Exploration)
             {
-                stateMachine.SetState(new PlayerMoveListenState(player, stateMachine));
+                stateMachine.EndTurn();
                 yield break;
             }
             

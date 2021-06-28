@@ -17,7 +17,6 @@ public class ButtonBackground : Switchable
             WorldType.Regular => regularBackground,
             WorldType.TheEdge => edgeBackground,
             _ => throw new NotImplementedException()
-
         };
     }
 }

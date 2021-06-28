@@ -67,12 +67,23 @@ namespace ShadowWithNoPast.GameProcess
                 Debug.LogError($"More than 1 world is inactive, this will lead to unexpected behaviour!");
             }
             CurrentlyInactive = world;
+#if UNITY_EDITOR
+            if(!Application.isPlaying)
+            {
+                world.gameObject.SetActive(false);
+            }
+#endif
         }
 
         public void ToggleActive()
         {
             CurrentlyActive.SetActive(false);
             CurrentlyInactive.SetActive(true);
+
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(CurrentlyActive);
+            UnityEditor.EditorUtility.SetDirty(CurrentlyInactive);
+#endif
 
             (CurrentlyActive, CurrentlyInactive) = (CurrentlyInactive, CurrentlyActive);
 

@@ -12,17 +12,25 @@ public class TriggerZonesScenario : MonoBehaviour, IGameScenario
 
     protected virtual void Start()
     {
-        Game.TurnsHandler.TurnPassed += UpdateZones;
+        //Game.TurnsHandler.TurnPassed += UpdateZones;
+        Zones.ForEach(zone => zone.SetExploration());
     }
 
     private void UpdateZones()
     {
-
-        if(Zones != null && Game.TurnsHandler.State == TurnSystemState.Exploration)
+        if(Zones != null && Zones.Count != 0)
         {
             foreach(var zone in Zones)
             {
-                zone.SetExploration();
+                switch (Game.TurnsHandler.State)
+                {
+                    case TurnSystemState.Exploration:
+                        zone.SetExploration();
+                        break;
+                    case TurnSystemState.Battle:
+                        zone.SetBattle();
+                        break;
+                }
             }
         }
     }

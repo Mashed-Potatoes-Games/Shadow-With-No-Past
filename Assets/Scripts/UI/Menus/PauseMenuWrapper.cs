@@ -38,4 +38,10 @@ public class PauseMenuWrapper : MonoBehaviour
     {
 
     }
+
+    private void OnDestroy()
+    {
+        InputControls.CancelButton.Remove(Pause);
+        InputControls.CancelButton.Remove(Resume);
+    }
 }

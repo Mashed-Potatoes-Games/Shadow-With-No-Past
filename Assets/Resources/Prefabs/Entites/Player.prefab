@@ -113,7 +113,7 @@ MonoBehaviour:
   <type>k__BackingField: 1
   <MaxHealth>k__BackingField: 4
   health: 4
-  MoveDistance: 2
+  MoveDistance: 3
   healthbar: {fileID: 8976848321840442451}
 --- !u!114 &382708216090105642
 MonoBehaviour:

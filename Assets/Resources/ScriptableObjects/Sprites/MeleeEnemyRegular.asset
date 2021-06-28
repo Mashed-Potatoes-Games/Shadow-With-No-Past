@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c14b84d1d8729848b1d8829c81e6883, type: 3}
   m_Name: MeleeEnemyRegular
   m_EditorClassIdentifier: 
-  Idle: {fileID: 0}
+  Idle: {fileID: 21300000, guid: d1a28f4084ab91a42b63ec2ef7d5f536, type: 3}
   Defence: {fileID: 0}
-  Attack: {fileID: 0}
-  Damage: {fileID: 0}
+  Attack: {fileID: 21300000, guid: c36d76f132e54844082ab9240fbcf8bb, type: 3}
+  Damage: {fileID: 21300000, guid: a5f695930f351944b93db87291a419bd, type: 3}

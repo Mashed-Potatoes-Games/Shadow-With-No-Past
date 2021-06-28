@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 public static class InputControls
 {
@@ -24,10 +25,10 @@ public class SingleInputHandler
     private Action DefaultActionsQueue;
     public SingleInputHandler(InputAction action)
     {
-        action.performed += (context) => ActionTriggered();
+        action.performed += (context) => ActionTriggered(context);
     }
 
-    private void ActionTriggered()
+    private void ActionTriggered(CallbackContext context)
     {
         if(AlwaysExecuteQueue != null)
         {

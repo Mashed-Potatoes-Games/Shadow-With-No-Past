@@ -67,14 +67,14 @@ namespace ShadowWithNoPast.GameProcess
                     {
                         if(entity.TurnController.EngageCombat())
                         {
-                            State = TurnSystemState.Battle;
+                            if (!entity.CompareTag("Player"))
+                            {
+                                State = TurnSystemState.Battle;
+                            }
                             Game.MainCameraController.StartFollow(entity);
                             yield return new WaitForSeconds(SecondsBetweenEnemiesMove);
                             yield return entity.TurnController.MoveAndTelegraphAction();
                             Game.MainCameraController.StopFollow(entity);
-                            // Add to ITurnController function to check if entity going to execute next move
-                            // Implement in all turn controllers
-                            // Call it here and if it's going to execute move, add to queue, otherwise do nothing
                             if (entity.TurnController.ReadyToExecute())
                             {
                                 EntitiesQueue.Enqueue(entity);
@@ -92,11 +92,15 @@ namespace ShadowWithNoPast.GameProcess
             while (EntitiesQueue.Count > 0)
             {
                 var entity = EntitiesQueue.Dequeue();
-                if (entity == null) continue;
+
+
+                if (entity == null || !entity.TurnController.ReadyToExecute()) continue;
+                State = TurnSystemState.Battle;
+
                 Game.MainCameraController.StartFollow(entity);
                 yield return new WaitForSeconds(SecondsBetweenEnemiesMove);
                 yield return entity.TurnController.ExecuteMove();
-                Game.MainCameraController.StartFollow(entity);
+                Game.MainCameraController.StopFollow(entity);
                 yield return new WaitForSeconds(SecondsBetweenEnemiesMove);
             }
         }

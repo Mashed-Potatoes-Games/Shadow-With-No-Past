@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfdbe34f1a8f2b443a7c972a330205f5, type: 3}
+  m_Name: TeleportDamage
+  m_EditorClassIdentifier: 
+  ExecutionSprite: 2
+  abilitySound: {fileID: 0}
+  icon: {fileID: 21300000, guid: a6aed25fcfd86b449a24c8214d4bb20c, type: 3}
+  actions:
+  - Action: {fileID: 11400000, guid: f16791c085d9baf40a8f7af76d972d32, type: 2}
+    Pattern: {fileID: 11400000, guid: 6d2baa08d155fff4c8e9e76913bc0b7d, type: 2}
+  - Action: {fileID: 11400000, guid: 30004c8071dec354084b1be62b0ae02e, type: 2}
+    Pattern: {fileID: 0}
+  defaultCooldown: 0
+  defaultDistanceConstraint: 0
